@@ -1,0 +1,15 @@
+/*======================================
+7. wpo-service-page
+ =======================================*/
+
+.wpo-service-section-s3 {
+    margin-top: 120px;
+
+    @media (max-width:991px) {
+        margin-top: 90px;
+    }
+
+    @media (max-width:767px) {
+        margin-top: 80px;
+    }
+}

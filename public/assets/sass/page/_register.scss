@@ -1,0 +1,44 @@
+/*======================================
+            Register-Style
+ =======================================*/
+
+.left-side-form {
+  padding: 1rem 1rem 1rem 2.5rem;
+
+  .logo {
+    margin-bottom: 5rem;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+
+    h5 {
+      margin: 0;
+    }
+  }
+
+  .row {
+    row-gap: 16px;
+  }
+}
+
+.right-side-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 100vh;
+  padding: 1rem 1.5rem;
+
+  img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .left-side-form {
+    padding: 2rem;
+  }
+}

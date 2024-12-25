@@ -1,0 +1,12 @@
+{
+    "watch": [
+        "src/**/*.js",
+        ".env"
+    ],
+    "ext": "js",
+    "ignore": [
+        "node_modules",
+        "dist"
+    ],
+    "exec": "node src/server.js"
+}

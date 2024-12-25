@@ -1,0 +1,68 @@
+<div class="page-wrapper h-screen register">
+  <!-- start preloader -->
+  <% include('../components/ui/preloader') %>
+
+  <div class="row h-100">
+    <!-- left side form -->
+    <div class="col-12 col-md-5 left-side-form">
+      <!-- logo -->
+      <div class="logo">
+        <img src="assets/images/logo/logo-circle.svg" alt="logo" width="35px" />
+        <h5>Community</h5>
+      </div>
+      <div class="mb-5 d-block">
+        <h1>Create an account</h1>
+        <p>Describe yourself as clearly so that there are no mistakes.</p>
+      </div>
+      <div class="d-block">
+        <form>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="inputEmail4">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="inputEmail4"
+                placeholder="Email"
+              />
+            </div>
+            <div class="col-6">
+              <label for="inputPassword4">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="inputPassword4"
+                placeholder="Password"
+              />
+            </div>
+            <div class="col-12">
+              <label for="inputEmail4">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="inputEmail4"
+                placeholder="Email"
+              />
+            </div>
+            <div class="col-12">
+              <label for="inputPassword4">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="inputPassword4"
+                placeholder="Password"
+              />
+            </div>
+          </div>
+          <button type="submit" class="theme-btn-sm w-100">Sign in</button>
+        </form>
+      </div>
+
+      <!-- right side image -->
+    </div>
+
+    <div class="d-none d-md-block col-7 right-side-form">
+      <img src="assets/images/register/banner.jpg" alt="banner login" />
+    </div>
+  </div>
+</div>

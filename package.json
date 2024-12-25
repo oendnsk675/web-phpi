@@ -1,0 +1,28 @@
+{
+	"name": "web-community",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"format": "npx prettier --plugin=prettier-plugin-ejs --write '**/*.{ejs,js}'",
+		"dev": "nodemon",
+		"styles:watch": "sass --watch public/assets/sass/style.scss:public/assets/sass/style.css"
+	},
+	"keywords": [],
+	"author": "Sayidina Ahmadal Qososyi",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"body-parser": "^1.20.3",
+		"dotenv": "^16.4.7",
+		"ejs": "^3.1.10",
+		"express": "^4.21.2",
+		"express-ejs-layouts": "^2.5.1",
+		"morgan": "^1.10.0"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.9",
+		"prettier": "^3.4.2",
+		"prettier-plugin-ejs": "^1.0.3",
+		"sass": "^1.83.0"
+	}
+}
