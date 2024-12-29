@@ -6,9 +6,27 @@ const path = require('path');
 const expressEjsLayouts = require('express-ejs-layouts');
 
 const routes = require('./routes');
+const database = require('./configs/ormconfig');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(
+  session({
+    secret: 'phpi2024',
+    resave: false,
+    saveUninitialized: true,
+  }),
+);
+
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.messages = req.flash();
+  next();
+});
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,18 +40,16 @@ app.use(expressEjsLayouts);
 
 app.set('layout', path.join(__dirname, 'views', 'layouts', 'main.ejs'));
 
-routes(app);
-
-app.get('/members', (req, res) => {
-  res.render('pages/members', {
-    title: 'Community Members',
-    members: [
-      { name: 'John Doe', role: 'Admin' },
-      { name: 'Jane Smith', role: 'Member' },
-      { name: 'Chris Johnson', role: 'Moderator' },
-    ],
+database
+  .initialize()
+  .then(() => {
+    console.log('[database]: Connected to the database');
+  })
+  .catch((error) => {
+    console.error('[database]: Error connecting', error);
   });
-});
+
+routes(app);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

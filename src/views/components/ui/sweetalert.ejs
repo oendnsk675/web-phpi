@@ -1,0 +1,25 @@
+<% if (messages.successMessage) { %>
+<script>
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'success',
+    text: '<%= messages.successMessage %>',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+</script>
+<% } %>
+
+<% if (messages.errorMessage) { %>
+<script>
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'error',
+    text: '<%= messages.errorMessage %>',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+</script>
+<% } %>
