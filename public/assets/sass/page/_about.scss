@@ -4,11 +4,17 @@
 
 /* 6.1	wpo-about-section-s3 */
 .wpo-about-section-s3 {
-    padding-bottom: 0;
+  padding-bottom: 0;
 
-       .wpo-about-wrap .wpo-about-exprience .tp-fun-fact-grids p {
-            font-size: 15px;
-            margin: 0;
-        }
+  .wpo-about-wrap .wpo-about-exprience .tp-fun-fact-grids p {
+    font-size: 15px;
+    margin: 0;
+  }
+}
 
+.wpo-about {
+  padding: 90px 90px;
+  @media (max-width: 767px) {
+    padding: 0px;
+  }
 }

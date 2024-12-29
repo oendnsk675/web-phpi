@@ -1,0 +1,102 @@
+.wpo-dashboard {
+  display: flex;
+  background-color: rgb(250, 250, 239);
+
+  .wpo-sidebar {
+    width: 20%;
+    height: 100vh;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    @include transition-time(0.3s);
+    @include media-query(991px) {
+      width: 0%;
+      position: relative;
+      height: auto;
+    }
+
+    .wpo-sidebar-widget {
+      .wpo-widget-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 25px 20px;
+        border-bottom: 1px solid #ebebeb;
+      }
+
+      .wpo-widget-menu {
+        ul {
+          li {
+            a {
+              display: flex;
+              align-items: center;
+              gap: 16px;
+              padding: 15px 20px;
+              color: slategray;
+              @include transition-time(0.3s);
+              @include media-query(991px) {
+                padding: 10px;
+              }
+
+              &:hover,
+              &:active {
+                color: $theme-primary-color;
+                border-right: 3px solid $theme-primary-color;
+                background-color: rgb(227, 228, 230);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .wpo-sidebar-widget-logout {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+
+      .wpo-widget-menu {
+        ul {
+          margin-bottom: 0;
+          li {
+            a {
+              display: flex;
+              align-items: center;
+              gap: 16px;
+              padding: 15px 20px;
+              color: slategray;
+              @include transition-time(0.3s);
+              @include media-query(991px) {
+                padding: 10px;
+              }
+
+              &:hover,
+              &:active {
+                color: $theme-primary-color;
+                border-right: 3px solid $theme-primary-color;
+                background-color: rgb(227, 228, 230);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .sidebar-helper {
+    width: 20%;
+  }
+
+  main {
+    flex: auto 1 1;
+    @include media-query(991px) {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+<div class="page-wrapper h-screen register">
+  <!-- start preloader -->
+  <% include('../components/ui/preloader') %>
+
+  <div class="wpo-register">
+    <!-- left side form -->
+    <div class="d-none d-md-block col-7 left-side-form">
+      <img src="assets/images/register/banner.jpg" alt="banner login" />
+    </div>
+
+    <div class="right-side-form">
+      <!-- logo -->
+      <div class="logo">
+        <a href="index.html" class="d-flex gap-2 align-items-center">
+          <img src="assets/images/Logo-HPI.webp" alt="Logo-HPI" width="80" />
+          <div class="d-flex flex-column w-100">
+            <h5 class="">PHPI</h5>
+            <p class="font-xs text-bg-dark"></p>
+              PERKUMPULAN HIMPUNAN PRAMUWISATA INDONESIA
+            </p>
+          </div>
+        </a>
+      </div>
+      <div class="mb-5 d-block">
+        <h1 class="mb-2">Masuk</h1>
+        <p>Silakan masuk dengan akun Anda untuk menggunakan fitur yang tersedia</p>
+      </div>
+      <div class="d-block">
+        <form>
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="NO Telpon"
+                required
+              />
+            </div>
+            <div class="col-12">
+              <label for="inputPassword4">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="inputPassword4"
+                placeholder="Password"
+                required
+              />
+            </div>
+          </div>
+          <div class="">
+            <button type="submit" class="theme-btn-sm w-100">Daftar</button>
+
+            <p class="mt-3 d-flex justify-content-center">
+              Belum punya akun?
+              <a href="/register">Daftar disini</a>
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <!-- right side image -->
+    </div>
+  </div>
+</div>
