@@ -7,23 +7,32 @@
     <div class="wpo-sidebar-widget">
       <div class="wpo-widget-title">
         <img src="/assets/images/Logo-HPI.webp" width="50" alt="Logo HPI" />
-        <h6>Nama Instansi</h6>
+        <h6 class="m-0">PHPI</h6>
       </div>
     </div>
+    <hr />
 
     <div class="wpo-sidebar-widget">
       <div class="wpo-widget-menu">
         <ul>
-          <li>
-            <a href="/admin/dashboard">
+          <% if (session.user.role === 'admin') { %>
+          <li class="<%= currentPage === 'dashboard' ? 'active' : '' %>">
+            <a href="/panel/dashboard">
               <i class="fa fa-dashboard"></i>
               <span>Dashboard</span>
             </a>
           </li>
-          <li>
-            <a href="/admin/members">
+          <li class="<%= currentPage == 'members' ? 'active' : '' %>">
+            <a href="/panel/members">
+              <i class="fa fa-users"></i>
+              <span>Members</span>
+            </a>
+          </li>
+          <% } %>
+          <li class="<%= currentPage === 'profile' ? 'active' : '' %>">
+            <a href="/panel/profile">
               <i class="fa fa-user"></i>
-              <span>User</span>
+              <span>Profile</span>
             </a>
           </li>
         </ul>
@@ -34,7 +43,7 @@
       <div class="wpo-widget-menu">
         <ul>
           <li>
-            <a href="/admin/dashboard">
+            <a href="/logout">
               <i class="fa fa-sign-out" aria-hidden="true"></i>
               <span>Logout</span>
             </a>
@@ -45,12 +54,7 @@
   </aside>
   <div class="sidebar-helper"></div>
   <main class="px-5 py-5"><%- body %></main>
-
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-<!-- Konten halaman dinamis -->
-
-<%- include('../components/ui/sweetalert.ejs') %>
 
 <!-- Include footer -->
 <%- include('../components/footer.ejs') %>

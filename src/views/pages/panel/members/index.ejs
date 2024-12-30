@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between align-items-center mb-5">
     <h4>Members</h4>
 
-    <a href="/admin/members/create">
+    <a href="/panel/members/create">
       <button class="theme-btn-sm">Tambah User</button>
     </a>
   </div>
@@ -15,6 +15,7 @@
           <th scope="col">Email</th>
           <th scope="col">Nama</th>
           <th scope="col">No Telpon</th>
+          <th scope="col">Status</th>
           <th scope="col">Aksi</th>
         </tr>
       </thead>
@@ -26,14 +27,33 @@
           <td><%= user.nama %></td>
           <td><%= user.no_telp %></td>
           <td>
+            <span
+              class="badge rounded-pill <%= user.status == 'active' ? 'bg-success' : 'bg-danger' %>"
+              ><%= user.status %></span
+            >
+          </td>
+          <td class="d-flex flex-column gap-2">
             <a
               class="btn btn-sm btn-primary"
-              href="/admin/members/<%= user.id %>"
+              href="/panel/members/edit/<%= user.id %>"
               >Edit</a
             >
+            <% if (user.status == 'inactive') { %>
+            <a
+              class="btn btn-sm btn-success"
+              href="/panel/members/verify/<%= user.id %>"
+              >Verifikasi</a
+            >
+            <%} else { %>
+            <a
+              class="btn btn-sm btn-warning"
+              href="/panel/members/suspend/<%= user.id %>"
+              >Suspend</a
+            >
+            <% } %>
             <a
               class="btn btn-sm btn-danger"
-              href="/admin/members/<%= user.id %>/delete"
+              href="/panel/members/<%= user.id %>/delete"
               >Hapus</a
             >
           </td>

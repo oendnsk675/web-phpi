@@ -1,5 +1,22 @@
 const path = require('path');
-const { getAll, create, save } = require('./controller/admin/users.controller');
+const {
+  getAll,
+  create,
+  save,
+  profile,
+  edit,
+  update,
+  verify,
+  suspend,
+} = require('./controller/admin/users.controller');
+const {
+  register,
+  doRegister,
+  login,
+  doLogin,
+} = require('./controller/auth/auth.controller');
+const { upload } = require('./configs/multer');
+const { checkAuth } = require('./middlewares/auth');
 
 module.exports = (app) => {
   app.get('/', (req, res) => {
@@ -20,11 +37,8 @@ module.exports = (app) => {
     });
   });
 
-  app.get('/register', (req, res) => {
-    res.render('pages/register', {
-      title: 'Register',
-    });
-  });
+  app.get('/register', register);
+  app.post('/register', doRegister);
 
   app.get('/members', (req, res) => {
     const teamMembers = Array.from({ length: 10 }, (_, i) => ({
@@ -54,20 +68,38 @@ module.exports = (app) => {
     });
   });
 
-  app.get('/login', (req, res) => {
-    res.render('pages/login', {
-      title: 'Login',
-    });
-  });
+  app.get('/login', login);
+  app.post('/login', doLogin);
 
-  app.get('/admin/dashboard', (req, res) => {
-    res.render('pages/admin/dashboard/index', {
+  app.get('/panel/dashboard', checkAuth, (req, res) => {
+    res.render('pages/panel/dashboard/index', {
       layout: 'layouts/dashboard',
       title: 'Dashboard',
     });
   });
 
-  app.get('/admin/members', getAll);
-  app.get('/admin/members/create', create);
-  app.post('/admin/members/save', save);
+  app.get('/panel/profile', checkAuth, profile);
+
+  app.get('/panel/members', checkAuth, getAll);
+  app.get('/panel/members/create', checkAuth, create);
+  app.get('/panel/members/edit/:id', checkAuth, edit);
+  app.get('/panel/members/verify/:id', checkAuth, verify);
+  app.get('/panel/members/suspend/:id', checkAuth, suspend);
+  app.post('/panel/members/save', checkAuth, upload.single('photo'), save);
+  app.post(
+    '/panel/members/update/:id',
+    checkAuth,
+    upload.single('photo'),
+    update,
+  );
+
+  // logout
+  app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send('Failed to sign out');
+      }
+      res.redirect('/login');
+    });
+  });
 };

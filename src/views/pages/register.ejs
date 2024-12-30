@@ -27,16 +27,17 @@
       </div>
       <br /><br />
       <div class="d-block">
-        <form>
+        <form action="/register" method="post">
           <div class="row mb-3">
             <div class="col-6">
-              <label for="inputEmail4">Email</label>
+              <label for="email">Email</label>
               <input
                 type="email"
                 class="form-control"
-                id="inputEmail4"
+                id="email"
                 placeholder="Email"
                 required
+                name="email"
               />
             </div>
             <div class="col-6">
@@ -47,16 +48,18 @@
                 id="name"
                 placeholder="Nama"
                 required
+                name="nama"
               />
             </div>
             <div class="col-12">
-              <label for="phone">NO Telpon</label>
+              <label for="no_telp">No Telpon</label>
               <input
                 type="tel"
                 class="form-control"
-                id="phone"
-                placeholder="NO Telpon"
+                id="no_telp"
+                placeholder="No Telpon"
                 required
+                name="no_telp"
               />
             </div>
             <div class="col-12">
@@ -67,6 +70,7 @@
                 id="inputPassword4"
                 placeholder="Password"
                 required
+                name="password"
               />
             </div>
           </div>

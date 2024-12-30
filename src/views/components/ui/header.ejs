@@ -3,7 +3,7 @@
     <div class="topbar-shape"></div>
     <div class="container">
       <div class="row">
-        <div class="col col-lg-2 col-md-3 col-12 w-auto">
+        <div class="w-auto">
           <div class="site-logo">
             <a href="index.html" class="d-flex gap-2 align-items-center">
               <img
@@ -12,8 +12,8 @@
                 width="80"
               />
               <div class="d-flex flex-column w-100">
-                <h5 class="text-white">PHPI</h5>
-                <span class="text-white font-xs"
+                <h5 class="text-white m-0">PHPI</h5>
+                <span class="fullname text-white font-xs"
                   >PERKUMPULAN HIMPUNAN PRAMUWISATA INDONESIA</span
                 >
               </div>
@@ -70,21 +70,34 @@
       <div id="navbar" class="collapse navbar-collapse navigation-holder">
         <button class="close-navbar"><i class="fa fa-close"></i></button>
         <ul class="nav navbar-nav">
-          <li><a href="/">Home</a></li>
-          <li><a href="about">Tentang Kami</a></li>
-          <li>
+          <li class="menu-item-has-children"><a href="/">Home</a></li>
+          <li class="menu-item-has-children"><a href="about">Tentang Kami</a></li>
+          <li class="menu-item-has-children">
             <a href="products">Produk</a>
           </li>
-          <li>
+          <li class="menu-item-has-children">
             <a href="members">Member</a>
           </li>
-          <li><a href="contact">Kontak</a></li>
+          <li class="menu-item-has-children"><a href="contact">Kontak</a></li>
         </ul>
       </div>
       <!-- end of nav-collapse -->
       <div class="search-quote">
         <div class="quote">
-          <a href="register" class="theme-btn">Register</a>
+          <% if (session.user) { %>
+            <div class="dropdown">
+              <button class="theme-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-bars m-0 p-0" aria-hidden="true"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="/panel/profile" class="dropdown-item">Go to Panel</a></li>
+                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+              </ul>
+            </div>
+          <% } else { %>
+          <a href="/login" class="theme-btn">Login</a>
+          <% } %>
+        </div>
         </div>
       </div>
     </div>

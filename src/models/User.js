@@ -23,6 +23,20 @@ const User = new EntitySchema({
     password: {
       type: 'varchar',
     },
+    status: {
+      type: 'enum',
+      enum: ['active', 'inactive'],
+      default: 'inactive',
+    },
+    role: {
+      type: 'enum',
+      enum: ['admin', 'user'],
+      default: 'user',
+    },
+    photo: {
+      type: 'varchar',
+      nullable: true,
+    },
     createdAt: {
       type: 'timestamp',
       default: () => 'CURRENT_TIMESTAMP',

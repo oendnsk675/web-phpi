@@ -9,7 +9,7 @@ const AppDataSource = new DataSource({
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DATABASE,
-  synchronize: true, // Gunakan false di produksi
+  synchronize: true,
   logging: false,
   entities: [require('../models/User')],
   migrations: [],

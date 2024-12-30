@@ -24,7 +24,10 @@ app.use(
 app.use(flash());
 
 app.use((req, res, next) => {
+  const currentPage = req.originalUrl.split('/')[2]; //
   res.locals.messages = req.flash();
+  res.locals.session = req.session;
+  res.locals.currentPage = currentPage;
   next();
 });
 
@@ -32,6 +35,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

@@ -22,10 +22,11 @@
       .wpo-widget-title {
         display: flex;
         align-items: center;
-        justify-content: center;
         gap: 8px;
-        padding: 25px 20px;
-        border-bottom: 1px solid #ebebeb;
+        margin: 10px;
+        padding: 15px 20px;
+        border-radius: 7px;
+        border: 1px solid #ebebeb;
       }
 
       .wpo-widget-menu {
@@ -42,12 +43,16 @@
                 padding: 10px;
               }
 
-              &:hover,
-              &:active {
+              &:hover {
                 color: $theme-primary-color;
                 border-right: 3px solid $theme-primary-color;
                 background-color: rgb(227, 228, 230);
               }
+            }
+            &.active {
+              color: $theme-primary-color;
+              border-right: 3px solid $theme-primary-color;
+              background-color: rgb(227, 228, 230);
             }
           }
         }
@@ -93,7 +98,7 @@
   }
 
   main {
-    flex: auto 1 1;
+    flex: 1 1 0%;
     @include media-query(991px) {
       width: 100%;
       margin-left: 0;
