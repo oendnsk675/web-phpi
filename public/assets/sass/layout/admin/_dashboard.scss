@@ -1,6 +1,7 @@
 .wpo-dashboard {
   display: flex;
   background-color: rgb(250, 250, 239);
+  height: 100vh;
 
   .wpo-sidebar {
     width: 20%;
@@ -13,7 +14,7 @@
     z-index: 999;
     @include transition-time(0.3s);
     @include media-query(991px) {
-      width: 0%;
+      width: fit-content;
       position: relative;
       height: auto;
     }
@@ -27,6 +28,16 @@
         padding: 15px 20px;
         border-radius: 7px;
         border: 1px solid #ebebeb;
+        img {
+          @media (max-width: 991px) {
+            display: none;
+          }
+        }
+        @include media-query(991px) {
+          padding: 4px;
+          margin: 10px 1px;
+          border: none;
+        }
       }
 
       .wpo-widget-menu {
@@ -41,12 +52,20 @@
               @include transition-time(0.3s);
               @include media-query(991px) {
                 padding: 10px;
+                display: flex;
+                justify-content: center;
               }
 
               &:hover {
                 color: $theme-primary-color;
                 border-right: 3px solid $theme-primary-color;
                 background-color: rgb(227, 228, 230);
+              }
+
+              span {
+                @include media-query(991px) {
+                  display: none;
+                }
               }
             }
             &.active {
@@ -78,6 +97,8 @@
               @include transition-time(0.3s);
               @include media-query(991px) {
                 padding: 10px;
+                display: flex;
+                justify-content: center;
               }
 
               &:hover,
@@ -85,6 +106,12 @@
                 color: $theme-primary-color;
                 border-right: 3px solid $theme-primary-color;
                 background-color: rgb(227, 228, 230);
+              }
+
+              span {
+                @include media-query(991px) {
+                  display: none;
+                }
               }
             }
           }
@@ -95,13 +122,20 @@
 
   .sidebar-helper {
     width: 20%;
+
+    @include media-query(991px) {
+      display: none;
+    }
   }
 
   main {
     flex: 1 1 0%;
     @include media-query(991px) {
       width: 100%;
-      margin-left: 0;
+      margin-left: 0 !important;
+      padding: 1rem !important;
+      height: 100%;
+      overflow-x: hidden;
     }
   }
 }

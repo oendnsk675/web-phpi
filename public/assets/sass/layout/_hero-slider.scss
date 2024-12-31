@@ -217,25 +217,28 @@
     margin-top: 17px;
 
     @media (max-width: 1399px) {
-      font-size: 50px;
-      line-height: 60px;
+      font-size: 33px;
+      line-height: 50px;
     }
 
     @include media-query(1199px) {
-      font-size: 70px;
+      font-size: 33px;
+      line-height: 50px;
     }
 
     @include media-query(991px) {
-      font-size: 45px;
-      line-height: 60px;
+      font-size: 33px;
+      line-height: 50px;
     }
 
     @include media-query(767px) {
-      font-size: 50px;
+      font-size: 33px;
+      line-height: 50px;
     }
 
     @include media-query(469px) {
-      font-size: 45px;
+      font-size: 33px;
+      line-height: 50px;
     }
 
     @include media-query(425px) {

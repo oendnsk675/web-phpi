@@ -307,7 +307,7 @@
     #navbar {
       background: $white;
       display: block !important;
-      width: 90%;
+      width: 280px;
       height: 100% !important;
       margin: 0;
       padding: 0;
@@ -316,7 +316,7 @@
       position: fixed;
       right: -300px;
       top: 0;
-      z-index: 100;
+      z-index: 999999999999999999999999999999999999;
 
       ul a {
         color: $black;
@@ -424,6 +424,7 @@
     @media (max-width: 991px) {
       background: $theme-primary-color;
       border-bottom: 0;
+      height: auto;
     }
 
     @include media-query(767px) {
@@ -674,6 +675,14 @@
 
   #navbar > ul > li a {
     color: $section-bg-color;
+  }
+
+  #navbar > ul > li.item-add-on {
+    display: none;
+
+    @media (max-width: 991px) {
+      display: block;
+    }
   }
 
   .navigation .search-quote {

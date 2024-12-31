@@ -1026,5 +1026,7 @@
     );
   });
 
-  $('#dataTables').DataTable();
+  $('#dataTables').DataTable({
+    scrollX: true,
+  });
 })(window.jQuery);

@@ -7,16 +7,10 @@
           <div class="site-logo">
             <a href="index.html" class="d-flex gap-2 align-items-center">
               <img
-                src="assets/images/Logo-HPI.webp"
+                src="assets/images/logo-phpi.png"
                 alt="Logo-HPI"
-                width="80"
+                width="290"
               />
-              <div class="d-flex flex-column w-100">
-                <h5 class="text-white m-0">PHPI</h5>
-                <span class="fullname text-white font-xs"
-                  >PERKUMPULAN HIMPUNAN PRAMUWISATA INDONESIA</span
-                >
-              </div>
             </a>
           </div>
         </div>
@@ -70,34 +64,48 @@
       <div id="navbar" class="collapse navbar-collapse navigation-holder">
         <button class="close-navbar"><i class="fa fa-close"></i></button>
         <ul class="nav navbar-nav">
-          <li class="menu-item-has-children"><a href="/">Home</a></li>
-          <li class="menu-item-has-children"><a href="about">Tentang Kami</a></li>
-          <li class="menu-item-has-children">
-            <a href="products">Produk</a>
+          <li class=""><a href="/">Home</a></li>
+          <li class="">
+            <a href="/about">Tentang Kami</a>
           </li>
-          <li class="menu-item-has-children">
-            <a href="members">Member</a>
+          <li class="">
+            <a href="/products">Produk</a>
           </li>
-          <li class="menu-item-has-children"><a href="contact">Kontak</a></li>
+          <li class="">
+            <a href="/members">Member</a>
+          </li>
+          <li class=""><a href="contact">Kontak</a></li>
+          <% if (session.user) { %>
+          <li class="item-add-on"><a href="/panel/profile">Go to Panel</a></li>
+          <li class="item-add-on"><a href="/logout">Logout</a></li>
+          <% } else { %>
+          <li class="item-add-on"><a href="/login">Login</a></li>
+          <% } %>
         </ul>
       </div>
       <!-- end of nav-collapse -->
       <div class="search-quote">
         <div class="quote">
           <% if (session.user) { %>
-            <div class="dropdown">
-              <button class="theme-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-bars m-0 p-0" aria-hidden="true"></i>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a href="/panel/profile" class="dropdown-item">Go to Panel</a></li>
-                <li><a class="dropdown-item" href="/logout">Logout</a></li>
-              </ul>
-            </div>
+          <div class="dropdown">
+            <button
+              class="theme-btn dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fa fa-bars m-0 p-0" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/panel/profile" class="dropdown-item">Go to Panel</a>
+              </li>
+              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+            </ul>
+          </div>
           <% } else { %>
           <a href="/login" class="theme-btn">Login</a>
           <% } %>
-        </div>
         </div>
       </div>
     </div>
