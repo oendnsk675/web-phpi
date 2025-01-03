@@ -66,6 +66,8 @@ exports.profileMember = async (req, res) => {
       user.photo = `${process.env.APP_URL}${user.photo}`;
     }
 
+    user.qr_url = `${process.env.APP_URL}/profile/${user.id}`;
+
     res.render('pages/profile', {
       title: 'Members',
       user,

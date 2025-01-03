@@ -5,10 +5,23 @@
         = FUNCTIONS
     -------------------------------------------*/
 
+  $('div.toggle-filter').addClass('mb-4');
+  $('.button-toggle-filter').on('click', function () {
+    $('#filter-1').toggle('slow', function () {
+      $('div.toggle-filter').toggleClass('mb-4');
+      if ($('#filter-1').is(':visible')) {
+        $('.text-toggle-filter').html('Hide Filter'); // Update text
+      } else {
+        $('.text-toggle-filter').html('Show Filter');
+      }
+    });
+    $('#filter-2').toggle('slow');
+  });
+
   // Toggle mobile navigation
   function toggleMobileNavigation() {
     var navbar = $('.navigation-holder');
-    var openBtn = $('.navbar-header .open-btn');
+    var openBtn = $('.open-btn');
     var closeBtn = $('.navigation-holder .close-navbar');
 
     openBtn.on('click', function () {

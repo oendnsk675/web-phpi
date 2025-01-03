@@ -32,11 +32,7 @@
             <div class="team-info-text">
               <div class="name-tag">
                 <h2><%= user.nama %></h2>
-                <input
-                  type="hidden"
-                  id="qr-url"
-                  value="http://localhost:3000/user/osyi"
-                />
+                <input type="hidden" id="qr-url" value="<%= user.qr_url %>" />
                 <div
                   role="button"
                   data-bs-toggle="modal"

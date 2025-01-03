@@ -147,7 +147,15 @@
         </div>
         <!-- sidebar -->
         <div class="card p-4 sidebar">
-          <div class="sidebar-item mb-4">
+          <div class="w-100 d-flex justify-content-center toggle-filter">
+            <div role="button" class="d-flex gap-3 align-items-center w-100 button-toggle-filter">
+              <hr class="w-100">
+              <span class="text-toggle-filter" style="min-width: max-content;">Hide Filter</span>
+              <hr class="w-100">
+            </div>
+          </div>
+
+          <div id="filter-1" class="sidebar-item mb-4">
             <h6 for="layout" class="sidebar-title">View Layout</h6>
             <select name="layout" id="layout" class="form-control">
               <option value="grid">Grid</option>
@@ -155,7 +163,7 @@
             </select>
           </div>
 
-          <form action="/members" method="get">
+          <form id="filter-2" action="/members" method="get">
             <h6 for="layout" class="sidebar-title">Filter</h6>
             <div class="sidebar-item">
               <div class="form-group">

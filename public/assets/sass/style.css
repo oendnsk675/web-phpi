@@ -364,6 +364,14 @@ a {
   height: fit-content !important;
 }
 
+.m-0 {
+  margin: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
 .wpo-section-title {
   margin-bottom: 60px;
   text-align: center;
@@ -1823,8 +1831,15 @@ a {
     margin: 0 25px 8px 25px;
   }
 }
+.site-header .open-btn {
+  background: none !important;
+  border: none !important;
+  color: whitesmoke !important;
+  font-size: 25px !important;
+  padding: 0 !important;
+}
 @media screen and (min-width: 992px) {
-  .site-header .navbar-header .open-btn {
+  .site-header .open-btn {
     display: none;
   }
   .site-header #navbar .close-navbar {
@@ -1838,9 +1853,6 @@ a {
 @media (max-width: 991px) {
   .site-header {
     /* class for show hide navigation */
-  }
-  .site-header .navbar {
-    min-height: 80px;
   }
   .site-header .container {
     width: 100%;
@@ -1964,7 +1976,14 @@ a {
 /* 2.1 topbar */
 .header-style-1, .header-style-3, .header-style-2 {
   height: 15rem;
+  position: relative;
+  z-index: 2;
   /*** navigation ***/
+}
+@media (max-width: 991px) {
+  .header-style-1, .header-style-3, .header-style-2 {
+    height: auto;
+  }
 }
 .header-style-1 .topbar, .header-style-3 .topbar, .header-style-2 .topbar {
   background-color: #fff;
@@ -1981,9 +2000,37 @@ a {
     height: auto;
   }
 }
+.header-style-1 .topbar img.logo-2, .header-style-3 .topbar img.logo-2, .header-style-2 .topbar img.logo-2 {
+  display: none;
+}
+@media screen and (max-width: 767px) {
+  .header-style-1 .topbar img.logo-2, .header-style-3 .topbar img.logo-2, .header-style-2 .topbar img.logo-2 {
+    display: block;
+  }
+}
+@media screen and (max-width: 767px) {
+  .header-style-1 .topbar img.logo-1, .header-style-3 .topbar img.logo-1, .header-style-2 .topbar img.logo-1 {
+    display: none;
+  }
+}
+.header-style-1 .topbar .topbar-item-container, .header-style-3 .topbar .topbar-item-container, .header-style-2 .topbar .topbar-item-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+@media (min-width: 991px) {
+  .header-style-1 .topbar .topbar-item-container, .header-style-3 .topbar .topbar-item-container, .header-style-2 .topbar .topbar-item-container {
+    justify-content: start;
+  }
+}
+@media (min-width: 991px) {
+  .header-style-1 .topbar .topbar-item-container .open-btn, .header-style-3 .topbar .topbar-item-container .open-btn, .header-style-2 .topbar .topbar-item-container .open-btn {
+    display: none;
+  }
+}
 @media (max-width: 767px) {
   .header-style-1 .topbar, .header-style-3 .topbar, .header-style-2 .topbar {
-    padding: 25px 0;
+    padding: 10px 0;
   }
 }
 .header-style-1 .topbar:before, .header-style-3 .topbar:before, .header-style-2 .topbar:before {
@@ -2490,12 +2537,12 @@ a {
 }
 @media (max-width: 991px) {
   .hero {
-    height: 500px;
+    height: 700px;
   }
 }
 @media (max-width: 767px) {
   .hero {
-    height: 450px;
+    height: 570px;
   }
 }
 .hero .slide {
@@ -2626,7 +2673,6 @@ a {
 .static-hero-s2 {
   position: relative;
   z-index: 1;
-  margin-top: -4rem;
 }
 .hero-style-1 .slide-caption,
 .static-hero-s2 .slide-caption {
@@ -2732,7 +2778,7 @@ a {
   .static-hero-s2 .slide-caption h2 {
     font-size: 33px;
     line-height: 44px;
-    margin-bottom: 5px;
+    margin-bottom: 4rem;
   }
 }
 .hero-style-1 .slide-caption .hero-style-btn,
@@ -8663,6 +8709,19 @@ a {
   display: flex;
   gap: 10px;
 }
+.wpo-team-section .team-grids .toggle-filter {
+  display: none;
+}
+@media (max-width: 991px) {
+  .wpo-team-section .team-grids .toggle-filter {
+    display: block;
+  }
+}
+@media (max-width: 991px) {
+  .wpo-team-section .team-grids {
+    flex-direction: column-reverse;
+  }
+}
 .wpo-team-section .team-grids .content {
   width: 65%;
 }
@@ -8676,8 +8735,19 @@ a {
   border: 1px solid #ccc;
   object-fit: cover;
 }
+@media (max-width: 767px) {
+  .wpo-team-section .team-grids .content {
+    width: 100%;
+    overflow-y: auto;
+  }
+}
 .wpo-team-section .team-grids .sidebar {
   flex: 1 1 0%;
+}
+@media (max-width: 767px) {
+  .wpo-team-section .team-grids .sidebar {
+    width: 100%;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
