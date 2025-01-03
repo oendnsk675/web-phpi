@@ -68,6 +68,18 @@
 
   smallNavFunctionality();
 
+  new QRCode(
+    document.getElementById('qr-container'),
+    'http://jindo.dev.naver.com/collie',
+  );
+
+  $('#qrcodeModal').on('shown.bs.modal', function () {
+    new QRCode(
+      document.getElementById('qrcode-modal'),
+      'http://jindo.dev.naver.com/collie',
+    );
+  });
+
   /*------------------------------------------
         = STICKY HEADER
     -------------------------------------------*/

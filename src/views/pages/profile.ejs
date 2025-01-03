@@ -11,13 +11,30 @@
       <div class="team-info-wrap">
         <div class="row align-items-center">
           <div class="col-lg-6">
-            <div class="team-info-img">
+            <div class="team-info-img relative">
+              <div class="verified">
+                <img
+                  src="/assets/images/ft-icon/verified.svg"
+                  alt=""
+                  srcset=""
+                />
+              </div>
               <img src="assets/images/at-single.jpg" alt="" />
             </div>
           </div>
           <div class="col-lg-6">
             <div class="team-info-text">
-              <h2>Jannatul Ferdaus</h2>
+              <div class="name-tag">
+                <h2>Jannatul Ferdaus</h2>
+                <div
+                  role="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#qrcodeModal"
+                  class="qr-container"
+                  id="qr-container"
+                ></div>
+                <%- include('../components/partials/profile/modal') %>
+              </div>
               <ul>
                 <li>Position: <span>Senior Product Designer</span></li>
                 <li>Planner Service:<span>Senior Engineer</span></li>

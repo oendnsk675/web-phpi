@@ -2677,11 +2677,11 @@ a {
 }
 .hero-style-1 .slide-caption h2,
 .static-hero-s2 .slide-caption h2 {
-  font-size: 105px;
+  font-size: 45px;
   font-weight: 700;
   color: #370000;
   margin-bottom: 32px;
-  line-height: 100px;
+  line-height: 50px;
   margin-top: 17px;
 }
 @media (max-width: 1399px) {
@@ -6753,6 +6753,17 @@ a {
     margin-bottom: 40px;
   }
 }
+.team-info-img .verified {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding: 35px 50px;
+}
+.team-info-img .verified img {
+  width: 50px !important;
+  height: 50px !important;
+}
 .team-info-img img {
   width: 100%;
   height: 465px;
@@ -6762,15 +6773,6 @@ a {
   .team-info-img img {
     height: 100%;
   }
-}
-
-.team-info-text h2 {
-  font-size: 30px;
-  font-weight: 500;
-  color: #fff;
-  margin-top: 0;
-  margin-bottom: 50px;
-  text-align: center;
 }
 
 .team-info-text {
@@ -6809,15 +6811,31 @@ a {
   }
 }
 
-.team-info-text h2 {
-  font-size: 27px;
+.team-info-text .name-tag {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #eee;
+  padding: 12px;
+}
+.team-info-text .name-tag h2 {
+  font-size: 20px;
   font-weight: 500;
   color: #1d2327;
-  margin-top: 0;
-  margin-bottom: 25px;
-  text-align: center;
-  background: #eee;
-  padding: 20px;
+  margin: 0;
+}
+.team-info-text .name-tag .qr-container,
+.team-info-text .name-tag qr-modal {
+  aspect-ratio: 1/1;
+  height: 40px;
+  background-color: red;
+}
+.team-info-text .name-tag .qr-modal {
+  height: 70vw;
+  max-width: 400px;
+  max-height: 400px;
+  aspect-ratio: 1/1;
 }
 
 .team-info-wrap ul {
