@@ -88,6 +88,8 @@
   if (qrContainer) {
     new QRCode(qrContainer, {
       text: qrURL,
+      width: 40,
+      height: 40,
     });
   }
 
