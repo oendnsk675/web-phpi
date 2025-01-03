@@ -96,18 +96,10 @@
       margin: 0;
     }
 
-    .qr-container,
-    qr-modal {
+    .qr-container {
       aspect-ratio: 1 / 1;
       height: 40px;
       background-color: red;
-    }
-
-    .qr-modal {
-      height: 70vw;
-      max-width: 400px;
-      max-height: 400px;
-      aspect-ratio: 1/1;
     }
   }
 }

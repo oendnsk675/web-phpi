@@ -68,16 +68,21 @@
 
   smallNavFunctionality();
 
-  new QRCode(
-    document.getElementById('qr-container'),
-    'http://jindo.dev.naver.com/collie',
-  );
+  const qrURL = $('#qr-url').val();
+  const qrContainer = document.getElementById('qr-container');
+  if (qrContainer) {
+    new QRCode(qrContainer, {
+      text: qrURL,
+    });
+  }
 
   $('#qrcodeModal').on('shown.bs.modal', function () {
-    new QRCode(
-      document.getElementById('qrcode-modal'),
-      'http://jindo.dev.naver.com/collie',
-    );
+    const qrModal = document.getElementById('qrcode-modal');
+    if (qrModal) {
+      new QRCode(qrModal, {
+        text: qrURL,
+      });
+    }
   });
 
   /*------------------------------------------

@@ -356,6 +356,10 @@ a {
   text-decoration: none !important;
 }
 
+.w-fit {
+  width: fit-content !important;
+}
+
 .wpo-section-title {
   margin-bottom: 60px;
   text-align: center;
@@ -6825,17 +6829,10 @@ a {
   color: #1d2327;
   margin: 0;
 }
-.team-info-text .name-tag .qr-container,
-.team-info-text .name-tag qr-modal {
+.team-info-text .name-tag .qr-container {
   aspect-ratio: 1/1;
   height: 40px;
   background-color: red;
-}
-.team-info-text .name-tag .qr-modal {
-  height: 70vw;
-  max-width: 400px;
-  max-height: 400px;
-  aspect-ratio: 1/1;
 }
 
 .team-info-wrap ul {
