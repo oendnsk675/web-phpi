@@ -6881,7 +6881,10 @@ a {
 }
 .team-info-text .name-tag .qr-container {
   aspect-ratio: 1/1;
+  width: 40px;
   height: 40px;
+  max-width: 40px;
+  max-height: 40px;
   background-color: red;
 }
 
