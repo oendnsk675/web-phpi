@@ -17,6 +17,10 @@ const {
 } = require('./controller/auth/auth.controller');
 const { upload } = require('./configs/multer');
 const { checkAuth } = require('./middlewares/auth');
+const {
+  getAllMember,
+  profileMember,
+} = require('./controller/members.controller');
 
 module.exports = (app) => {
   app.get('/', (req, res) => {
@@ -31,28 +35,12 @@ module.exports = (app) => {
     });
   });
 
-  app.get('/profile', (req, res) => {
-    res.render('pages/profile', {
-      title: 'Profile - Solun - Software & IT Solutions HTML Template',
-    });
-  });
+  app.get('/profile/:id', profileMember);
 
   app.get('/register', register);
   app.post('/register', doRegister);
 
-  app.get('/members', (req, res) => {
-    const teamMembers = Array.from({ length: 10 }, (_, i) => ({
-      name: `Person ${i + 1}`,
-      role: `Role ${i + 1}`,
-      image: `assets/images/team/${(i % 5) + 1}.jpg`, // Menggunakan gambar 1-5 secara bergantian
-      linkedin: `https://linkedin.com/in/person${i + 1}`,
-    }));
-
-    res.render('pages/members', {
-      title: 'List Member',
-      teamMembers,
-    });
-  });
+  app.get('/members', getAllMember);
 
   app.get('/products', (req, res) => {
     const products = Array.from({ length: 6 }, (_, i) => ({

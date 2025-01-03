@@ -73,25 +73,130 @@
         </div>
       </div>
       <div class="team-grids">
-        <div class="row justify-content-start g-5">
-          <% teamMembers.forEach(member => { %>
-          <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-            <a href="/profile">
-              <div class="grid">
-                <div class="grid-img">
-                  <img src="assets/images/team/1.jpg" alt="" />
-                  <div class="social-single-link">
-                    <a href="#"><i class="ti-linkedin"></i></a>
-                  </div>
-                </div>
-                <div class="text">
-                  <h3><a href="team-single.html">Burton Messer</a></h3>
-                  <span>Senior Engineer</span>
-                </div>
-              </div>
-            </a>
+        <!-- content -->
+        <div class="card content p-4 h-fit">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="image">#</th>
+                <th scope="col" class="text-center">Email</th>
+                <th scope="col" class="text-center">Nama</th>
+                <th scope="col" class="text-center">Status</th>
+                <th scope="col" class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% users.forEach(element => { %>
+              <tr>
+                <th class="image">
+                  <img
+                    src="<%= element.photo %>"
+                    alt="team member"
+                    class="team-member"
+                  />
+                </th>
+                <td><%= element.email %></td>
+                <td><%= element.nama %></td>
+                <td>
+                  <span
+                    class="badge rounded-pill <%= element.status == 'active' ? 'bg-success' : 'bg-danger' %>"
+                    ><%= element.status %></span
+                  >
+                </td>
+                <td>
+                  <a
+                    class="btn btn-sm btn-primary"
+                    href="/profile/<%= element.id %>"
+                    >Detail</a
+                  >
+                </td>
+              </tr>
+
+              <% }) %>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <!-- Previous Button -->
+              <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                <a
+                  class="page-link"
+                  href="?page=<%= currentPage - 1 %>"
+                  tabindex="-1"
+                  >Previous</a
+                >
+              </li>
+
+              <!-- Page Numbers -->
+              <% for (let i = 1; i <= totalPages; i++) { %>
+              <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+              </li>
+              <% } %>
+
+              <!-- Next Button -->
+              <li
+                class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>"
+              >
+                <a class="page-link" href="?page=<%= currentPage + 1 %>"
+                  >Next</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <!-- sidebar -->
+        <div class="card p-4 sidebar">
+          <div class="sidebar-item mb-4">
+            <h6 for="layout" class="sidebar-title">View Layout</h6>
+            <select name="layout" id="layout" class="form-control">
+              <option value="grid">Grid</option>
+              <option value="list">List</option>
+            </select>
           </div>
-          <% }) %>
+
+          <form action="/members" method="get">
+            <h6 for="layout" class="sidebar-title">Filter</h6>
+            <div class="sidebar-item">
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Cari berdasarkan email"
+                  name="email"
+                  value="<%= email %>"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Cari berdasarkan nama"
+                  name="nama"
+                  value="<%= nama %>"
+                />
+              </div>
+              <div class="form-group">
+                <select name="status" id="status" class="form-control">
+                  <option value="">Cari berdasarkan status</option>
+                  <option
+                  <%= status === 'active' ? 'selected' : '' %>
+                    value="active"
+                  >
+                    Active
+                  </option>
+                  <option
+                  <%= status === 'inactive' ? 'selected' : '' %>
+                    value="inactive"
+                  >
+                    Inactive
+                  </option>
+                </select>
+              </div>
+              <button class="theme-btn-sm w-100" type="submit">Cari</button>
+              <a href="/members" class="theme-btn-sm bg-info text-center w-100 mt-2" type="submit">Reset</a>
+            </div>
+          </form>
         </div>
       </div>
     </div>

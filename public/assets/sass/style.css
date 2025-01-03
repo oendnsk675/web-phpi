@@ -360,6 +360,10 @@ a {
   width: fit-content !important;
 }
 
+.h-fit {
+  height: fit-content !important;
+}
+
 .wpo-section-title {
   margin-bottom: 60px;
   text-align: center;
@@ -8653,6 +8657,27 @@ a {
     width: 100%;
     padding: 2rem;
   }
+}
+
+.wpo-team-section .team-grids {
+  display: flex;
+  gap: 10px;
+}
+.wpo-team-section .team-grids .content {
+  width: 65%;
+}
+.wpo-team-section .team-grids .content .table img {
+  border-radius: 10px;
+  width: 50px;
+  max-width: 50px;
+  height: 50px;
+  max-height: 50px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  object-fit: cover;
+}
+.wpo-team-section .team-grids .sidebar {
+  flex: 1 1 0%;
 }
 
 /*# sourceMappingURL=style.css.map */

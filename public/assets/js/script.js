@@ -68,6 +68,8 @@
 
   smallNavFunctionality();
 
+  let _qrCodeModal = null;
+
   const qrURL = $('#qr-url').val();
   const qrContainer = document.getElementById('qr-container');
   if (qrContainer) {
@@ -78,10 +80,19 @@
 
   $('#qrcodeModal').on('shown.bs.modal', function () {
     const qrModal = document.getElementById('qrcode-modal');
-    if (qrModal) {
-      new QRCode(qrModal, {
+    if (qrModal && !_qrCodeModal) {
+      _qrCodeModal = new QRCode(qrModal, {
         text: qrURL,
       });
+    }
+  });
+
+  $('#layout').change(function () {
+    let layout = $(this).val();
+    if (layout == 'grid') {
+      $('.image').show();
+    } else {
+      $('.image').hide();
     }
   });
 
