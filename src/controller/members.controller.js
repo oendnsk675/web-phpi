@@ -70,9 +70,6 @@ exports.profileMember = async (req, res) => {
 
     user.qr_url = `${process.env.APP_URL}/profile/${user.id}`;
 
-    console.log(user.photo);
-
-    console.log(user.photo_);
     const memberCard = await createMemberCard({
       id: user.id,
       email: user.email,

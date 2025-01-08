@@ -28,7 +28,7 @@ exports.createMemberCard = async (memberInfo) => {
     const ctx = canvas.getContext('2d');
 
     // Latar belakang kartu
-    const backgroundImagePath = path.resolve(
+    const backgroundImagePath = path.join(
       __dirname,
       '..',
       '..',
@@ -55,10 +55,10 @@ exports.createMemberCard = async (memberInfo) => {
 
     // Render photo
     let photoPath = '';
-    if (memberInfo.photo) {
+    if (memberInfo.photo != null) {
       let photoPath = path.join(__dirname, '..', '..', memberInfo.photo);
       if (!fs.existsSync(photoPath)) {
-        photoPath = path.resolve(
+        photoPath = path.join(
           __dirname,
           '..',
           '..',
@@ -69,7 +69,7 @@ exports.createMemberCard = async (memberInfo) => {
         );
       }
     } else {
-      photoPath = path.resolve(
+      photoPath = path.join(
         __dirname,
         '..',
         '..',
@@ -89,7 +89,7 @@ exports.createMemberCard = async (memberInfo) => {
     ctx.fillText(`${memberInfo.name}`, width - 225, height - 80); // Posisi teks nama
 
     // Simpan gambar ke file
-    const outputFilePath = path.resolve(
+    const outputFilePath = path.join(
       __dirname,
       '..',
       '..',
