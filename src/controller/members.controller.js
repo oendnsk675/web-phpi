@@ -88,7 +88,7 @@ exports.profileMember = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    console.log(`Error fetching users: ${error}`);
     res.status(500).send('Error fetching users');
   }
 };
