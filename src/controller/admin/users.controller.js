@@ -1,5 +1,6 @@
 const AppDataSource = require('../../configs/ormconfig');
 const User = require('../../models/User');
+const { createMemberCard } = require('../../utils/qrcode');
 
 exports.getAll = async (req, res) => {
   try {

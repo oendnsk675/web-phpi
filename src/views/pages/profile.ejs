@@ -30,6 +30,14 @@
           </div>
           <div class="col-lg-6">
             <div class="team-info-text">
+              <div
+                role="button"
+                class="d-flex w-100 justify-content-end text-info mb-2"
+                data-bs-toggle="modal"
+                data-bs-target="#cardMemberModal"
+              >
+                Lihat Kartu Member
+              </div>
               <div class="name-tag">
                 <h2><%= user.nama %></h2>
                 <input type="hidden" id="qr-url" value="<%= user.qr_url %>" />

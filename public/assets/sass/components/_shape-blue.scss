@@ -1,0 +1,12 @@
+.service-shape {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  svg {
+    path {
+      fill: #0dd7b2;
+    }
+  }
+}

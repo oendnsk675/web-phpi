@@ -3,6 +3,7 @@ const User = require('../models/User');
 require('dotenv').config();
 
 const { Like } = require('typeorm'); // Pastikan untuk mengimpor Like dari TypeORM
+const { createMemberCard } = require('../utils/qrcode');
 
 exports.getAllMember = async (req, res) => {
   try {
@@ -62,17 +63,38 @@ exports.profileMember = async (req, res) => {
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOneBy({ id: id });
 
+    user.photo_ = user.photo;
     if (user && user.photo) {
       user.photo = `${process.env.APP_URL}${user.photo}`;
     }
 
     user.qr_url = `${process.env.APP_URL}/profile/${user.id}`;
 
+    console.log(user.photo);
+
+    console.log(user.photo_);
+    const memberCard = await createMemberCard({
+      id: user.id,
+      email: user.email,
+      name: user.nama,
+      phone: user.no_telp,
+      qrData: user.qr_url,
+      photo: user.photo_,
+      status: user.status,
+    });
+
+    if (memberCard) {
+      user.memberCard = `${process.env.APP_URL}/uploads/member-card/${user.id}.png`;
+    }
+
+    console.log(memberCard);
+
     res.render('pages/profile', {
       title: 'Members',
       user,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).send('Error fetching users');
   }
 };

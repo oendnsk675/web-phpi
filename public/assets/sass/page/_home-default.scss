@@ -263,19 +263,6 @@
   .service-wrapper {
     position: relative;
 
-    .service-shape {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-
-      svg {
-        path {
-          fill: #0dd7b2;
-        }
-      }
-    }
-
     .service-grids {
       .grid {
         text-align: center;
