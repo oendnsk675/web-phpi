@@ -86,9 +86,6 @@ exports.profileMember = async (req, res) => {
     if (memberCard) {
       user.memberCard = `${process.env.APP_URL}/uploads/member-card/${user.id}.png`;
     }
-
-    console.log(memberCard);
-
     res.render('pages/profile', {
       title: 'Members',
       user,

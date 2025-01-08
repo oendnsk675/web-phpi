@@ -54,8 +54,21 @@ exports.createMemberCard = async (memberInfo) => {
     ctx.drawImage(img, width - 208, 35, 120, 120);
 
     // Render photo
-    let photoPath = path.join(__dirname, '..', '..', memberInfo.photo);
-    if (!fs.existsSync(photoPath)) {
+    let photoPath = '';
+    if (memberInfo.photo) {
+      let photoPath = path.join(__dirname, '..', '..', memberInfo.photo);
+      if (!fs.existsSync(photoPath)) {
+        photoPath = path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'public',
+          'assets',
+          'images',
+          'user.png',
+        );
+      }
+    } else {
       photoPath = path.resolve(
         __dirname,
         '..',
