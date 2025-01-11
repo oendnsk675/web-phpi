@@ -53,7 +53,7 @@ exports.getAllMember = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching users:', error);
-    res.status(500).send('Error fetching users');
+    res.render('pages/errors/index');
   }
 };
 
@@ -89,6 +89,6 @@ exports.profileMember = async (req, res) => {
     });
   } catch (error) {
     console.log(`Error fetching users: ${error}`);
-    res.status(500).send('Error fetching users');
+    return res.render('pages/errors/index');
   }
 };

@@ -1,0 +1,61 @@
+<div class="page-wrapper">
+  <!-- start preloader -->
+  <%- include('../../components/ui/preloader') %>
+  <!-- end preloader -->
+  <!-- Start header -->
+  <%- include('../../components/ui/header') %>
+  <!-- end of header -->
+
+  <!-- start wpo-page-title -->
+  <section class="wpo-page-title">
+    <div class="container">
+      <div class="row">
+        <div class="col col-xs-12">
+          <div class="wpo-breadcumb-wrap">
+            <h2>401</h2>
+            <ol class="wpo-breadcumb-wrap">
+              <li><a href="/">Home</a></li>
+              <li>Unauthorized</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
+  </section>
+  <!-- end page-title -->
+
+  <!-- start error-404-section -->
+  <section class="error-404-section section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col col-xs-12">
+          <div class="content clearfix">
+            <div class="error">
+              <img src="assets/images/error-404.png" alt />
+            </div>
+            <div class="error-message">
+              <h3>Oops! Authorization Required!</h3>
+              <p>
+                You do not have permission to view this page on this server.
+              </p>
+              <a href="/" class="theme-btn">Back to home</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
+  </section>
+  <!-- end error-404-section -->
+
+  <!-- stert wpo-social-section -->
+  <%- include('../../components/partials/home/social') %>
+  <!-- end wpo-social-section -->
+
+  <!-- start of wpo-site-footer-section -->
+  <%- include('../../components/ui/footer.ejs') %>
+  <!-- end of wpo-site-footer-section -->
+</div>

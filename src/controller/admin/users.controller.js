@@ -17,7 +17,7 @@ exports.getAll = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching users:', error);
-    res.status(500).send('Error fetching users');
+    return res.render('pages/errors/index');
   }
 };
 
@@ -30,7 +30,7 @@ exports.create = async (req, res) => {
       type: 'create',
     });
   } catch (error) {
-    res.status(500).send('Error fetching users');
+    return res.render('pages/errors/index');
   }
 };
 
@@ -48,12 +48,12 @@ exports.save = async (req, res) => {
 
     req.flash('successMessage', 'Data berhasil disimpan');
 
-    res.redirect('/panel/members/index');
+    return res.redirect('/panel/members/index');
   } catch (error) {
     console.log(error);
     req.flash('errorMessage', 'Terjadi kesalahan');
 
-    res.redirect('/panel/members/create');
+    return res.redirect('/panel/members/create');
   }
 };
 
@@ -63,14 +63,14 @@ exports.edit = async (req, res) => {
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOneBy({ id: id });
 
-    res.render('pages/panel/members/create', {
+    return res.render('pages/panel/members/create', {
       layout: 'layouts/dashboard',
       title: 'Members',
       user,
       type: 'edit',
     });
   } catch (error) {
-    res.status(500).send('Error fetching users');
+    return res.status(500).send('Error fetching users');
   }
 };
 
@@ -82,10 +82,10 @@ exports.verify = async (req, res) => {
 
     req.flash('successMessage', 'User berhasil di verifikasi');
 
-    res.redirect('/panel/members');
+    return res.redirect('/panel/members');
   } catch (error) {
     req.flash('errorMessage', 'User gagal di verifikasi');
-    res.redirect('/panel/members');
+    return res.redirect('/panel/members');
   }
 };
 
@@ -97,10 +97,10 @@ exports.suspend = async (req, res) => {
 
     req.flash('successMessage', 'User berhasil di suspend');
 
-    res.redirect('/panel/members');
+    return res.redirect('/panel/members');
   } catch (error) {
     req.flash('errorMessage', 'User gagal di suspend');
-    res.redirect('/panel/members');
+    return res.redirect('/panel/members');
   }
 };
 
@@ -117,12 +117,15 @@ exports.update = async (req, res) => {
 
     req.flash('successMessage', 'Data berhasil di edit');
 
-    res.redirect('/panel/members');
+    if (req.query.type == 'user') {
+      return res.redirect('/panel/profile');
+    }
+    return res.redirect('/panel/members');
   } catch (error) {
     console.log(error);
     req.flash('errorMessage', 'Terjadi kesalahan');
 
-    res.redirect('/panel/members/create');
+    return res.redirect('/panel/members/create');
   }
 };
 
@@ -132,13 +135,13 @@ exports.profile = async (req, res) => {
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOneBy({ id: id });
 
-    res.render('pages/panel/members/profile', {
+    return res.render('pages/panel/members/profile', {
       layout: 'layouts/dashboard',
       title: 'Members',
       user,
       type: 'edit',
     });
   } catch (error) {
-    res.status(500).send('Error fetching users');
+    return res.render('pages/errors/index');
   }
 };

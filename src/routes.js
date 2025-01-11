@@ -21,6 +21,7 @@ const {
   getAllMember,
   profileMember,
 } = require('./controller/members.controller');
+const { checkAuthorization } = require('./middlewares/authorization');
 
 module.exports = (app) => {
   app.get('/', (req, res) => {
@@ -59,7 +60,7 @@ module.exports = (app) => {
   app.get('/login', login);
   app.post('/login', doLogin);
 
-  app.get('/panel/dashboard', checkAuth, (req, res) => {
+  app.get('/panel/dashboard', checkAuth, checkAuthorization, (req, res) => {
     res.render('pages/panel/dashboard/index', {
       layout: 'layouts/dashboard',
       title: 'Dashboard',
@@ -68,11 +69,11 @@ module.exports = (app) => {
 
   app.get('/panel/profile', checkAuth, profile);
 
-  app.get('/panel/members', checkAuth, getAll);
-  app.get('/panel/members/create', checkAuth, create);
-  app.get('/panel/members/edit/:id', checkAuth, edit);
-  app.get('/panel/members/verify/:id', checkAuth, verify);
-  app.get('/panel/members/suspend/:id', checkAuth, suspend);
+  app.get('/panel/members', checkAuth, checkAuthorization, getAll);
+  app.get('/panel/members/create', checkAuth, checkAuthorization, create);
+  app.get('/panel/members/edit/:id', checkAuth, checkAuthorization, edit);
+  app.get('/panel/members/verify/:id', checkAuth, checkAuthorization, verify);
+  app.get('/panel/members/suspend/:id', checkAuth, checkAuthorization, suspend);
   app.post('/panel/members/save', checkAuth, upload.single('photo'), save);
   app.post(
     '/panel/members/update/:id',
