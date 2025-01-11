@@ -48,15 +48,21 @@
         </div>
         <div class="col-12 col-lg-6 mb-3">
           <label for="inputPassword4">Password</label>
-          <input
-            type="password"
-            name="password"
-            class="form-control"
-            id="inputPassword4"
-            placeholder="Password"
-            value="<%= user?.password %>"
-            required
-          />
+          <div class="input-group">
+            <input
+              type="password"
+              class="form-control"
+              id="inputPassword4"
+              placeholder="Password"
+              required
+              name="password"
+              autocomplete="current-password"
+              value="<%= user?.password %>"
+            />
+            <span role="button" id="togglePassword" class="input-group-text">
+              <i class="fa fa-eye-slash"></i>
+            </span>
+          </div>
         </div>
         <div class="col-12 col-lg-6 mb-3">
           <label for="photo">Foto</label>

@@ -79,6 +79,16 @@
     }
   }
 
+  // function to toggle password input type
+  $('#togglePassword').on('click', function () {
+    var passwordField = $('#inputPassword4');
+    var passwordFieldType = passwordField.attr('type');
+    var newType = passwordFieldType === 'password' ? 'text' : 'password';
+    passwordField.attr('type', newType);
+
+    $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+  });
+
   smallNavFunctionality();
 
   let _qrCodeModal = null;
