@@ -15,6 +15,15 @@ async function seed() {
     status: 'active',
     role: 'admin',
     photo: null,
+    address: 'Jakarta',
+    birthday: new Date('1990-01-01'),
+    gender: 'male',
+    lastEducation: 'SMA',
+    trainingCertificationNumber: '1',
+    competencyCertificationNumber: '1',
+    qualification: '1',
+    validUntil: new Date('2025-01-01'),
+    languageSkill: 'English',
   };
   await userRepository.save(users);
 

@@ -22,8 +22,8 @@ const path = require('path');
 
 exports.createMemberCard = async (memberInfo) => {
   try {
-    const width = 1050; // Lebar kartu
-    const height = 600; // Tinggi kartu
+    const height = 1000;
+    const width = 600;
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
@@ -35,28 +35,33 @@ exports.createMemberCard = async (memberInfo) => {
       'public',
       'assets',
       'images',
-      'member-card.jpg',
+      'phpi-card-member.png',
     );
     const background = await loadImage(backgroundImagePath);
     ctx.drawImage(background, 0, 0, width, height);
 
-    ctx.fillStyle = '#000000'; // Warna teks hitam
+    ctx.fillStyle = '#fff'; // Warna teks hitam
+    ctx.font = 'bold 35px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(memberInfo.name, 300, 600); // Posisi teks ID
+    ctx.textAlign = 'start';
     ctx.font = '25px Arial';
-    ctx.fillText(`ID: ${memberInfo.id}`, 60, 250); // Posisi teks ID
-    ctx.fillText(`Email: ${memberInfo.email}`, 60, 290); // Posisi teks nama
-    ctx.fillText(`Phone: ${memberInfo.phone}`, 60, 330); // Posisi teks nama
+    ctx.fillText(`NIP     : -`, 60, 660); // Posisi teks ID
+    ctx.fillText(`NSP/Reg : -`, 60, 700); // Posisi teks nama
+    ctx.fillText(`No KTPP : -`, 60, 740); // Posisi teks nama
 
     // Render QR code
     const qrCodeData = await QRCode.toDataURL(memberInfo.qrData, {
       margin: 1,
     });
     const img = await loadImage(qrCodeData);
-    ctx.drawImage(img, width - 208, 35, 120, 120);
+    const qrCodeX = (width - 160) / 2;
+    ctx.drawImage(img, qrCodeX, 800, 160, 160);
 
     // Render photo
     let photoPath = '';
     if (memberInfo.photo != null) {
-      let photoPath = path.join(__dirname, '..', '..', memberInfo.photo);
+      photoPath = path.join(__dirname, '..', '..', memberInfo.photo);
       if (!fs.existsSync(photoPath)) {
         photoPath = path.join(
           __dirname,
@@ -80,13 +85,7 @@ exports.createMemberCard = async (memberInfo) => {
       );
     }
     const photo = await loadImage(photoPath);
-    ctx.drawImage(photo, width - 350, 215, 250, 250);
-
-    // Render nama anggota
-    ctx.fillStyle = '#000000'; // Warna teks hitam
-    ctx.font = '700 25px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText(`${memberInfo.name}`, width - 225, height - 80); // Posisi teks nama
+    ctx.drawImage(photo, (width - 250) / 2, 240, 250, 250);
 
     // Simpan gambar ke file
     const outputFilePath = path.join(
@@ -117,8 +116,7 @@ exports.createMemberCard = async (memberInfo) => {
 //   phone: 'Sayidina Ahmadal Qososyi',
 //   name: 'Sayidina Ahmadal Qososyi',
 //   status: 'Active',
-//   photo: 'user.png',
-//   qrData: 'https://example.com/member/123456', // Data untuk QR code
+//   qrData: 'https://example.com/member/123456',
 // };
 
 // createMemberCard(memberInfo);

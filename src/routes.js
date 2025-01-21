@@ -9,6 +9,25 @@ const {
   verify,
   suspend,
 } = require('./controller/admin/users.controller');
+
+const {
+  getAll: getAllProduct,
+  create: createProduct,
+  save: saveProduct,
+  edit: editProduct,
+  update: updateProduct,
+  delete: deleteProduct,
+} = require('./controller/admin/products.controller');
+
+const {
+  getAll: getAllCategory,
+  create: createCategory,
+  save: saveCategory,
+  edit: editCategory,
+  update: updateCategory,
+  delete: deleteCategory,
+} = require('./controller/admin/categories.controller');
+
 const {
   register,
   doRegister,
@@ -22,17 +41,17 @@ const {
   profileMember,
 } = require('./controller/members.controller');
 const { checkAuthorization } = require('./middlewares/authorization');
+const { multerErrorHandler } = require('./middlewares/multerError');
+
+const homeRoutes = require('./routes/home');
+const productMemberRoutes = require('./routes/product');
 
 module.exports = (app) => {
-  app.get('/', (req, res) => {
-    res.render('pages/home', {
-      title: 'Solun – Software & IT Solutions HTML Template',
-    });
-  });
+  app.use('/', homeRoutes);
 
   app.get('/about', (req, res) => {
     res.render('pages/about', {
-      title: 'Profile - Solun - Software & IT Solutions HTML Template',
+      title: 'Profile - PHPI',
     });
   });
 
@@ -43,19 +62,7 @@ module.exports = (app) => {
 
   app.get('/members', getAllMember);
 
-  app.get('/products', (req, res) => {
-    const products = Array.from({ length: 6 }, (_, i) => ({
-      name: `Person ${i + 1}`,
-      role: `Role ${i + 1}`,
-      image: `assets/images/team/${(i % 5) + 1}.jpg`, // Menggunakan gambar 1-5 secara bergantian
-      linkedin: `https://linkedin.com/in/person${i + 1}`,
-    }));
-
-    res.render('pages/products', {
-      title: 'List Product',
-      products,
-    });
-  });
+  app.use('/products', productMemberRoutes);
 
   app.get('/login', login);
   app.post('/login', doLogin);
@@ -82,7 +89,63 @@ module.exports = (app) => {
     update,
   );
 
-  // logout
+  app.get('/panel/category', checkAuth, checkAuthorization, getAllCategory);
+  app.get(
+    '/panel/category/create',
+    checkAuth,
+    checkAuthorization,
+    createCategory,
+  );
+  app.get(
+    '/panel/category/edit/:id',
+    checkAuth,
+    checkAuthorization,
+    editCategory,
+  );
+  app.get(
+    '/panel/category/delete/:id',
+    checkAuth,
+    checkAuthorization,
+    deleteCategory,
+  );
+  app.post('/panel/category/save', checkAuth, saveCategory);
+  app.post('/panel/category/update/:id', checkAuth, updateCategory);
+
+  app.get('/panel/products', checkAuth, getAllProduct);
+  app.get('/panel/products/create', checkAuth, createProduct);
+  app.get('/panel/products/delete/:id', checkAuth, deleteProduct);
+  app.get('/panel/products/edit/:id', checkAuth, editProduct);
+  app.post(
+    '/panel/products/save',
+    checkAuth,
+    upload.array('banners', 5),
+    multerErrorHandler,
+    saveProduct,
+  );
+  app.post(
+    '/panel/products/update/:id',
+    checkAuth,
+    upload.array('banners', 5),
+    multerErrorHandler,
+    updateProduct,
+  );
+
+  app.get('/history', (req, res) => {
+    return res.render('pages/history', {
+      title: 'Sejarah',
+    });
+  });
+  app.get('/contribute', (req, res) => {
+    return res.render('pages/contribute', {
+      title: 'Sejarah',
+    });
+  });
+  app.get('/vision-mission', (req, res) => {
+    return res.render('pages/vision-mission', {
+      title: 'Vision & Mission',
+    });
+  });
+
   app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
       if (err) {

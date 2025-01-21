@@ -6,7 +6,7 @@
 		"format": "npx prettier --plugin=prettier-plugin-ejs --write '**/*.{ejs,js}'",
 		"dev": "nodemon",
 		"styles:watch": "sass --watch public/assets/sass/style.scss:public/assets/sass/style.css",
-		"seed": "node src/seed/user.seeder.js"
+		"seed": "node src/seed/user.seeder.js && node src/seed/language.seeder.js"
 	},
 	"keywords": [],
 	"author": "Sayidina Ahmadal Qososyi",
@@ -21,6 +21,7 @@
 		"express": "^4.21.2",
 		"express-ejs-layouts": "^2.5.1",
 		"express-session": "^1.18.1",
+		"glob": "^11.0.1",
 		"morgan": "^1.10.0",
 		"multer": "1.4.5-lts.1",
 		"pg": "^8.13.1",

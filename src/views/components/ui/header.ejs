@@ -68,8 +68,13 @@
         <button class="close-navbar"><i class="fa fa-close"></i></button>
         <ul class="nav navbar-nav">
           <li class=""><a href="/">Home</a></li>
-          <li class="">
+          <li class="menu-item-has-children">
             <a href="/about">Tentang Kami</a>
+            <ul class="sub-menu">
+              <li><a href="/history">Sejarah</a></li>
+              <li><a href="/vision-mission">Visi & Misi</a></li>
+              <li><a href="/contribute">Kontribusi</a></li>
+            </ul>
           </li>
           <li class="">
             <a href="/products">Produk</a>
@@ -77,7 +82,7 @@
           <li class="">
             <a href="/members">Member</a>
           </li>
-          <li class=""><a href="contact">Kontak</a></li>
+          <li class="d-none"><a href="contact">Kontak</a></li>
           <% if (session.user) { %>
           <li class="item-add-on"><a href="/panel/profile">Go to Panel</a></li>
           <li class="item-add-on"><a href="/logout">Logout</a></li>

@@ -396,6 +396,15 @@
     });
   });
 
+  $('.slider-hero').slick({
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    fade: true,
+    asNavFor: '.slider-nav',
+  });
+
   /*------------------------------------------
          = SHOP DETAILS PAGE PRODUCT SLIDER
      -------------------------------------------*/
@@ -1081,5 +1090,303 @@
 
   $('#dataTables').DataTable({
     scrollX: true,
+    columnDefs: [
+      {
+        targets: '_all', // Atur untuk semua kolom
+        className: 'text-center', // Tambahkan kelas CSS untuk menyelaraskan teks
+      },
+      {
+        targets: -1, // Target kolom aksi (misalnya kolom terakhir)
+        width: '100px', // Atur lebar kolom sesuai kebutuhan
+        className: 'text-center', // Tambahkan align tengah jika diperlukan
+      },
+    ],
+  });
+
+  $('#dt-product').DataTable({
+    serverSide: true,
+    processing: true,
+    ajax: {
+      url: '/panel/products', // URL yang mengarah ke endpoint API Anda
+      type: 'GET',
+      data: function (d) {
+        d.start = d.start || 0; // Offset untuk pagination
+        d.length = d.length || 10; // Limit pagination
+      },
+    },
+    columns: [
+      {
+        data: null, // Kolom untuk nomor urut
+        render: function (data, type, row, meta) {
+          return meta.row + 1; // Menampilkan nomor urut dimulai dari 1
+        },
+      },
+      { data: 'name' },
+      { data: 'description' },
+      { data: 'price' },
+      { data: 'category' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `
+            <div class="d-flex flex-column align-items-center gap-1">
+              <a class="btn btn-sm btn-primary w-100" href="/panel/products/edit/${row.id}">Edit</a>
+              <a class="btn btn-sm btn-danger delete-btn w-100" href="/panel/products/delete/${row.id}">Hapus</a>
+            </div>
+          `;
+        },
+      },
+    ],
+    scrollX: true,
+    columnDefs: [
+      {
+        targets: '_all', // Atur untuk semua kolom
+        className: 'text-center', // Tambahkan kelas CSS untuk menyelaraskan teks
+      },
+      {
+        targets: -1, // Target kolom aksi (misalnya kolom terakhir)
+        width: '100px', // Atur lebar kolom sesuai kebutuhan
+        className: 'text-center', // Tambahkan align tengah jika diperlukan
+      },
+    ],
+  });
+
+  $('#dt-product').on('click', '.delete-btn', function (e) {
+    e.preventDefault(); // Prevent default anchor click behavior
+
+    const href = $(this).attr('href'); // Get the href attribute
+
+    // Show SweetAlert2 confirmation popup
+    Swal.fire({
+      title: 'Anda yakin?',
+      text: 'Anda tidak dapat mengembalikan data ini lagi!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If confirmed, navigate to the href
+        window.location.href = href;
+      }
+    });
+  });
+
+  $('#dt-user').DataTable({
+    serverSide: true,
+    processing: true,
+    ajax: {
+      url: '/panel/members',
+      type: 'GET',
+      data: function (d) {
+        d.start = d.start || 0;
+        d.length = d.length || 10;
+      },
+    },
+    columns: [
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          return meta.row + 1;
+        },
+      },
+      { data: 'email' },
+      { data: 'nama' },
+      { data: 'no_telp' },
+      {
+        data: 'status',
+        render: function (data) {
+          return `<span class="badge rounded-pill ${data === 'active' ? 'bg-success' : 'bg-danger'}">${data}</span>`;
+        },
+      },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `
+            <div class="d-flex flex-column gap-2">
+              <a class="w-100 btn btn-sm btn-primary" href="/panel/members/edit/${row.id}">Edit</a>
+              ${
+                row.status === 'inactive'
+                  ? `<a class="w-100 btn btn-sm btn-success" href="/panel/members/verify/${row.id}">Verifikasi</a>`
+                  : `<a class="w-100 btn btn-sm btn-warning delete-btn" href="/panel/members/suspend/${row.id}">Suspend</a>`
+              }
+              <a class="w-100 btn btn-sm btn-danger delete-btn" href="/panel/members/delete/${row.id}">Hapus</a>
+            </div>
+          `;
+        },
+      },
+    ],
+    scrollX: true,
+    columnDefs: [
+      {
+        targets: '_all',
+        className: 'text-center',
+      },
+      {
+        targets: -1,
+        width: '100px',
+        className: 'text-center',
+      },
+    ],
+  });
+
+  $('#dt-user').on('click', '.delete-btn', function (e) {
+    e.preventDefault(); // Prevent default anchor click behavior
+
+    const href = $(this).attr('href'); // Get the href attribute
+
+    // Show SweetAlert2 confirmation popup
+    Swal.fire({
+      title: 'Anda yakin?',
+      text: 'Anda tidak dapat mengembalikan data ini lagi!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If confirmed, navigate to the href
+        window.location.href = href;
+      }
+    });
+  });
+
+  $('#dt-category').DataTable({
+    serverSide: true,
+    processing: true,
+    ajax: {
+      url: '/panel/category',
+      type: 'GET',
+      data: function (d) {
+        d.start = d.start || 0;
+        d.length = d.length || 10;
+      },
+    },
+    columns: [
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          return meta.row + 1;
+        },
+      },
+      { data: 'name' },
+      { data: 'description' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `
+            <div class="d-flex flex-column gap-2">
+              <a class="w-100 btn btn-sm btn-primary" href="/panel/category/edit/${row.id}">Edit</a>
+              <a class="w-100 btn btn-sm btn-danger delete-btn" href="/panel/category/delete/${row.id}">Hapus</a>
+            </div>
+          `;
+        },
+      },
+    ],
+    scrollX: true,
+    columnDefs: [
+      {
+        targets: '_all',
+        className: 'text-center',
+      },
+      {
+        targets: -1,
+        width: '100px',
+        className: 'text-center',
+      },
+    ],
+  });
+
+  $('#dt-category').on('click', '.delete-btn', function (e) {
+    e.preventDefault(); // Prevent default anchor click behavior
+
+    const href = $(this).attr('href'); // Get the href attribute
+
+    // Show SweetAlert2 confirmation popup
+    Swal.fire({
+      title: 'Anda yakin?',
+      text: 'Anda tidak dapat mengembalikan data ini lagi!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If confirmed, navigate to the href
+        window.location.href = href;
+      }
+    });
+  });
+
+  $('.language').select2({
+    tags: true,
+  });
+
+  $('.delete-btn').on('click', function (e) {
+    e.preventDefault(); // Prevent default anchor click behavior
+
+    const href = $(this).attr('href'); // Get the href attribute
+
+    // Show SweetAlert2 confirmation popup
+    Swal.fire({
+      title: 'Anda yakin?',
+      text: 'Anda tidak dapat mengembalikan data ini lagi!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If confirmed, navigate to the href
+        window.location.href = href;
+      }
+    });
+  });
+
+  $('#photo').on('change', function (event) {
+    const files = event.target.files;
+    const previewContainer = $('#preview-container');
+    const previewBoxes = previewContainer.find('.preview-box');
+
+    if (files.length > 5) {
+      Swal.fire({
+        title: 'Oops...',
+        text: 'Anda hanya dapat mengunggah maksimal 5 file.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+
+    previewBoxes.find('img').remove();
+    previewBoxes.find('span').remove();
+    // Loop through files and handle each file preview
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      if (file && file instanceof Blob) {
+        const reader = new FileReader();
+
+        if (i == 3 && files.length - 4 != 0) {
+          console.log(previewBoxes[i]);
+          $(previewBoxes[i]).html(
+            `<span class="more-indicator">+${files.length - 4}</span>`,
+          );
+        }
+
+        reader.onload = function (e) {
+          // Find the correct preview box and insert image
+          $(previewBoxes[i]).append(
+            `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;" />`,
+          );
+        };
+
+        reader.readAsDataURL(file); // Read file as data URL
+      }
+    }
   });
 })(window.jQuery);

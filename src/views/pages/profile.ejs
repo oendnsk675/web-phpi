@@ -105,6 +105,65 @@
                 <li>French(fluent), English (fluent), Greek , chinese.</li>
               </ul>
             </div>
+            <!-- products -->
+            <section class="wpo-shop-section section-padding">
+              <h1 class="mb-5">User Products</h1>
+              <div class="">
+                <div class="row">
+                  <div class="col col-xs-12">
+                    <div class="shop-grids clearfix">
+                      <% products.forEach(product => { %>
+                      <a href="/products/<%= product.id %>">
+                        <div class="grid">
+                          <div class="img-holder">
+                            <img
+                              src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> "
+                              alt="image"
+                            />
+                          </div>
+                          <div class="details">
+                            <h3>
+                              <a href="/products/<%= product.id %>"
+                                ><%= product.name %></a
+                              >
+                            </h3>
+                            <span><%= product.price %></span>
+                            <div class="add-to-cart">
+                              <a href="/products/<%= product.id %>">Detail</a>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                      <% }) %>
+                    </div>
+                    <div class="pagination-wrapper pagination-wrapper-center">
+                      <ul class="pg-pagination">
+                        <% if (page != 1) { %>
+                        <li>
+                          <a href="?page=<%= page - 1 %>" aria-label="Previous">
+                            <i class="ti-angle-left"></i>
+                          </a>
+                        </li>
+                        <% } %>
+                        <% for( let index = 1; index <= totalPage; index++ ) { %>
+                        <li class="<%= page == index ? 'active' : '' %>">
+                          <a href="?page=<%= index %>"><%= index %></a>
+                        </li>
+                        <% } %>
+                        <% if (page < totalPage) { %>
+                        <li>
+                          <a href="?page=<%= page + 1 %>" aria-label="Next">
+                            <i class="ti-angle-right"></i>
+                          </a>
+                        </li>
+                        <% } %>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end container -->
+            </section>
           </div>
         </div>
       </div>

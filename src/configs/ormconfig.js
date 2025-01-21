@@ -11,7 +11,13 @@ const AppDataSource = new DataSource({
   database: process.env.POSTGRES_DATABASE,
   synchronize: true,
   logging: false,
-  entities: [require('../models/User')],
+  entities: [
+    require('../models/User'),
+    require('../models/Language'),
+    require('../models/Product'),
+    require('../models/Category'),
+    require('../models/Banner'),
+  ],
   migrations: [],
   subscribers: [],
 });

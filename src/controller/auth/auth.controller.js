@@ -48,7 +48,11 @@ exports.doLogin = async (req, res) => {
     req.session.user = user;
 
     req.flash('successMessage', 'User berhasil login');
-    res.redirect('/');
+    if (user.role == 'admin') {
+      res.redirect('/panel/dashboard');
+    } else {
+      res.redirect('/panel/profile');
+    }
   } catch (error) {
     req.flash('errorMessage', 'Terjadi kesalahan');
 

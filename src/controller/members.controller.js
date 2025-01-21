@@ -4,6 +4,8 @@ require('dotenv').config();
 
 const { Like } = require('typeorm'); // Pastikan untuk mengimpor Like dari TypeORM
 const { createMemberCard } = require('../utils/qrcode');
+const Product = require('../models/Product');
+const { formatRupiah } = require('../utils/commons');
 
 exports.getAllMember = async (req, res) => {
   try {
@@ -60,6 +62,11 @@ exports.getAllMember = async (req, res) => {
 exports.profileMember = async (req, res) => {
   try {
     const { id } = req.params;
+    const start = parseInt(req.query.page) - 1 || 0;
+    const length = req.query.length || 9;
+    const skip = start * length;
+    const page = start + 1;
+
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOneBy({ id: id });
 
@@ -83,9 +90,44 @@ exports.profileMember = async (req, res) => {
     if (memberCard) {
       user.memberCard = `${process.env.APP_URL}/uploads/member-card/${user.id}.png`;
     }
+
+    const productRepository = AppDataSource.getRepository(Product);
+
+    const totalRecords = await productRepository.count({
+      where: {
+        userId: user.id,
+      },
+    });
+    const products = await productRepository.find({
+      where: {
+        userId: user.id,
+      },
+      order: {
+        updatedAt: 'DESC',
+      },
+      relations: ['banners', 'category'],
+      skip,
+      take: length,
+    });
+
     res.render('pages/profile', {
-      title: 'Members',
+      title: `Profile - ${user.nama}` || 'Profile',
       user,
+      products: products.map((product) => ({
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: formatRupiah(product.price),
+        category: product.category.name || '-',
+        banners: product.banners.map(
+          (banner) => `${process.env.APP_URL}${banner.path}`,
+        ),
+      })),
+      page,
+      limit: length,
+      total: totalRecords,
+      totalPage: Math.ceil(totalRecords / length),
+      isFirstPage: page == 1,
     });
   } catch (error) {
     console.log(`Error fetching users: ${error}`);

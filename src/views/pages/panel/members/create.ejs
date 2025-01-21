@@ -14,55 +14,165 @@
     >
       <div class="row mb-3">
         <div class="col-12 col-lg-6 mb-3">
-          <label for="inputEmail4">Email</label>
-          <input
-            type="email"
-            name="email"
-            class="form-control"
-            id="inputEmail4"
-            placeholder="Email"
-            value="<%= user?.email %>"
-            required
-          />
-        </div>
-        <div class="col-12 col-lg-6 mb-3">
-          <label for="name">Nama</label>
+          <label for="name">Nama Sesuai KTP <span style="color: red">*</span></label>
           <input
             type="text"
             name="nama"
             class="form-control"
             id="name"
-            placeholder="Nama"
             value="<%= user?.nama %>"
             required
           />
         </div>
         <div class="col-12 col-lg-6 mb-3">
-          <label for="phone">No Telpon</label>
+          <label for="address">Alamat Sesuai KTP <span style="color: red">*</span></label>
+          <input
+            type="text"
+            name="address"
+            class="form-control"
+            id="address"
+            value="<%= user?.address %>"
+            required
+          />
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="birthday">Tanggal Lahir <span style="color: red">*</span></label>
+          <input
+            type="date"
+            name="birthday"
+            class="form-control"
+            id="birthday"
+            value="<%= user?.birthday %>"
+            required
+          />
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="gender">Jenis Kelamin <span style="color: red">*</span></label>
+          <select
+            name="gender"
+            class="form-control"
+            id="gender"
+            required
+          >
+            <option value="" disabled selected>Pilih Jenis Kelamin</option>
+            <option value="male" <%= user?.gender === 'male' ? 'selected' : '' %>>Laki-laki</option>
+            <option value="female" <%= user?.gender === 'female' ? 'selected' : '' %>>Perempuan</option>
+          </select>
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="phone">Nomor Telpon (Whatsapp) <span style="color: red">*</span></label>
           <input
             type="tel"
             name="no_telp"
             class="form-control"
             id="phone"
-            placeholder="No Telpon"
             value="<%= user?.no_telp %>"
             required
           />
         </div>
         <div class="col-12 col-lg-6 mb-3">
-          <label for="inputPassword4">Password</label>
+          <label for="inputEmail4">Email <span style="color: red">*</span></label>
           <input
-            type="password"
-            name="password"
+            type="email"
+            name="email"
             class="form-control"
-            id="inputPassword4"
-            placeholder="Password"
-            value="<%= user?.password %>"
+            id="inputEmail4"
+            value="<%= user?.email %>"
+          />
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="lastEducation">Pendidikan Terakhir <span style="color: red">*</span></label>
+          <select
+            name="lastEducation"
+            class="form-control"
+            id="lastEducation"
+            required
+          >
+            <option value="" disabled selected>Pilih Pendidikan Terakhir</option>
+            <option value="SMA" <%= user?.lastEducation === 'SMA' ? 'selected' : '' %>>SMA</option>
+            <option value="D3" <%= user?.lastEducation === 'D3' ? 'selected' : '' %>>D3</option>
+            <option value="S1" <%= user?.lastEducation === 'S1' ? 'selected' : '' %>>S1</option>
+            <option value="S2" <%= user?.lastEducation === 'S2' ? 'selected' : '' %>>S2</option>
+            <option value="S3" <%= user?.lastEducation === 'S3' ? 'selected' : '' %>>S3</option>
+          </select>
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="trainingCertificationNumber">Nomor Sertifikat Pelatihan Pramuwisata <span style="color: red">*</span></label>
+          <input
+            type="text"
+            name="trainingCertificationNumber"
+            class="form-control"
+            id="trainingCertificationNumber"
+            value="<%= user?.trainingCertificationNumber %>"
             required
           />
         </div>
         <div class="col-12 col-lg-6 mb-3">
-          <label for="photo">Foto</label>
+          <label for="competencyCertificationNumber">Nomor Sertifikat Kompetensi <span style="color: red">*</span></label>
+          <input
+            type="text"
+            name="competencyCertificationNumber"
+            class="form-control"
+            id="competencyCertificationNumber"
+            value="<%= user?.competencyCertificationNumber %>"
+            required
+          />
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="qualification">Kualifikasi/Kompetensi <span style="color: red">*</span></label>
+          <input
+            type="text"
+            name="qualification"
+            class="form-control"
+            id="qualification"
+            value="<%= user?.qualification %>"
+            required
+          />
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="validUntil">Berlaku sampai dengan <span style="color: red">*</span></label>
+          <input
+            type="date"
+            name="validUntil"
+            class="form-control"
+            id="validUntil"
+            value="<%= user?.validUntil %>"
+            required
+          />
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="languageSkill">Keahlian Bahasa <span style="color: red">*</span></label>
+          <select class="form-control language" name="languages" id="languages" multiple="multiple" required>
+            <% languages.forEach(language => { %>
+              <option value="<%= language.language %>" 
+                <%= user?.languages.some(lang => lang.id === language.id) ? 'selected' : '' %>>
+                <%= language.language %>
+              </option>
+            <% }) %>
+          </select>          
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="inputPassword4">Password <span style="color: red">*</span></label>
+          <div class="input-group">
+            <input
+              type="password"
+              class="form-control"
+              id="inputPassword4"
+              required
+              name="password"
+              autocomplete="current-password"
+              value="<%= user?.password %>"
+            />
+            <span role="button" id="togglePassword" class="input-group-text">
+              <i class="fa fa-eye-slash"></i>
+            </span>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="photo">Foto 
+            <span style="font-size: x-small; font-style: italic;">
+            Rekomendasi ukuran (250px x 250px)
+          </span> </label>
           <input type="file" name="photo" class="form-control" id="photo" />
         </div>
       </div>
