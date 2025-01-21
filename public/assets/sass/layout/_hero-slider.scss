@@ -17,6 +17,7 @@
 
   @include media-query(767px) {
     height: 570px;
+    margin-top: -1rem;
   }
 
   .slide {

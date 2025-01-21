@@ -2583,6 +2583,7 @@ a {
 @media (max-width: 767px) {
   .hero {
     height: 570px;
+    margin-top: -1rem;
   }
 }
 .hero .slide {
@@ -6132,7 +6133,7 @@ a {
 }
 @media (max-width: 767px) {
   .wpo-about {
-    padding: 0px;
+    padding: 30px 0px;
   }
 }
 
