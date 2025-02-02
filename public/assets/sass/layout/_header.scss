@@ -15,7 +15,7 @@
   }
 
   .navigation {
-    background-color: $white;
+    background-color: $theme-primary-color;
     margin-bottom: 0;
     border: 0;
     @include rounded-border(0);
@@ -36,7 +36,7 @@
     > ul li a:hover,
     > ul li a:focus {
       text-decoration: none;
-      color: $dark-gray;
+      opacity: 0.8;
     }
 
     // style for widther screen
@@ -59,7 +59,7 @@
       }
 
       > ul .sub-menu {
-        background-color: $white;
+        background-color: $theme-primary-color;
         width: 220px;
         padding: 10px 0;
         position: absolute;
@@ -309,7 +309,7 @@
     }
 
     #navbar {
-      background: $white;
+      background: $theme-primary-color;
       display: block !important;
       width: 280px;
       height: 100% !important;
@@ -328,7 +328,7 @@
 
       ul a:hover,
       ul li.current a {
-        color: $theme-primary-color;
+        color: $white;
       }
 
       .navbar-nav {
@@ -337,7 +337,7 @@
       }
 
       .close-navbar {
-        background-color: $theme-primary-color;
+        background-color: $white;
         width: 35px;
         height: 35px;
         color: $white;
@@ -348,6 +348,10 @@
         left: -18px;
         top: 10px;
         z-index: 20;
+
+        i {
+          color: $theme-primary-color;
+        }
       }
 
       > ul > li {
@@ -415,7 +419,7 @@
 /* 2.1 topbar */
 
 .header-style-1 {
-  height: 12rem;
+  height: 9rem;
   position: relative;
   z-index: 2;
 
@@ -445,9 +449,14 @@
       }
     }
 
-    img.logo-1 {
+    .logo-1 {
+      p {
+        line-height: normal;
+        font-size: medium;
+      }
+
       @media screen and (max-width: 767px) {
-        display: none;
+        display: none !important;
       }
     }
 
@@ -472,6 +481,7 @@
     }
 
     &:before {
+      display: none;
       position: absolute;
       right: 55%;
       top: -5px;
@@ -488,6 +498,7 @@
     }
 
     &:after {
+      display: none;
       position: absolute;
       left: 0;
       top: 0;

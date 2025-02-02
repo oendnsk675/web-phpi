@@ -45,9 +45,12 @@ const { multerErrorHandler } = require('./middlewares/multerError');
 
 const homeRoutes = require('./routes/home');
 const productMemberRoutes = require('./routes/product');
+const directoryRoutes = require('./routes/directory');
 
 module.exports = (app) => {
   app.use('/', homeRoutes);
+  app.use('/products', productMemberRoutes);
+  app.use('/directory', directoryRoutes);
 
   app.get('/about', (req, res) => {
     res.render('pages/about', {
@@ -61,8 +64,6 @@ module.exports = (app) => {
   app.post('/register', doRegister);
 
   app.get('/members', getAllMember);
-
-  app.use('/products', productMemberRoutes);
 
   app.get('/login', login);
   app.post('/login', doLogin);

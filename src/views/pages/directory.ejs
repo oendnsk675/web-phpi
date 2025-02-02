@@ -1,0 +1,160 @@
+<div class="page-wrapper">
+  <!-- start preloader -->
+  <%- include('../components/ui/preloader') %>
+  <!-- end preloader -->
+  <!-- Start header -->
+  <%- include('../components/ui/header') %>
+  <!-- end of header -->
+
+  <!-- start wpo-page-title -->
+  <section
+    class="wpo-page-title"
+    style="
+      background: url(/assets/images/banner/directory.webp) no-repeat center
+        top / cover;
+    "
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col col-xs-12">
+          <div class="wpo-breadcumb-wrap">
+            <h2><%= title %></h2>
+            <ol class="wpo-breadcumb-wrap">
+              <li><a href="index.html">Home</a></li>
+              <li><%= title %></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
+  </section>
+  <!-- end page-title -->
+
+  <!-- start wpo-shop-section -->
+  <section class="wpo-shop-section section-padding">
+    <div class="container">
+      <form action="" class="mb-5 d-flex gap-3">
+        <select name="provinceSelect" id="provinceSelect" class="form-control">
+          <option value="" disabled selected>Pilih provinsi</option>
+          <option value="Bali">Bali</option>
+          <option value="Bangka Belitung">Bangka Belitung</option>
+          <option value="Banten">Banten</option>
+          <option value="Bengkulu">Bengkulu</option>
+          <option value="Jakarta">Jakarta</option>
+          <option value="Jambi">Jambi</option>
+          <option value="Jawa Barat">Jawa Barat</option>
+          <option value="Jawa Tengah">Jawa Tengah</option>
+          <option value="Jawa Timur">Jawa Timur</option>
+          <option value="Kalimantan Barat">Kalimantan Barat</option>
+          <option value="Kalimantan Selatan">Kalimantan Selatan</option>
+          <option value="Kalimantan Timur">Kalimantan Timur</option>
+          <option value="Kalimantan Utara">Kalimantan Utara</option>
+          <option value="Kepulauan Riau">Kepulauan Riau</option>
+          <option value="Lampung">Lampung</option>
+          <option value="Nangroe Aceh Darussalam">
+            Nangroe Aceh Darussalam
+          </option>
+          <option value="Nusa Tenggara Barat">Nusa Tenggara Barat</option>
+          <option value="Nusa Tenggara Timur">Nusa Tenggara Timur</option>
+          <option value="Riau">Riau</option>
+          <option value="Sulawesi Selatan">Sulawesi Selatan</option>
+          <option value="Sulawesi Tengah">Sulawesi Tengah</option>
+          <option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
+          <option value="Sulawesi Utara">Sulawesi Utara</option>
+          <option value="Sumatera Barat">Sumatera Barat</option>
+          <option value="Sumatera Selatan">Sumatera Selatan</option>
+          <option value="Sumatera Utara">Sumatera Utara</option>
+          <option value="Yogyakarta">Yogyakarta</option>
+          <option value="Papua">Papua</option>
+        </select>
+        <button type="button" id="resetButton" class="btn btn-primary h-auto">
+          Reset
+        </button>
+      </form>
+
+      <div class="d-flex flex-column gap-3">
+        <% directories.forEach((directory, index) => { %>
+        <div class="card">
+          <a
+            data-bs-toggle="collapse"
+            href="#collapseExample<%= directory.id %>"
+            role="button"
+            aria-expanded="false"
+            aria-controls="collapseExample<%= directory.id %>"
+            class="text-decoration-none text-dark"
+          >
+            <div class="card-header">
+              <h4 class="m-0"><%= index+1 %>. <%= directory.instance %>.</h4>
+            </div>
+          </a>
+
+          <div class="collapse" id="collapseExample<%= directory.id %>">
+            <div class="card-body">
+              <div class="d-flex gap-4 mb-5">
+                <!-- card profile for chairman -->
+                <div class="d-flex flex-column">
+                  <!-- image -->
+                  <div class="img-container">
+                    <img
+                      src="<%= directory.chairman.image %>"
+                      class="img-thumbnail"
+                      alt="profile <%= directory.chairman.name %>"
+                    />
+                  </div>
+
+                  <!-- name & title -->
+                  <div class="d-flex flex-column mt-3">
+                    <h5><%= directory.chairman.name %></h5>
+                    <span class="fst-italic">KETUA</span>
+                  </div>
+                </div>
+
+                <!-- card profile for Deputy Chairman -->
+                <div class="d-flex flex-column">
+                  <!-- image -->
+                  <div class="img-container">
+                    <img
+                      src="<%= directory.secretary.image %>"
+                      class="img-thumbnail"
+                      alt="profile <%= directory.secretary.name %>"
+                    />
+                  </div>
+
+                  <!-- name & title -->
+                  <div class="d-flex flex-column mt-3">
+                    <h5><%= directory.secretary.name %></h5>
+                    <span class="fst-italic">SEKRETARIS</span>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex flex-column gap-2">
+                <h5>Alamat</h5>
+                <span>
+                  <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  <span><%= directory.address %></span>
+                </span>
+                <span>
+                  <i class="fa fa-envelope" aria-hidden="true"></i>
+                  <span><%= directory.email %></span>
+                </span>
+                <span>
+                  <i class="fa fa-phone-square" aria-hidden="true"></i>
+                  <span><%= directory.phone %></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+    <!-- end container -->
+  </section>
+  <!-- end wpo-shop-section -->
+
+  <!-- start of wpo-site-footer-section -->
+  <%- include('../components/ui/footer.ejs') %>
+  <!-- end of wpo-site-footer-section -->
+</div>

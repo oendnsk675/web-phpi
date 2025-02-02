@@ -398,11 +398,13 @@
 
   $('.slider-hero').slick({
     infinite: true,
+    autoplay: true,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
     fade: true,
-    asNavFor: '.slider-nav',
+    dots: false,
+    // asNavFor: '.slider-nav',
   });
 
   /*------------------------------------------
@@ -1388,5 +1390,24 @@
         reader.readAsDataURL(file); // Read file as data URL
       }
     }
+  });
+
+  // filter directories
+  $('#provinceSelect').on('change', function () {
+    const selectedProvince = $(this).val();
+
+    $('.card').each(function () {
+      const instance = $(this).find('h4').text();
+
+      if (selectedProvince === '' || instance.includes(selectedProvince)) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  });
+  $('#resetButton').on('click', function () {
+    $('#provinceSelect').val(''); // Reset dropdown ke pilihan awal
+    $('.card').show(); // Menampilkan semua card
   });
 })(window.jQuery);
