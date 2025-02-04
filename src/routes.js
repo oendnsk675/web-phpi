@@ -8,6 +8,7 @@ const {
   update,
   verify,
   suspend,
+  updatePersonalProfile,
 } = require('./controller/admin/users.controller');
 
 const {
@@ -28,17 +29,14 @@ const {
   delete: deleteCategory,
 } = require('./controller/admin/categories.controller');
 
-const {
-  register,
-  doRegister,
-  login,
-  doLogin,
-} = require('./controller/auth/auth.controller');
+const { register, doRegister, login, doLogin } = require('./controller/auth/auth.controller');
 const { upload } = require('./configs/multer');
 const { checkAuth } = require('./middlewares/auth');
 const {
   getAllMember,
   profileMember,
+  findYourGuide,
+  searchGuide,
 } = require('./controller/members.controller');
 const { checkAuthorization } = require('./middlewares/authorization');
 const { multerErrorHandler } = require('./middlewares/multerError');
@@ -46,15 +44,17 @@ const { multerErrorHandler } = require('./middlewares/multerError');
 const homeRoutes = require('./routes/home');
 const productMemberRoutes = require('./routes/product');
 const directoryRoutes = require('./routes/directory');
+const reviewRoutes = require('./routes/review');
 
 module.exports = (app) => {
   app.use('/', homeRoutes);
   app.use('/products', productMemberRoutes);
   app.use('/directory', directoryRoutes);
+  app.use('/review', reviewRoutes);
 
   app.get('/about', (req, res) => {
     res.render('pages/about', {
-      title: 'Profile - PHPI',
+      title: 'Tentang - PHPI',
     });
   });
 
@@ -64,6 +64,8 @@ module.exports = (app) => {
   app.post('/register', doRegister);
 
   app.get('/members', getAllMember);
+  app.get('/search/guide', searchGuide);
+  app.get('/find-your-guide', findYourGuide);
 
   app.get('/login', login);
   app.post('/login', doLogin);
@@ -83,32 +85,18 @@ module.exports = (app) => {
   app.get('/panel/members/verify/:id', checkAuth, checkAuthorization, verify);
   app.get('/panel/members/suspend/:id', checkAuth, checkAuthorization, suspend);
   app.post('/panel/members/save', checkAuth, upload.single('photo'), save);
+  app.post('/panel/members/update/:id', checkAuth, upload.single('photo'), update);
   app.post(
-    '/panel/members/update/:id',
+    '/panel/members/update-personal-profile/:id',
     checkAuth,
     upload.single('photo'),
-    update,
+    updatePersonalProfile,
   );
 
   app.get('/panel/category', checkAuth, checkAuthorization, getAllCategory);
-  app.get(
-    '/panel/category/create',
-    checkAuth,
-    checkAuthorization,
-    createCategory,
-  );
-  app.get(
-    '/panel/category/edit/:id',
-    checkAuth,
-    checkAuthorization,
-    editCategory,
-  );
-  app.get(
-    '/panel/category/delete/:id',
-    checkAuth,
-    checkAuthorization,
-    deleteCategory,
-  );
+  app.get('/panel/category/create', checkAuth, checkAuthorization, createCategory);
+  app.get('/panel/category/edit/:id', checkAuth, checkAuthorization, editCategory);
+  app.get('/panel/category/delete/:id', checkAuth, checkAuthorization, deleteCategory);
   app.post('/panel/category/save', checkAuth, saveCategory);
   app.post('/panel/category/update/:id', checkAuth, updateCategory);
 

@@ -4,6 +4,8 @@ const Banner = require('../../models/Banner');
 const Category = require('../../models/Category');
 const Product = require('../../models/Product');
 const User = require('../../models/User');
+const ProductService = require('../../models/ProductServices');
+const Itinerary = require('../../models/Itinerary');
 require('dotenv').config();
 
 exports.getAll = async (req, res) => {
@@ -63,7 +65,10 @@ exports.getAll = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const categoryRepository = AppDataSource.getRepository(Category);
+    const productServiceRepository =
+      AppDataSource.getRepository(ProductService);
     const categories = await categoryRepository.find();
+    const productServices = await productServiceRepository.find();
 
     return res.render('pages/panel/products/create', {
       layout: 'layouts/dashboard',
@@ -71,6 +76,7 @@ exports.create = async (req, res) => {
       product: null,
       type: 'create',
       categories,
+      productServices,
     });
   } catch (error) {
     console.log({ error });
@@ -83,11 +89,23 @@ exports.save = async (req, res) => {
     const { id } = req.session.user;
     let payload = req.body;
     const files = req.files;
+    let { inclusions, exclusions } = payload;
 
-    const user = await AppDataSource.getRepository(User).findOneBy({
-      id,
-    });
+    inclusions = inclusions
+      ? Array.isArray(inclusions)
+        ? inclusions
+        : [inclusions]
+      : [];
+    exclusions = exclusions
+      ? Array.isArray(exclusions)
+        ? exclusions
+        : [exclusions]
+      : [];
 
+    delete payload.inclusions;
+    delete payload.exclusions;
+
+    const user = await AppDataSource.getRepository(User).findOneBy({ id });
     payload.user = user;
 
     if (payload.category) {
@@ -101,23 +119,67 @@ exports.save = async (req, res) => {
     const productRepository = AppDataSource.getRepository(Product);
     const savedProduct = await productRepository.save(payload);
 
+    const productServiceRepository =
+      AppDataSource.getRepository(ProductService);
+    const servicesToInsert = [];
+
+    // Handle inclusions
+    if (inclusions.length > 0) {
+      inclusions.forEach((name) => {
+        servicesToInsert.push({
+          name,
+          type: 'inclusive',
+          product: savedProduct,
+        });
+      });
+    }
+
+    // Handle exclusions
+    if (exclusions.length > 0) {
+      exclusions.forEach((name) => {
+        servicesToInsert.push({
+          name,
+          type: 'exclusive',
+          product: savedProduct,
+        });
+      });
+    }
+
+    if (servicesToInsert.length > 0) {
+      await productServiceRepository.save(servicesToInsert);
+    }
+
     // Jika ada files (banner), simpan setelah product
-    if (files != undefined && files.length > 0) {
+    if (files && files.length > 0) {
       const bannerRepository = AppDataSource.getRepository(Banner);
 
-      // Simpan banner dan hubungkan dengan product yang baru saja disimpan
       await Promise.all(
         files.map(async (file) => {
           const imagePath = `/uploads/${file.filename}`;
-
           const banner = bannerRepository.create({
             path: imagePath,
             product: savedProduct,
           });
-
           return await bannerRepository.save(banner);
         }),
       );
+    }
+
+    // Handle itineraries if provided
+    if (payload.itineraries && Array.isArray(payload.itineraries)) {
+      const itineraryRepository = AppDataSource.getRepository(Itinerary);
+      const itinerariesToInsert = payload.itineraries.map(
+        (itineraryData, index) => ({
+          title: itineraryData.title,
+          description: itineraryData.description,
+          time: itineraryData.time,
+          product: savedProduct,
+        }),
+      );
+
+      if (itinerariesToInsert.length > 0) {
+        await itineraryRepository.save(itinerariesToInsert);
+      }
     }
 
     req.flash('successMessage', 'Data berhasil disimpan');
@@ -133,10 +195,12 @@ exports.edit = async (req, res) => {
   try {
     const id = req.params.id;
     const productRepository = AppDataSource.getRepository(Product);
+    const productServiceRepository =
+      AppDataSource.getRepository(ProductService);
     const product = await productRepository
       .findOne({
         where: { id },
-        relations: ['banners', 'category'],
+        relations: ['banners', 'category', 'productServices', 'itineraries'],
       })
       .then((product) => {
         return {
@@ -148,6 +212,9 @@ exports.edit = async (req, res) => {
       });
     const categoryRepository = AppDataSource.getRepository(Category);
     const categories = await categoryRepository.find();
+    const productServices = await productServiceRepository.find({
+      where: { productId: product.id },
+    });
 
     return res.render('pages/panel/products/create', {
       layout: 'layouts/dashboard',
@@ -155,6 +222,7 @@ exports.edit = async (req, res) => {
       product,
       type: 'edit',
       categories,
+      productServices,
     });
   } catch (error) {
     console.log(error);
@@ -163,13 +231,29 @@ exports.edit = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const queryRunner = AppDataSource.createQueryRunner(); // Membuat query runner untuk transaksi
-  await queryRunner.startTransaction(); // Mulai transaksi
+  const queryRunner = AppDataSource.createQueryRunner();
+  await queryRunner.startTransaction();
   const files = req.files;
 
   try {
     const payload = req.body;
     const { id } = req.params;
+    let { inclusions, exclusions, itineraries } = payload;
+
+    inclusions = inclusions
+      ? Array.isArray(inclusions)
+        ? inclusions
+        : [inclusions]
+      : [];
+    exclusions = exclusions
+      ? Array.isArray(exclusions)
+        ? exclusions
+        : [exclusions]
+      : [];
+
+    delete payload.inclusions;
+    delete payload.exclusions;
+    delete payload.itineraries;
 
     if (payload.category) {
       payload.category = await AppDataSource.getRepository(Category).findOneBy({
@@ -178,44 +262,93 @@ exports.update = async (req, res) => {
     }
 
     const productRepository = queryRunner.manager.getRepository(Product);
+    const productServiceRepository =
+      queryRunner.manager.getRepository(ProductService);
 
     // Update data product
     await productRepository.update(id, payload);
     const product = await productRepository.findOneBy({ id });
 
-    // Jika ada files (banner), simpan setelah product
-    if (files != undefined && files.length > 0) {
-      const bannerRepository = AppDataSource.getRepository(Banner);
+    // Hapus semua productServices terkait sebelum memasukkan yang baru
+    await productServiceRepository.delete({ product: { id } });
 
-      // Simpan banner dan hubungkan dengan product yang baru saja disimpan
-      bannerRepository.delete({ product });
+    const servicesToInsert = [];
+
+    // Handle inclusions
+    if (inclusions.length > 0) {
+      inclusions.forEach((name) => {
+        servicesToInsert.push({
+          name,
+          type: 'inclusive',
+          product,
+        });
+      });
+    }
+
+    // Handle exclusions
+    if (exclusions.length > 0) {
+      exclusions.forEach((name) => {
+        servicesToInsert.push({
+          name,
+          type: 'exclusive',
+          product,
+        });
+      });
+    }
+
+    if (servicesToInsert.length > 0) {
+      await productServiceRepository.save(servicesToInsert);
+    }
+
+    // Jika ada files (banner), update banner
+    if (files && files.length > 0) {
+      const bannerRepository = queryRunner.manager.getRepository(Banner);
+
+      await bannerRepository.delete({ product });
+
       await Promise.all(
         files.map(async (file) => {
           const imagePath = `/uploads/${file.filename}`;
-
           const banner = bannerRepository.create({
             path: imagePath,
             product,
           });
-
           return await bannerRepository.save(banner);
         }),
       );
     }
 
-    await queryRunner.commitTransaction(); // Commit transaksi
+    if (itineraries && Array.isArray(itineraries)) {
+      // Menggunakan repository untuk Itinerary
+      const itineraryRepository = queryRunner.manager.getRepository(Itinerary);
+
+      // Menghapus itineraries yang ada sebelum menambahkan yang baru
+      await itineraryRepository.delete({ product: { id } });
+
+      const itinerariesToInsert = itineraries.map((itineraryData) => ({
+        title: itineraryData.title,
+        description: itineraryData.description,
+        time: itineraryData.time,
+        product, // Referensi ke produk yang diperbarui
+      }));
+
+      // Menyimpan itineraries yang baru
+      if (itinerariesToInsert.length > 0) {
+        await itineraryRepository.save(itinerariesToInsert);
+      }
+    }
+
+    await queryRunner.commitTransaction();
 
     req.flash('successMessage', 'Data berhasil di edit');
-
     return res.redirect('/panel/products');
   } catch (error) {
-    await queryRunner.rollbackTransaction(); // Rollback transaksi jika ada error
+    await queryRunner.rollbackTransaction();
     console.log(error);
     req.flash('errorMessage', 'Terjadi kesalahan');
-
     return res.redirect('/panel/products/create');
   } finally {
-    await queryRunner.release(); // Pastikan query runner dilepas
+    await queryRunner.release();
   }
 };
 

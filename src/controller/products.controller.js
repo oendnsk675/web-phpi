@@ -2,6 +2,8 @@ const { Like } = require('typeorm');
 const AppDataSource = require('../configs/ormconfig');
 const Product = require('../models/Product');
 const { formatRupiah } = require('../utils/commons');
+const User = require('../models/User');
+const Review = require('../models/Review');
 require('dotenv').config();
 
 exports.getAll = async (req, res) => {
@@ -50,9 +52,7 @@ exports.getAll = async (req, res) => {
           description: product.description,
           price: formatRupiah(product.price),
           category: product.category.name || '-',
-          banners: product.banners.map(
-            (banner) => `${process.env.APP_URL}${banner.path}`,
-          ),
+          banners: product.banners.map((banner) => `${process.env.APP_URL}${banner.path}`),
         })),
         page,
         limit: length,
@@ -74,17 +74,62 @@ exports.getDetail = async (req, res) => {
     const product = await productRepository
       .findOne({
         where: { id },
-        relations: ['banners', 'category'],
+        relations: ['banners', 'category', 'user', 'user.languages', 'productServices', 'itineraries', 'reviews', 'reviews.user'],
       })
-      .then((product) => {
+      .then(async (product) => {
+        let ratingUser = await AppDataSource.getRepository(Product).find({
+          where: { user: { id: product.user.id } },
+          relations: ['reviews'],
+        });
+        let ratingUserCount = 0;
+        ratingUser = ratingUser
+          .map((product) => {
+            if (product.reviews.length > 0) {
+              return (
+                product.reviews.reduce((total, review) => {
+                  ratingUserCount++;
+                  return total + review.rating;
+                }, 0) / product.reviews.length
+              );
+            }
+            return 0;
+          })
+          .filter((rating) => rating > 0);
+
+        if (ratingUser.length > 0) {
+          ratingUser = ratingUser.reduce((total, rating) => total + rating, 0) / ratingUser.length;
+        } else {
+          ratingUser = 0;
+        }
+
         return {
           ...product,
-          banners: product.banners.map(
-            (banner) => `${process.env.APP_URL}${banner.path}`,
-          ),
+          banners: product.banners.map((banner) => `${process.env.APP_URL}${banner.path}`),
+          user: {
+            ...product.user,
+            createdAt: product.user.createdAt.getFullYear(),
+          },
+          reviews: product.reviews.map((review) => ({
+            ...review,
+            user: {
+              ...review.user,
+              photo: `${process.env.APP_URL}${review?.user?.photo}`,
+            },
+            createdAt: new Intl.DateTimeFormat('id-ID', {
+              year: 'numeric',
+              month: 'long',
+              day: '2-digit',
+            }).format(new Date(review.createdAt)),
+          })),
           price: formatRupiah(product.price),
+          ratingUser,
+          ratingUserCount,
+          rating: product.reviews.reduce((total, review) => total + review.rating, 0) / product.reviews.length,
         };
       });
+
+    console.log({ ratingUser: product.ratingUserCount });
+
     return res.render('pages/detail-product', {
       title: 'Detail Product',
       product,

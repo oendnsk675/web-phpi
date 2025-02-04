@@ -16,6 +16,22 @@ const Product = new EntitySchema({
       type: 'text',
       nullable: true,
     },
+    location: {
+      type: 'varchar',
+      nullable: true,
+    },
+    serviceTime: {
+      type: 'varchar',
+      nullable: true,
+    },
+    capacity: {
+      type: 'int',
+      nullable: true,
+    },
+    importantInformation: {
+      type: 'text',
+      nullable: true,
+    },
     price: {
       type: 'decimal',
       precision: 10,
@@ -57,6 +73,23 @@ const Product = new EntitySchema({
       target: 'Banner',
       inverseSide: 'product',
       nullable: true,
+    },
+    productServices: {
+      type: 'one-to-many',
+      target: 'ProductService', // Target ke entitas ProductService
+      inverseSide: 'product', // Harus sama dengan nama relasi di ProductService
+      cascade: true, // Opsional: insert/update otomatis ke child entity
+    },
+    itineraries: {
+      type: 'one-to-many',
+      target: 'Itinerary', // Target ke entitas ProductService
+      inverseSide: 'product', // Harus sama dengan nama relasi di ProductService
+      cascade: true, // Opsional: insert/update otomatis ke child entity
+    },
+    reviews: {
+      type: 'one-to-many',
+      target: 'Review',
+      inverseSide: 'product',
     },
   },
 });

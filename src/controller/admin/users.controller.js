@@ -3,6 +3,7 @@ const AppDataSource = require('../../configs/ormconfig');
 const Language = require('../../models/Language');
 const User = require('../../models/User');
 const { createMemberCard } = require('../../utils/qrcode');
+const SpecialInterest = require('../../models/SpecialInterest');
 
 exports.getAll = async (req, res) => {
   try {
@@ -156,12 +157,17 @@ exports.update = async (req, res) => {
   try {
     const payload = req.body;
     const { id } = req.params;
-    let { languages } = payload;
+    let { languages, specialInterest } = payload;
 
     languages = Array.isArray(languages) ? languages : [languages];
+    specialInterest = Array.isArray(specialInterest) ? specialInterest : [specialInterest];
 
     if (languages && languages.length > 0) {
       delete payload.languages;
+    }
+
+    if (specialInterest && specialInterest.length > 0) {
+      delete payload.specialInterest;
     }
 
     // Cek apakah ada file yang diupload dan simpan gambar
@@ -172,6 +178,7 @@ exports.update = async (req, res) => {
 
     const userRepository = queryRunner.manager.getRepository(User);
     const languageRepository = queryRunner.manager.getRepository(Language);
+    const specialInterestRepository = queryRunner.manager.getRepository(SpecialInterest);
 
     // Update data pengguna (kecuali relasi languages)
     await userRepository.update(id, payload);
@@ -193,8 +200,7 @@ exports.update = async (req, res) => {
       });
 
       const missingLanguages = languages.filter(
-        (language) =>
-          !existingLanguages.some((existing) => existing.language === language),
+        (language) => !existingLanguages.some((existing) => existing.language === language),
       );
 
       if (missingLanguages.length > 0) {
@@ -213,9 +219,64 @@ exports.update = async (req, res) => {
       await userRepository.save(user);
     }
 
+    // Cek apakah ada perubahan pada spesial interest yang dikirimkan
+    if (specialInterest && specialInterest.length > 0) {
+      const existingData = await specialInterestRepository.findBy({
+        name: In(specialInterest),
+      });
+
+      const missingData = specialInterest.filter(
+        (data) => !existingData.some((existing) => existing.name === data),
+      );
+
+      if (missingData.length > 0) {
+        const newData = missingData.map((name) => ({
+          name, // pastikan field yang benar digunakan sesuai model
+        }));
+
+        await specialInterestRepository.save(newData); // Menyimpan bahasa baru ke dalam tabel
+      }
+
+      const dataSelected = await specialInterestRepository.findBy({
+        name: In(specialInterest),
+      });
+
+      user.specialInterest = dataSelected;
+      await userRepository.save(user);
+    }
+
     await queryRunner.commitTransaction(); // Commit transaksi
 
     req.flash('successMessage', 'Data berhasil di edit');
+
+    if (req.query.type == 'user') {
+      return res.redirect('/panel/profile');
+    }
+    return res.redirect('/panel/members');
+  } catch (error) {
+    await queryRunner.rollbackTransaction(); // Rollback transaksi jika ada error
+    console.log(error);
+    req.flash('errorMessage', 'Terjadi kesalahan');
+
+    return res.redirect('/panel/members/create');
+  } finally {
+    await queryRunner.release(); // Pastikan query runner dilepas
+  }
+};
+
+exports.updatePersonalProfile = async (req, res) => {
+  const queryRunner = AppDataSource.createQueryRunner(); // Membuat query runner untuk transaksi
+  await queryRunner.startTransaction(); // Mulai transaksi
+
+  try {
+    const payload = req.body;
+    const { id } = req.params;
+
+    await queryRunner.manager.getRepository(User).update(id, payload);
+
+    await queryRunner.commitTransaction();
+
+    req.flash('successMessage', 'Data personal berhasil di edit');
 
     if (req.query.type == 'user') {
       return res.redirect('/panel/profile');
@@ -239,15 +300,17 @@ exports.profile = async (req, res) => {
     const languageRepository = AppDataSource.getRepository(Language);
     const user = await userRepository.findOne({
       where: { id },
-      relations: ['languages'],
+      relations: ['languages', 'specialInterest'],
     });
     const languages = await languageRepository.find();
+    const specialInterest = await AppDataSource.getRepository(SpecialInterest).find();
 
     return res.render('pages/panel/members/profile', {
       layout: 'layouts/dashboard',
       title: 'Members',
       user,
       languages,
+      specialInterest,
       type: 'edit',
     });
   } catch (error) {

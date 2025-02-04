@@ -56,6 +56,78 @@
           </select>
         </div>
         <div class="col-12 col-lg-6 mb-3 h-fit">
+          <label for="location">Location</label>
+          <input
+            type="text"
+            name="location"
+            class="form-control"
+            id="location"
+            placeholder="Nama"
+            value="<%= product?.location %>"
+            required
+          />
+        </div>
+        <div class="col-12 col-lg-6 mb-3 h-fit">
+          <label for="serviceTime">Service Time</label>
+          <input
+            type="text"
+            name="serviceTime"
+            class="form-control"
+            id="serviceTime"
+            placeholder="ex. 1-2 days or 9 hours"
+            value="<%= product?.serviceTime %>"
+            required
+          />
+        </div>
+        <div class="col-12 col-lg-6 mb-3 h-fit">
+          <label for="capacity">Capacity up to?</label>
+          <input
+            type="number"
+            name="capacity"
+            class="form-control"
+            id="capacity"
+            placeholder="Nama"
+            value="<%= product?.capacity %>"
+            required
+          />
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="inclusions">Service Include</label>
+          <select class="form-control inclusions" name="inclusions" id="inclusions" multiple="multiple">
+            <% productServices.forEach(service => { %>
+              <% if (service.type == 'inclusive') { %>
+                <option value="<%= service.name %>" 
+                <%= product?.productServices.some(svc => svc.id === service.id) ? 'selected' : '' %>>
+                  <%= service.name %>
+                </option>
+              <% } %>
+            <% }) %>
+          </select>          
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="exclusions">Service Exclude</label>
+          <select class="form-control exclusions" name="exclusions" id="exclusions" multiple="multiple">
+            <% productServices.forEach(service => { %>
+              <% if (service.type == 'exclusive') { %>
+                <option value="<%= service.name %>" 
+                <%= product?.productServices.some(svc => svc.id === service.id) ? 'selected' : '' %>>
+                  <%= service.name %>
+                </option>
+              <% } %>
+            <% }) %>
+          </select>          
+        </div>
+        <div class="col-12 col-lg-6 mb-3 h-fit">
+          <label for="importantInformation">Importan information</label>
+          <textarea
+            name="importantInformation"
+            class="form-control"
+            id="importantInformation"
+            placeholder="Deskripsi"
+            rows="3"
+          ><%= product?.importantInformation %></textarea>
+        </div>
+        <div class="col-12 col-lg-6 mb-3 h-fit">
           <label for="description">Deskripsi</label>
           <textarea
             name="description"
@@ -89,6 +161,41 @@
               <% } %>
           </div> 
         </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label>Itinerary</label>
+          <div class="accordion" id="itinerary-container">
+            <% if (product?.itineraries && product.itineraries.length > 0) { %>
+              <% product.itineraries.forEach((itinerary, index) => { %>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading<%= index %>">
+                    <button class="accordion-button <%= index !== 0 ? 'collapsed' : '' %>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= index %>" aria-expanded="<%= index === 0 ? 'true' : 'false' %>" aria-controls="collapse<%= index %>">
+                      Day <%= index + 1 %> - <%= itinerary.title %>
+                    </button>
+                  </h2>
+                  <div id="collapse<%= index %>" class="accordion-collapse collapse <%= index === 0 ? 'show' : '' %>" aria-labelledby="heading<%= index %>" data-bs-parent="#itinerary-container">
+                    <div class="accordion-body">
+                      <div class="mb-2">
+                        <label>Judul Kegiatan</label>
+                        <input type="text" name="itineraries[<%= index %>][title]" class="form-control" value="<%= itinerary.title %>" required />
+                      </div>
+                      <div class="mb-2">
+                        <label>Deskripsi</label>
+                        <textarea name="itineraries[<%= index %>][description]" class="form-control" rows="2" required><%= itinerary.description %></textarea>
+                      </div>
+                      <div class="mb-2">
+                        <label>Waktu (HH:MM)</label>
+                        <input type="time" name="itineraries[<%= index %>][time]" class="form-control" value="<%= itinerary.time %>" required />
+                      </div>
+                      <button type="button" class="btn btn-danger btn-sm remove-day">Hapus</button>
+                    </div>
+                  </div>
+                </div>
+              <% }) %>
+            <% } %>
+          </div>
+          <button type="button" id="add-day" class="btn btn-primary w-100 mt-4">+ Tambah Itinerary</button>
+        </div>
+        
       </div>
       <div class="">
         <button id="submit-product" type="submit" class="theme-btn-sm w-100">

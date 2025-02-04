@@ -206,9 +206,7 @@
 
   // tooltips
 
-  var tooltipTriggerList = [].slice.call(
-    document.querySelectorAll('[data-bs-toggle="tooltip"]'),
-  );
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
   });
@@ -234,10 +232,7 @@
       dots: true,
       arrows: false,
       nav: true,
-      navText: [
-        '<i class="ti-arrow-left"></i>',
-        '<i class="ti-arrow-right"></i>',
-      ],
+      navText: ['<i class="ti-arrow-left"></i>', '<i class="ti-arrow-right"></i>'],
       responsive: {
         0: {
           items: 1,
@@ -513,8 +508,7 @@
         var swiper = this;
         for (var i = 0; i < swiper.slides.length; i++) {
           swiper.slides[i].style.transition = speed + 'ms';
-          swiper.slides[i].querySelector('.slide-inner').style.transition =
-            speed + 'ms';
+          swiper.slides[i].querySelector('.slide-inner').style.transition = speed + 'ms';
         }
       },
     },
@@ -526,10 +520,7 @@
   var sliderBgSetting = $('.slide-bg-image');
   sliderBgSetting.each(function (indx) {
     if ($(this).attr('data-background')) {
-      $(this).css(
-        'background-image',
-        'url(' + $(this).data('background') + ')',
-      );
+      $(this).css('background-image', 'url(' + $(this).data('background') + ')');
     }
   });
 
@@ -611,9 +602,7 @@
         duration: 300,
         easing: 'ease-in-out',
         opener: function (openerElement) {
-          return openerElement.is('img')
-            ? openerElement
-            : openerElement.find('img');
+          return openerElement.is('img') ? openerElement : openerElement.find('img');
         },
       },
     });
@@ -877,10 +866,7 @@
       margin: 30,
       loop: true,
       nav: true,
-      navText: [
-        '<i class="fi ti-arrow-left"></i>',
-        '<i class="fi ti-arrow-right"></i>',
-      ],
+      navText: ['<i class="fi ti-arrow-left"></i>', '<i class="fi ti-arrow-right"></i>'],
       dots: false,
       items: 1,
     });
@@ -920,9 +906,7 @@
   /*------------------------------------------
         = BACK TO TOP BTN SETTING
     -------------------------------------------*/
-  $('body').append(
-    "<a href='#' class='back-to-top'><i class='ti-arrow-up'></i></a>",
-  );
+  $('body').append("<a href='#' class='back-to-top'><i class='ti-arrow-up'></i></a>");
 
   function toggleBackToTopBtn() {
     var amountScrolled = 1000;
@@ -1326,6 +1310,15 @@
   $('.language').select2({
     tags: true,
   });
+  $('.specialInterestSelect2').select2({
+    tags: true,
+  });
+  $('.inclusions').select2({
+    tags: true,
+  });
+  $('.exclusions').select2({
+    tags: true,
+  });
 
   $('.delete-btn').on('click', function (e) {
     e.preventDefault(); // Prevent default anchor click behavior
@@ -1375,9 +1368,7 @@
 
         if (i == 3 && files.length - 4 != 0) {
           console.log(previewBoxes[i]);
-          $(previewBoxes[i]).html(
-            `<span class="more-indicator">+${files.length - 4}</span>`,
-          );
+          $(previewBoxes[i]).html(`<span class="more-indicator">+${files.length - 4}</span>`);
         }
 
         reader.onload = function (e) {
@@ -1409,5 +1400,80 @@
   $('#resetButton').on('click', function () {
     $('#provinceSelect').val(''); // Reset dropdown ke pilihan awal
     $('.card').show(); // Menampilkan semua card
+  });
+
+  // quil
+  const editors = {};
+
+  ['experience', 'educations'].forEach((id) => {
+    const element = document.querySelector(`#${id}`);
+    if (element) {
+      editors[id] = new Quill(element, { theme: 'snow' });
+
+      const hiddenInput = document.querySelector(`input[name="${id}"]`);
+      if (hiddenInput && hiddenInput.value.trim()) {
+        editors[id].root.innerHTML = hiddenInput.value.trim();
+      }
+    }
+  });
+
+  // Event Listener untuk Submit
+  $('#personalProfileForm').on('submit', function (e) {
+    e.preventDefault(); // Cegah submit otomatis untuk debug
+
+    // Salin data dari Quill ke input hidden
+    $.each(editors, function (name, editor) {
+      $(`input[name="${name}"]`).val(editor.root.innerHTML.trim());
+    });
+
+    // Debug untuk cek data sebelum submit
+    console.log('Experience:', $('input[name="experience"]').val());
+    console.log('Educations:', $('input[name="educations"]').val());
+
+    // Submit ulang form setelah data terisi
+    this.submit();
+  });
+
+  let dayCount = $('#itinerary-container .accordion-item').length || 0;
+
+  $('#add-day').click(function () {
+    const dayTemplate = `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading${dayCount}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${dayCount}" aria-expanded="false" aria-controls="collapse${dayCount}">
+              Step - ${dayCount + 1}
+            </button>
+          </h2>
+          <div id="collapse${dayCount}" class="accordion-collapse collapse" aria-labelledby="heading${dayCount}" data-bs-parent="#itinerary-container">
+            <div class="accordion-body">
+              <div class="mb-2">
+                <label>Judul Kegiatan</label>
+                <input type="text" name="itineraries[${dayCount}][title]" class="form-control" required />
+              </div>
+              <div class="mb-2">
+                <label>Deskripsi</label>
+                <textarea name="itineraries[${dayCount}][description]" class="form-control" rows="2" required></textarea>
+              </div>
+              <div class="mb-2">
+                <label>Waktu (HH:MM)</label>
+                <input type="time" name="itineraries[${dayCount}][time]" class="form-control" required />
+              </div>
+              <button type="button" class="btn btn-danger btn-sm remove-day">Hapus</button>
+            </div>
+          </div>
+        </div>`;
+
+    $('#itinerary-container').append(dayTemplate);
+    dayCount++;
+  });
+
+  $(document).on('click', '.remove-day', function () {
+    $(this).closest('.accordion-item').remove();
+    $('#itinerary-container .accordion-item').each(function (index) {
+      $(this)
+        .find('.accordion-button')
+        .text(`Day ${index + 1}`);
+    });
+    dayCount--;
   });
 })(window.jQuery);

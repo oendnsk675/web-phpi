@@ -14,6 +14,10 @@ const AppDataSource = new DataSource({
   entities: [
     require('../models/User'),
     require('../models/Language'),
+    require('../models/SpecialInterest'),
+    require('../models/Review'),
+    require('../models/ProductServices'),
+    require('../models/Itinerary'),
     require('../models/Product'),
     require('../models/Category'),
     require('../models/Banner'),

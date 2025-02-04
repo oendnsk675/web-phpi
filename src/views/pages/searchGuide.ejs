@@ -1,0 +1,147 @@
+<div class="page-wrapper">
+  <!-- start preloader -->
+  <%- include('../components/ui/preloader') %>
+  <!-- end preloader -->
+  <!-- Start header -->
+  <%- include('../components/ui/header') %>
+  <!-- end of header -->
+
+  <!-- start wpo-page-title -->
+  <section class="wpo-page-title" style="background: url(/assets/images/banner/member.jpg) no-repeat center top / cover">
+    <div class="container">
+      <div class="row">
+        <div class="col col-xs-12">
+          <div class="wpo-breadcumb-wrap">
+            <h2><%= title %></h2>
+            <ol class="wpo-breadcumb-wrap">
+              <li><a href="/">Home</a></li>
+              <li><%= title %></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
+  </section>
+  <!-- end page-title -->
+
+  <!-- start wpo-team-section -->
+  <section class="wpo-page section-padding">
+    <div class="container">
+      <div class="team-grids">
+        <!-- content -->
+        <div class="card content p-4 h-fit">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="image">#</th>
+                <th scope="col" class="text-center">Email</th>
+                <th scope="col" class="text-center">Nama</th>
+                <th scope="col" class="text-center">Status</th>
+                <th scope="col" class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% users.forEach((user) => { %>
+              <tr>
+                <th class="image">
+                  <img src="<%= user.photo %>" alt="team member" class="team-member" />
+                </th>
+                <td><%= user.email %></td>
+                <td><%= user.nama %></td>
+                <td>
+                  <span class="badge rounded-pill <%= user.status == 'active' ? 'bg-success' : 'bg-danger' %>"><%= user.status %></span>
+                </td>
+                <td>
+                  <a class="btn btn-sm btn-primary" href="/profile/<%= user.id %>">Detail</a>
+                </td>
+              </tr>
+
+              <% }) %>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <!-- Previous Button -->
+              <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= currentPage - 1 %>" tabindex="-1">Previous</a>
+              </li>
+
+              <!-- Page Numbers -->
+              <% for (let i = 1; i <= totalPages; i++) { %>
+              <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+              </li>
+              <% } %>
+
+              <!-- Next Button -->
+              <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <!-- sidebar -->
+        <div class="card p-4 sidebar">
+          <div class="w-100 d-flex justify-content-center toggle-filter">
+            <div role="button" class="d-flex gap-3 align-items-center w-100 button-toggle-filter">
+              <hr class="w-100" />
+              <span class="text-toggle-filter" style="min-width: max-content">Hide Filter</span>
+              <hr class="w-100" />
+            </div>
+          </div>
+
+          <form id="filter-2" action="/search/guide" method="get">
+            <div class="sidebar-item">
+              <div class="">
+                <h6 for="layout" class="sidebar-title">Guide Type</h6>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Cari berdasarkan location" name="location" value="<%= location %>" />
+                </div>
+                <div class="form-group">
+                  <select name="language" id="language" class="form-control">
+                    <option value="">Cari berdasarkan bahasa</option>
+                    <% dataLanguage.forEach((lang) => { %>
+                      <option value="<%= lang.language %>" <%= lang.language == language ? 'selected' : '' %>><%= lang.language %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <select name="category" id="category" class="form-control">
+                    <option value="">Cari berdasarkan kategori</option>
+                    <% dataCategory.forEach((data) => { %>
+                      <option value="<%= data.name %>" <%= data.name == category ? 'selected' : '' %>><%= data.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <select name="specialInterest" id="specialInterest" class="form-control">
+                    <option value="">Cari berdasarkan spesial interest</option>
+                    <% dataSpecialInterest.forEach((data) => { %>
+                      <option value="<%= data.name %>" <%= data.name == specialInterest ? 'selected' : '' %>><%= data.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Cari berdasarkan nama" name="nama" value="<%= nama %>" />
+                </div>
+              </div>
+              <button class="theme-btn-sm w-100" type="submit">Cari</button>
+              <a href="/search/guide" class="theme-btn-sm bg-info text-center w-100 mt-2" type="submit">Reset</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end wpo-team-section -->
+
+  <!-- stert wpo-social-section -->
+  <%- include('../components/partials/home/social') %>
+  <!-- end wpo-social-section -->
+
+  <!-- start of wpo-site-footer-section -->
+  <%- include('../components/ui/footer.ejs') %>
+  <!-- end of wpo-site-footer-section -->
+</div>

@@ -17,4 +17,281 @@
   @media (max-width: 767px) {
     padding: 30px 0px;
   }
+
+  hr {
+    flex-grow: 1;
+    color: $theme-secondary-color;
+  }
+
+  .team-grid {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    overflow-x: auto;
+
+    @media (max-width: 767px) {
+      justify-content: start;
+      padding: 0 8px;
+    }
+
+    .team-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 200px;
+      flex-shrink: 0;
+
+      .image-thumbnail {
+        width: 200px;
+        height: 200px;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .team-structure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    .card {
+      width: 150px;
+      height: fit-content;
+      border-radius: 12px;
+      text-wrap: wrap;
+
+      .card-footer {
+        background-color: hsla(232, 45%, 49%, 0.4);
+        font-weight: bold;
+      }
+    }
+
+    ul.level-1 {
+      margin: 0;
+      list-style: none;
+
+      li {
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          height: 1rem;
+          width: 5px;
+          background-color: #071257;
+          bottom: -1rem;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+    }
+
+    ul.level-2 {
+      display: flex !important;
+      gap: 1rem;
+      list-style: none;
+      margin: 0;
+
+      li {
+        position: relative;
+
+        &:first-child {
+          &::before {
+            content: '';
+            position: absolute;
+            height: 5px;
+            width: 120px;
+            background-color: #071257;
+            top: -1rem;
+            left: calc(50% - -0.12221rem);
+            max-width: calc(50% + 0.531rem);
+          }
+          &::after {
+            content: '';
+            position: absolute;
+            height: 2rem;
+            width: 5px;
+            background-color: #071257;
+            bottom: -2rem;
+            left: 50%;
+            transform: translateX(-73%);
+          }
+
+          .card::after {
+            content: '';
+            position: absolute;
+            height: 1rem;
+            width: 5px;
+            background-color: #071257;
+            top: -1rem;
+            left: 52%;
+            transform: translateX(-22%);
+          }
+        }
+
+        &:last-child {
+          &::before {
+            content: '';
+            position: absolute;
+            height: 5px;
+            width: 120px;
+            background-color: #071257;
+            top: -1rem;
+            left: calc(50% - 5.1rem);
+            max-width: calc(50% + 0.531rem);
+          }
+          &::after {
+            content: '';
+            position: absolute;
+            height: 2rem;
+            width: 5px;
+            background-color: #071257;
+            bottom: -2rem;
+            left: 50%;
+            transform: translateX(-73%);
+          }
+          .card::after {
+            content: '';
+            position: absolute;
+            height: 1rem;
+            width: 5px;
+            background-color: #071257;
+            top: -1rem;
+            left: 50%;
+            transform: translateX(-73%);
+          }
+        }
+      }
+    }
+
+    ul.level-3 {
+      display: flex !important;
+      gap: 1rem;
+      list-style: none;
+      margin: 0;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: clip;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+
+      li {
+        position: relative;
+
+        &:first-child {
+          &::before {
+            content: '';
+            position: absolute;
+            height: 5px;
+            width: 120px;
+            background-color: #071257;
+            top: -1rem;
+            left: calc(50% - -0.12221rem);
+            max-width: calc(50% + 0.531rem);
+          }
+          &::after {
+            content: '';
+            position: absolute;
+            height: 1rem;
+            width: 5px;
+            background-color: #071257;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-73%);
+          }
+
+          .card::after {
+            content: '';
+            position: absolute;
+            height: 1rem;
+            width: 5px;
+            background-color: #071257;
+            bottom: -1rem;
+            left: 52%;
+            transform: translateX(-22%);
+          }
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          height: 5px;
+          width: 120px;
+          background-color: #071257;
+          top: -1rem;
+          left: calc(-5% - -0.12221rem);
+          max-width: calc(50% + 0.531rem);
+        }
+        .card {
+          &::before {
+            content: '';
+            position: absolute;
+            height: 1rem;
+            width: 5px;
+            background-color: #071257;
+            top: -1rem;
+            left: 48%;
+            transform: translateX(-22%);
+          }
+
+          &::after {
+            content: '';
+            position: absolute;
+            height: 1rem;
+            width: 5px;
+            background-color: #071257;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-73%);
+          }
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          height: 5px;
+          width: 120px;
+          background-color: #071257;
+          top: -1rem;
+          left: calc(50% - -0.12221rem);
+          max-width: calc(50% + 0.531rem);
+        }
+
+        &:last-child {
+          &::before {
+            content: '';
+            position: absolute;
+            height: 5px;
+            width: 120px;
+            background-color: #071257;
+            top: -1rem;
+            left: calc(50% - 5.1rem);
+            max-width: calc(50% + 0.531rem);
+          }
+          &::after {
+            content: '';
+            position: absolute;
+            height: 1rem;
+            width: 5px;
+            background-color: #071257;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-73%);
+          }
+          .card::after {
+            content: '';
+            position: absolute;
+            height: 1rem;
+            width: 5px;
+            background-color: #071257;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-73%);
+          }
+        }
+      }
+    }
+  }
 }

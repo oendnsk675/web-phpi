@@ -70,6 +70,14 @@ const User = new EntitySchema({
       type: 'varchar',
       nullable: true,
     },
+    educations: {
+      type: 'text',
+      nullable: true,
+    },
+    experience: {
+      type: 'text',
+      nullable: true,
+    },
     createdAt: {
       type: 'timestamp',
       default: () => 'CURRENT_TIMESTAMP',
@@ -86,9 +94,19 @@ const User = new EntitySchema({
       target: 'Language',
       joinTable: true,
     },
+    specialInterest: {
+      type: 'many-to-many',
+      target: 'SpecialInterest',
+      joinTable: true,
+    },
     products: {
       type: 'one-to-many',
       target: 'Product',
+      inverseSide: 'user',
+    },
+    reviews: {
+      type: 'one-to-many',
+      target: 'Review',
       inverseSide: 'user',
     },
   },
