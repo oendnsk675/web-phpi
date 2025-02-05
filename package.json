@@ -6,7 +6,7 @@
 		"format": "npx prettier --plugin=prettier-plugin-ejs --write '**/*.{ejs,js}'",
 		"dev": "nodemon",
 		"styles:watch": "sass --watch public/assets/sass/style.scss:public/assets/sass/style.css",
-		"seed": "node src/seed/user.seeder.js && node src/seed/language.seeder.js"
+		"seed": "node src/seed/user.seeder.js && node src/seed/language.seeder.js && node src/seed/category.seeder.js"
 	},
 	"keywords": [],
 	"author": "Sayidina Ahmadal Qososyi",
