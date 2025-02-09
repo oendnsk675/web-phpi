@@ -21,11 +21,8 @@
           </div>
           <div class="col-lg-6">
             <div class="team-info-text">
-              <div class="d-flex justify-content-between align-items-center">
-                <span
-                  class="fst-italic <%= user.status == 'active' ? 'text-success' : 'text-danger' %>"
-                  style="font-size: smaller"
-                >
+              <div class="d-flex justify-content-start align-items-center">
+                <span class="fst-italic <%= user.status == 'active' ? 'text-success' : 'text-danger' %>" style="font-size: smaller">
                   <% if (user.status == 'active') { %>
                   <i class="fa fa-times-circle" aria-hidden="true"></i>
                   <% } else {%>
@@ -33,35 +30,52 @@
                   <% } %>
                   <%= user.status === 'active' ? 'Identity verified' : 'Identity not verified' %>
                 </span>
-
-                <div
-                  role="button"
-                  class="text-info mb-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#cardMemberModal"
-                >
-                  Lihat Kartu Member
-                </div>
               </div>
               <div class="name-tag">
                 <h2><%= user.nama %></h2>
-                <input type="hidden" id="qr-url" value="<%= user.qr_url %>" />
-                <div
-                  role="button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#qrcodeModal"
-                  class="qr-container"
-                  id="qr-container"
-                ></div>
-                <%- include('../components/partials/profile/modal') %>
               </div>
-              <ul>
+              <ul class="no-border">
                 <li>
                   Email:<span><%= user.email %></span>
                 </li>
                 <li>
-                  No HP:<span><%= user.phone %></span>
+                  No HP:<span><%= user.no_telp %></span>
                 </li>
+              </ul>
+              <ul class="">
+                <li>
+                  <a href="#" class="d-flex align-items-center gap-3">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <div class="d-flex flex-column">
+                      <span>Available Area </span>
+                      <span class=""> <% const areas = user?.availableAreas || []; %> <%= areas.map(area => area.name).join(', ') %>. </span>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="d-flex align-items-center gap-3">
+                    <i class="fa fa-language" aria-hidden="true"></i>
+                    <div class="d-flex flex-column">
+                      <span>Language </span>
+                      <span class=""> <% const languages = user?.languages || []; %> <%= languages.map(language => language.language).join(', ') %>. </span>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="d-flex align-items-center gap-3">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <div class="d-flex flex-column">
+                      <span>Special interest </span>
+                      <span class=""> <% const si = user?.specialInterest || []; %> <%= si.map(item => item.name).join(', ') %>. </span>
+                    </div>
+                  </a>
+                </li>
+                <a href="https://api.whatsapp.com/send/?phone=<%= user.no_telp %>" target="_blank">
+                  <button class="theme-btn-sm whatsapp-btn w-100 d-flex align-items-center justify-content-center gap-2">
+                    <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                    <span>Message Maydhi</span>
+                  </button>
+                </a>
               </ul>
             </div>
           </div>
@@ -89,29 +103,39 @@
             <!-- products -->
             <section class="wpo-shop-section section-padding pt-5">
               <h1 class="mb-5">User Products</h1>
-              <div class="">
+              <div class="container">
                 <div class="row">
                   <div class="col col-xs-12">
                     <div class="shop-grids clearfix">
                       <% products.forEach(product => { %>
                       <a href="/products/<%= product.id %>">
                         <div class="grid">
-                          <div class="img-holder">
-                            <img
-                              src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> "
-                              alt="image"
-                            />
+                          <div class="img-container">
+                            <div class="img-holder">
+                              <img src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> " alt="image" />
+                            </div>
+                            <div class="img-mini">
+                              <% product?.banners?.forEach(image => { %>
+                              <div class="img-mini-item">
+                                <img src="<%= image %>" alt="image banner" />
+                              </div>
+                              <% }) %>
+                            </div>
                           </div>
                           <div class="details">
                             <h3>
-                              <a href="/products/<%= product.id %>"
-                                ><%= product.name %></a
-                              >
+                              <span><%= product.name %></span>
                             </h3>
-                            <span><%= product.price %></span>
-                            <div class="add-to-cart">
-                              <a href="/products/<%= product.id %>">Detail</a>
+                            <div class="metadata">
+                              <span class="badge text-bg-secondary">Bali</span>
+                              <span class="badge text-bg-secondary">9 Hours</span>
                             </div>
+                            <span class="description"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae illum reprehenderit nisi sit saepe laudantium id, tenetur aut impedit minima. </span>
+                            <span class="price">
+                              <span>From</span>
+                              <h3><%= product.price %></h3>
+                              <span>/ per group</span>
+                            </span>
                           </div>
                         </div>
                       </a>
@@ -166,10 +190,7 @@
                 <div class="logo widget-title">
                   <img src="/assets/images/logo.svg" alt="blog" />
                 </div>
-                <p>
-                  Many desktop publishing packages web page editors now is use
-                  model search for many web sites.
-                </p>
+                <p>Many desktop publishing packages web page editors now is use model search for many web sites.</p>
                 <ul>
                   <li>
                     <a href="#">
@@ -216,18 +237,13 @@
                 <ul>
                   <li>
                     <p>
-                      <a href="blog-single.html"
-                        >What are the pros and cons of becoming a it
-                        solution?</a
-                      >
+                      <a href="blog-single.html">What are the pros and cons of becoming a it solution?</a>
                     </p>
                     <span><i class="fi flaticon-calendar"></i> 10.09.2022</span>
                   </li>
                   <li>
                     <p>
-                      <a href="blog-single.html"
-                        >We are able to give truly independent advice</a
-                      >
+                      <a href="blog-single.html">We are able to give truly independent advice</a>
                     </p>
                     <span><i class="fi flaticon-calendar"></i> 10.09.2022</span>
                   </li>
@@ -239,18 +255,10 @@
                 <div class="widget-title">
                   <h3>Newsletter</h3>
                 </div>
-                <p>
-                  Many desktop publi’s shing packages web page editors now is
-                  use sites.
-                </p>
+                <p>Many desktop publi’s shing packages web page editors now is use sites.</p>
                 <form>
                   <div class="input-1">
-                    <input
-                      type="email"
-                      class="form-control"
-                      placeholder="Email Address *"
-                      required=""
-                    />
+                    <input type="email" class="form-control" placeholder="Email Address *" required="" />
                   </div>
                   <div class="submit clearfix">
                     <button type="submit">
@@ -269,10 +277,7 @@
       <div class="container">
         <div class="row">
           <div class="col col-xs-12">
-            <p class="copyright">
-              Copyright &copy; 2022 Solun by <a href="/">wpOceans</a>. All
-              Rights Reserved.
-            </p>
+            <p class="copyright">Copyright &copy; 2022 Solun by <a href="/">wpOceans</a>. All Rights Reserved.</p>
           </div>
         </div>
       </div>

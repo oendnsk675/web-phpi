@@ -29,9 +29,37 @@
   </section>
   <!-- end page-title -->
 
+  <section class="wpo-breadcumb-wrap"></section>
+
   <!-- start wpo-team-section -->
-  <section class="wpo-page section-padding">
+  <section class="wpo-find-your-guide section-padding">
     <div class="container">
+      <div class="row">
+        <div class="col col-xs-12">
+          <div class="wpo-section-title">
+            <h2>
+              Gunakan alat "Find Your Guide" kami untuk menemukan pemandu yang sempurna untuk tur
+              Anda di Indonesia!
+            </h2>
+          </div>
+          <div class="wpo-section-description">
+            <p>
+              Gunakan <b>"Find Your Guide"</b> untuk menemukan pemandu yang sempurna untuk tur anda
+              di indonesia!
+            </p>
+            <p>
+              Tools <b>"Find Your Guide"</b> akan membantu Anda menemukan pemandu di indonesia yang
+              tersedia untuk tanggal yang Anda pilih.
+            </p>
+            <p>
+              Memilih jenis tur, bahasa, dan minat khusus anda akan membantu anda menemukan pemandu
+              yang sempurna untuk tur impian anda di Kota seluruh Indonesia.
+            </p>
+            <p>Bingung harus mulai dari mana?</p>
+            <p>Cukup klik tombol cari di bawah untuk melihat semua pemandu kami.</p>
+          </div>
+        </div>
+      </div>
       <div class="row justify-content-center">
         <div class="col col-md-12 col-lg-6">
           <div class="card card-body">
@@ -39,60 +67,85 @@
 
             <form action="/search/guide" method="get">
               <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <div class="input-group flex-nowrap">
+                      <span class="input-group-text" id="addon-wrapping">
+                        <i class="fa fa-map-marker"></i>
+                      </span>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="location"
+                        name="location"
+                        placeholder="Search by location"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <div class="input-group flex-nowrap">
+                      <span class="input-group-text" id="addon-wrapping">
+                        <i class="fa fa-language" aria-hidden="true"></i>
+                      </span>
+                      <select name="language" id="language" class="form-control">
+                        <option value="">Search by language</option>
+                        <% dataLanguage.forEach((lang) => { %>
+                        <option value="<%= lang.language %>"><%= lang.language %></option>
+                        <% }) %>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <div class="input-group flex-nowrap">
+                      <span class="input-group-text" id="addon-wrapping">
+                        <i class="fa fa-compass" aria-hidden="true"></i>
+                      </span>
+                      <select name="category" id="category" class="form-control">
+                        <option value="">Search by category</option>
+                        <% dataCategory.forEach((data) => { %>
+                        <option value="<%= data.name %>"><%= data.name %></option>
+                        <% }) %>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <div class="input-group flex-nowrap">
+                      <span class="input-group-text" id="addon-wrapping">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                      </span>
+                      <select name="specialInterest" id="specialInterest" class="form-control">
+                        <option value="">Search by special interest</option>
+                        <% dataSpecialInterest.forEach((data) => { %>
+                        <option value="<%= data.name %>"><%= data.name %></option>
+                        <% }) %>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <div class="col-12">
                   <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="nama"
-                      name="nama"
-                      placeholder="Cari berdasarkan nama"
-                    />
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="location"
-                      name="location"
-                      placeholder="Cari berdasarkan location"
-                    />
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-group">
-                    <select name="language" id="language" class="form-control">
-                      <option value="">Cari berdasarkan bahasa</option>
-                      <% dataLanguage.forEach((lang) => { %>
-                      <option value="<%= lang.language %>"><%= lang.language %></option>
-                      <% }) %>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-group">
-                    <select name="category" id="category" class="form-control">
-                      <option value="">Cari berdasarkan kategori</option>
-                      <% dataCategory.forEach((data) => { %>
-                      <option value="<%= data.name %>"><%= data.name %></option>
-                      <% }) %>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-group">
-                    <select name="specialInterest" id="specialInterest" class="form-control">
-                      <option value="">Cari berdasarkan spesial interest</option>
-                      <% dataSpecialInterest.forEach((data) => { %>
-                      <option value="<%= data.name %>"><%= data.name %></option>
-                      <% }) %>
-                    </select>
+                    <div class="input-group flex-nowrap">
+                      <span class="input-group-text" id="addon-wrapping">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                      </span>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="nama"
+                        name="nama"
+                        placeholder="Search by name"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div class="col-12">
-                  <button type="submit" class="theme-btn-sm w-100">Cari</button>
+                  <button type="submit" class="theme-btn-sm w-100">Search</button>
                 </div>
               </div>
             </form>

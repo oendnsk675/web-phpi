@@ -9,7 +9,7 @@ const path = require('path');
  * The generated card is saved as a PNG file.
  *
  * @param {Object} memberInfo - Information about the member.
- * @param {string} memberInfo.id - The ID of the member.
+ * @param {number} memberInfo.id - The ID of the member.
  * @param {string} memberInfo.email - The name of the member.
  * @param {string} memberInfo.phone - The name of the member.
  * @param {string} memberInfo.name - The name of the member.
@@ -63,26 +63,10 @@ exports.createMemberCard = async (memberInfo) => {
     if (memberInfo.photo != null) {
       photoPath = path.join(__dirname, '..', '..', memberInfo.photo);
       if (!fs.existsSync(photoPath)) {
-        photoPath = path.join(
-          __dirname,
-          '..',
-          '..',
-          'public',
-          'assets',
-          'images',
-          'user.png',
-        );
+        photoPath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'user.png');
       }
     } else {
-      photoPath = path.join(
-        __dirname,
-        '..',
-        '..',
-        'public',
-        'assets',
-        'images',
-        'user.png',
-      );
+      photoPath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'user.png');
     }
     const photo = await loadImage(photoPath);
     ctx.drawImage(photo, (width - 250) / 2, 240, 250, 250);

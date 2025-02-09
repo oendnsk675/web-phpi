@@ -4,6 +4,7 @@ const Language = require('../../models/Language');
 const User = require('../../models/User');
 const { createMemberCard } = require('../../utils/qrcode');
 const SpecialInterest = require('../../models/SpecialInterest');
+const UserAvailableAreas = require('../../models/UserAvailableAreas');
 
 exports.getAll = async (req, res) => {
   try {
@@ -186,7 +187,7 @@ exports.update = async (req, res) => {
     // Ambil user yang akan diupdate
     const user = await userRepository.findOne({
       where: { id: parseInt(id) },
-      relations: ['languages'], // Mengambil relasi languages
+      relations: ['languages', 'specialInterest'],
     });
 
     if (!user) {
@@ -270,9 +271,52 @@ exports.updatePersonalProfile = async (req, res) => {
 
   try {
     const payload = req.body;
+    let { availableAreas } = payload;
     const { id } = req.params;
 
+    availableAreas = Array.isArray(availableAreas)
+      ? availableAreas
+      : availableAreas !== undefined
+        ? [availableAreas]
+        : [];
+
+    if (availableAreas && availableAreas.length > 0) {
+      delete payload.availableAreas;
+    }
+
+    const userRepository = queryRunner.manager.getRepository(User);
+    const availableAreasRepository = queryRunner.manager.getRepository(UserAvailableAreas);
+
     await queryRunner.manager.getRepository(User).update(id, payload);
+    const user = await userRepository.findOne({
+      where: { id: parseInt(id) },
+      relations: ['availableAreas'],
+    });
+
+    if (availableAreas && availableAreas.length > 0) {
+      const existingData = await availableAreasRepository.findBy({
+        name: In(availableAreas),
+      });
+
+      const missingData = availableAreas.filter(
+        (data) => !existingData.some((existing) => existing.name === data),
+      );
+
+      if (missingData.length > 0) {
+        const newData = missingData.map((name) => ({
+          name, // pastikan field yang benar digunakan sesuai model
+        }));
+
+        await availableAreasRepository.save(newData); // Menyimpan bahasa baru ke dalam tabel
+      }
+
+      const dataSelected = await availableAreasRepository.findBy({
+        name: In(availableAreas),
+      });
+
+      user.availableAreas = dataSelected;
+      await userRepository.save(user);
+    }
 
     await queryRunner.commitTransaction();
 
@@ -300,10 +344,26 @@ exports.profile = async (req, res) => {
     const languageRepository = AppDataSource.getRepository(Language);
     const user = await userRepository.findOne({
       where: { id },
-      relations: ['languages', 'specialInterest'],
+      relations: ['languages', 'specialInterest', 'availableAreas'],
     });
     const languages = await languageRepository.find();
     const specialInterest = await AppDataSource.getRepository(SpecialInterest).find();
+    const availableAreas = await AppDataSource.getRepository(UserAvailableAreas).find();
+
+    user.qr_url = `${process.env.APP_URL}/profile/${user.id}`;
+
+    const memberCard = await createMemberCard({
+      id: user.id,
+      email: user.email,
+      name: user.nama,
+      phone: user.no_telp,
+      qrData: user.qr_url,
+      photo: user.photo,
+      status: user.status,
+    });
+    if (memberCard) {
+      user.memberCard = `${process.env.APP_URL}/uploads/member-card/${user.id}.png`;
+    }
 
     return res.render('pages/panel/members/profile', {
       layout: 'layouts/dashboard',
@@ -311,6 +371,7 @@ exports.profile = async (req, res) => {
       user,
       languages,
       specialInterest,
+      availableAreas,
       type: 'edit',
     });
   } catch (error) {

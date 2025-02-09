@@ -48,8 +48,9 @@
       font-size: 17px;
       color: #1d2327;
       font-weight: 700;
-      margin-bottom: 22px;
       list-style: none;
+      border-top: 1px solid #f1f1f1;
+      padding: 22px 11px;
 
       &:last-child {
         padding-bottom: 0;
@@ -67,6 +68,13 @@
       &:last-child {
         margin-bottom: 0;
       }
+    }
+  }
+
+  ul.no-border {
+    li {
+      border: none;
+      padding: 11px 11px;
     }
   }
 }
@@ -90,7 +98,7 @@
     padding: 12px;
 
     h2 {
-      font-size: 20px;
+      font-size: 34px;
       font-weight: 500;
       color: #1d2327;
       margin: 0;

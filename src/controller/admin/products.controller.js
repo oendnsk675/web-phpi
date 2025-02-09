@@ -6,6 +6,7 @@ const Product = require('../../models/Product');
 const User = require('../../models/User');
 const ProductService = require('../../models/ProductServices');
 const Itinerary = require('../../models/Itinerary');
+const ProductLocation = require('../../models/ProductLocation');
 require('dotenv').config();
 
 exports.getAll = async (req, res) => {
@@ -28,7 +29,7 @@ exports.getAll = async (req, res) => {
       order: {
         updatedAt: 'DESC',
       },
-      relations: ['banners', 'category'],
+      relations: ['banners', 'category', 'location'],
       skip: start,
       take: length,
     });
@@ -66,8 +67,10 @@ exports.create = async (req, res) => {
   try {
     const categoryRepository = AppDataSource.getRepository(Category);
     const productServiceRepository = AppDataSource.getRepository(ProductService);
+    const locationsRepository = AppDataSource.getRepository(ProductLocation);
     const categories = await categoryRepository.find();
     const productServices = await productServiceRepository.find();
+    const locations = await locationsRepository.find();
 
     return res.render('pages/panel/products/create', {
       layout: 'layouts/dashboard',
@@ -76,6 +79,7 @@ exports.create = async (req, res) => {
       type: 'create',
       categories,
       productServices,
+      locations,
     });
   } catch (error) {
     console.log({ error });
@@ -102,6 +106,12 @@ exports.save = async (req, res) => {
     if (payload.category) {
       payload.category = await AppDataSource.getRepository(Category).findOneBy({
         id: payload.category,
+      });
+    }
+
+    if (payload.location) {
+      payload.location = await AppDataSource.getRepository(Category).findOneBy({
+        id: payload.location,
       });
     }
 
@@ -187,7 +197,7 @@ exports.edit = async (req, res) => {
     const product = await productRepository
       .findOne({
         where: { id },
-        relations: ['banners', 'category', 'productServices', 'itineraries'],
+        relations: ['banners', 'category', 'productServices', 'itineraries', 'location'],
       })
       .then((product) => {
         return {
@@ -197,6 +207,7 @@ exports.edit = async (req, res) => {
       });
     const categoryRepository = AppDataSource.getRepository(Category);
     const categories = await categoryRepository.find();
+    const locations = await AppDataSource.getRepository(ProductLocation).find();
     const productServices = await productServiceRepository.find({
       where: { productId: product.id },
     });
@@ -208,6 +219,7 @@ exports.edit = async (req, res) => {
       type: 'edit',
       categories,
       productServices,
+      locations,
     });
   } catch (error) {
     console.log(error);
@@ -235,6 +247,12 @@ exports.update = async (req, res) => {
     if (payload.category) {
       payload.category = await AppDataSource.getRepository(Category).findOneBy({
         id: payload.category,
+      });
+    }
+
+    if (payload.location) {
+      payload.location = await AppDataSource.getRepository(Category).findOneBy({
+        id: payload.location,
       });
     }
 

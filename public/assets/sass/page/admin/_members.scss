@@ -1,0 +1,9 @@
+.img-continer {
+  img {
+    width: 33%;
+
+    @media (max-width: 767px) {
+      width: 100%;
+    }
+  }
+}

@@ -206,7 +206,9 @@
 
   // tooltips
 
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  var tooltipTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="tooltip"]'),
+  );
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
   });
@@ -232,7 +234,10 @@
       dots: true,
       arrows: false,
       nav: true,
-      navText: ['<i class="ti-arrow-left"></i>', '<i class="ti-arrow-right"></i>'],
+      navText: [
+        '<i class="ti-arrow-left"></i>',
+        '<i class="ti-arrow-right"></i>',
+      ],
       responsive: {
         0: {
           items: 1,
@@ -508,7 +513,8 @@
         var swiper = this;
         for (var i = 0; i < swiper.slides.length; i++) {
           swiper.slides[i].style.transition = speed + 'ms';
-          swiper.slides[i].querySelector('.slide-inner').style.transition = speed + 'ms';
+          swiper.slides[i].querySelector('.slide-inner').style.transition =
+            speed + 'ms';
         }
       },
     },
@@ -520,7 +526,10 @@
   var sliderBgSetting = $('.slide-bg-image');
   sliderBgSetting.each(function (indx) {
     if ($(this).attr('data-background')) {
-      $(this).css('background-image', 'url(' + $(this).data('background') + ')');
+      $(this).css(
+        'background-image',
+        'url(' + $(this).data('background') + ')',
+      );
     }
   });
 
@@ -602,7 +611,9 @@
         duration: 300,
         easing: 'ease-in-out',
         opener: function (openerElement) {
-          return openerElement.is('img') ? openerElement : openerElement.find('img');
+          return openerElement.is('img')
+            ? openerElement
+            : openerElement.find('img');
         },
       },
     });
@@ -866,7 +877,10 @@
       margin: 30,
       loop: true,
       nav: true,
-      navText: ['<i class="fi ti-arrow-left"></i>', '<i class="fi ti-arrow-right"></i>'],
+      navText: [
+        '<i class="fi ti-arrow-left"></i>',
+        '<i class="fi ti-arrow-right"></i>',
+      ],
       dots: false,
       items: 1,
     });
@@ -906,7 +920,9 @@
   /*------------------------------------------
         = BACK TO TOP BTN SETTING
     -------------------------------------------*/
-  $('body').append("<a href='#' class='back-to-top'><i class='ti-arrow-up'></i></a>");
+  $('body').append(
+    "<a href='#' class='back-to-top'><i class='ti-arrow-up'></i></a>",
+  );
 
   function toggleBackToTopBtn() {
     var amountScrolled = 1000;
@@ -1192,11 +1208,7 @@
           return `
             <div class="d-flex flex-column gap-2">
               <a class="w-100 btn btn-sm btn-primary" href="/panel/members/edit/${row.id}">Edit</a>
-              ${
-                row.status === 'inactive'
-                  ? `<a class="w-100 btn btn-sm btn-success" href="/panel/members/verify/${row.id}">Verifikasi</a>`
-                  : `<a class="w-100 btn btn-sm btn-warning delete-btn" href="/panel/members/suspend/${row.id}">Suspend</a>`
-              }
+              ${row.status === 'inactive' ? `<a class="w-100 btn btn-sm btn-success" href="/panel/members/verify/${row.id}">Verifikasi</a>` : `<a class="w-100 btn btn-sm btn-warning delete-btn" href="/panel/members/suspend/${row.id}">Suspend</a>`}
               <a class="w-100 btn btn-sm btn-danger delete-btn" href="/panel/members/delete/${row.id}">Hapus</a>
             </div>
           `;
@@ -1307,16 +1319,10 @@
     });
   });
 
-  $('.language').select2({
-    tags: true,
-  });
-  $('.specialInterestSelect2').select2({
-    tags: true,
-  });
-  $('.inclusions').select2({
-    tags: true,
-  });
-  $('.exclusions').select2({
+  $(
+    '.language, .specialInterestSelect2, .availableAreasSelect2, .inclusions, .exclusions',
+  ).select2({
+    width: '100%',
     tags: true,
   });
 
@@ -1368,7 +1374,9 @@
 
         if (i == 3 && files.length - 4 != 0) {
           console.log(previewBoxes[i]);
-          $(previewBoxes[i]).html(`<span class="more-indicator">+${files.length - 4}</span>`);
+          $(previewBoxes[i]).html(
+            `<span class="more-indicator">+${files.length - 4}</span>`,
+          );
         }
 
         reader.onload = function (e) {
@@ -1475,5 +1483,131 @@
         .text(`Day ${index + 1}`);
     });
     dayCount--;
+  });
+
+  let typingTimer;
+  const doneTypingInterval = 500; // Tunggu 500ms setelah user berhenti mengetik
+
+  $('#filter-2').on(
+    'input change',
+    'input, .custom-select-guide .option',
+    function () {
+      clearTimeout(typingTimer);
+
+      typingTimer = setTimeout(function () {
+        let formData = $('#filter-2').serialize(); // Ambil semua data form
+
+        $('#guide-list').html('<p class="loading">Loading...</p>');
+
+        $.ajax({
+          url: '/search/guide',
+          method: 'GET',
+          data: formData,
+          success: function (response) {
+            console.log('Data fetched successfully', response);
+
+            if (response.users && response.users.length > 0) {
+              updateGuideList(response.users);
+            } else {
+              $('#guide-list').html(
+                '<p class="not-found">Tidak ada hasil ditemukan.</p>',
+              );
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error('Error fetching data', error);
+          },
+        });
+      }, doneTypingInterval);
+    },
+  );
+
+  $(document).on('click', '.custom-select-guide .select', function () {
+    let container = $(this).closest('.custom-select-guide');
+
+    // Tutup semua dropdown kecuali yang sedang diklik
+    $('.options-container').not(container.find('.options-container')).hide();
+
+    // Toggle dropdown yang diklik
+    container.find('.options-container').toggle();
+  });
+
+  $(document).on('click', '.custom-select-guide .option', function () {
+    let value = $(this).text();
+    let container = $(this).closest('.custom-select-guide');
+
+    // Update tampilan
+    container.find('.select').text(value);
+    container.find('.option').removeClass('selected');
+    $(this).addClass('selected');
+
+    // Update input hidden dan trigger change agar AJAX berjalan
+    container.find('input[type="hidden"]').val(value).trigger('change');
+
+    // Sembunyikan dropdown
+    container.find('.options-container').hide();
+  });
+
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('.custom-select-guide').length) {
+      $('.options-container').hide();
+    }
+  });
+
+  function updateGuideList(users) {
+    let guideHTML = '';
+
+    users.forEach((user) => {
+      let stars = '';
+      for (let i = 0; i < Math.floor(user.avgRating); i++) {
+        stars += '<i class="fa fa-star" aria-hidden="true"></i>';
+      }
+      for (let i = Math.floor(user.avgRating); i < 5; i++) {
+        stars += '<i class="fa fa-star-o" aria-hidden="true"></i>';
+      }
+
+      let badges = user.availableAreas
+        .slice(0, 3)
+        .map((area) => `<div class="badge">${area.name}</div>`)
+        .join('');
+      if (user.availableAreas.length > 3) {
+        badges += '<div class="badge">...</div>';
+      }
+
+      guideHTML += `
+            <a href="/profile/${user.id}" class="guide-item">
+                <div class="img-holder">
+                    <img src="${user.photo}" alt="guide image" />
+                </div>
+                <div class="guide-body">
+                    <div class="guide-name">${user.nama}</div>
+                    <div class="rating">
+                        <div class="star">${stars}</div>
+                        <span class="rating-metric">${user.avgRating}/5</span>
+                    </div>
+                    <span class="review-count">(${user.countReview} Review)</span>
+                    <div class="d-flex gap-2 align-items-center">${badges}</div>
+                    <div class="description">
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.</p>
+                    </div>
+                </div>
+            </a>`;
+    });
+
+    $('#guide-list').html(guideHTML);
+  }
+
+  $(document).on('click', '#reset-filter', function () {
+    $('#filter-2')[0].reset();
+
+    // Reset nilai input hidden dalam custom select
+    $('.custom-select-guide input[type="hidden"]').val('');
+
+    // Reset tampilan select custom
+    $('.custom-select-guide .select').text('Language');
+    $('.custom-select-guide .option').removeClass('selected');
+
+    // Trigger perubahan untuk memperbarui hasil pencarian
+    $('#filter-2').trigger('change');
   });
 })(window.jQuery);

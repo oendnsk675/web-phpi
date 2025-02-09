@@ -7,16 +7,19 @@
     <div class="card-header" style="background: none;">
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Requirement Profile</button>
+            <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Requirement Profile</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Personal Profile</button>
+            <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Personal Profile</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="card-tab" data-bs-toggle="tab" data-bs-target="#card" type="button" role="tab" aria-controls="card" aria-selected="false">Card Member</button>
         </li>
     </ul>
     </div>
     <div class="card-body">
       <div class="tab-content mt-3" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
           <form
           action="<%= user && user.id ? `/panel/members/update/${user.id}` : '/panel/members/save' %>?type=user"
           method="post"
@@ -204,7 +207,7 @@
             </div>
           </form>
         </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           <form
           id="personalProfileForm"
           action="<%= user && user.id ? `/panel/members/update-personal-profile/${user.id}` : '/panel/members/save-personal-profile' %>?type=user"
@@ -212,6 +215,25 @@
           enctype="multipart/form-data"
           >
             <div class="row mb-5">
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="name">Available Area</label>
+                <select 
+                class="form-control availableAreasSelect2" 
+                name="availableAreas" 
+                id="availableAreas" 
+                multiple="multiple" >
+                  <% availableAreas.forEach(data => { %>
+                    <option value="<%= data.name %>" 
+                      <%= user?.availableAreas.some(data_ => data_.id === data.id) ? 'selected' : '' %>>
+                      <%= data.name %>
+                    </option>
+                  <% }) %>
+                </select> 
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="name">Short description</label>
+                <textarea name="description" class="form-control" id="description"><%= user?.description %></textarea>
+              </div>
               <div class="col-12 col-lg-6 mb-3">
                 <label for="name">Personal Experience</label>
                 <div id="experience"></div>
@@ -229,6 +251,20 @@
               </button>
             </div>
           </form>
+        </div>
+        <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="card-tab">
+          <div class="card" id="card">
+            <div class="card-body d-flex justify-content-center">
+              <div class="img-continer d-flex justify-content-center">
+                <img src="<%= user?.memberCard %>" alt="card member"/>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a href="<%= user?.memberCard %>" download="member-card.png">
+                <button class="btn btn-primary w-100">Download</button>
+              </a>
+            </div>
+          </div>
         </div>
     </div>
     </div>

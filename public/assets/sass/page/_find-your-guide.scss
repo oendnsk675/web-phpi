@@ -1,0 +1,31 @@
+.wpo-find-your-guide {
+  .wpo-section-title {
+    padding: 0 7rem;
+
+    @media (max-width: 991px) {
+      padding: 8px;
+    }
+    h2 {
+      font-size: 38px;
+
+      @media (max-width: 991px) {
+        font-size: 27px;
+      }
+    }
+  }
+
+  .wpo-section-description {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  form {
+    .input-group-text {
+      background: transparent;
+    }
+    .form-control {
+      border-left: none;
+      padding-left: 0;
+    }
+  }
+}

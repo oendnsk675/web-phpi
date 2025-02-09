@@ -41,22 +41,39 @@
             <% products.forEach(product => { %>
             <a href="/products/<%= product.id %>">
               <div class="grid">
-                <div class="img-holder">
-                  <img
-                    src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> "
-                    alt="image"
-                  />
+                <div class="img-container">
+                  <div class="img-holder">
+                    <img
+                      src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> "
+                      alt="image"
+                    />
+                  </div>
+                  <div class="img-mini">
+                    <% product?.banners?.forEach(image => { %>
+                    <div class="img-mini-item">
+                      <img src="<%= image %>" alt="image banner" />
+                    </div>
+                    <% }) %>
+                  </div>
                 </div>
                 <div class="details">
                   <h3>
-                    <a href="/products/<%= product.id %>"
-                      ><%= product.name %></a
-                    >
+                    <span><%= product.name %></span>
                   </h3>
-                  <span><%= product.price %></span>
-                  <div class="add-to-cart">
-                    <a href="/products/<%= product.id %>">Detail</a>
+                  <div class="metadata">
+                    <span class="badge text-bg-secondary">Bali</span>
+                    <span class="badge text-bg-secondary">9 Hours</span>
                   </div>
+                  <span class="description">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Vitae illum reprehenderit nisi sit saepe laudantium id,
+                    tenetur aut impedit minima.
+                  </span>
+                  <span class="price">
+                    <span>From</span>
+                    <h3><%= product.price %></h3>
+                    <span>/ per group</span>
+                  </span>
                 </div>
               </div>
             </a>

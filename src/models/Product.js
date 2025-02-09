@@ -16,10 +16,6 @@ const Product = new EntitySchema({
       type: 'text',
       nullable: true,
     },
-    location: {
-      type: 'varchar',
-      nullable: true,
-    },
     serviceTime: {
       type: 'varchar',
       nullable: true,
@@ -66,6 +62,11 @@ const Product = new EntitySchema({
     category: {
       type: 'many-to-one',
       target: 'Category',
+      joinColumn: true,
+    },
+    location: {
+      type: 'many-to-one',
+      target: 'ProductLocation',
       joinColumn: true,
     },
     banners: {

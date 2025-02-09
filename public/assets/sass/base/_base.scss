@@ -327,3 +327,45 @@ a {
 .mb-9-rem {
   margin-bottom: 9rem;
 }
+
+.custom-select-guide {
+  position: relative;
+  min-width: 200px;
+
+  .select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .options-container {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    z-index: 9999;
+    margin-top: 8px;
+    border-radius: 4px;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .option {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 0;
+  }
+
+  .option:hover {
+    background: lightgray;
+  }
+
+  .option.selected {
+    background: lightgray;
+  }
+}

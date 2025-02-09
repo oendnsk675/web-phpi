@@ -57,15 +57,21 @@
         </div>
         <div class="col-12 col-lg-6 mb-3 h-fit">
           <label for="location">Location</label>
-          <input
-            type="text"
+          <select
             name="location"
             class="form-control"
             id="location"
-            placeholder="Nama"
-            value="<%= product?.location %>"
             required
-          />
+          >
+            <option value="">Pilih Location</option>
+            <% locations.forEach((location) => { %>
+            <option
+              value="<%= location?.id %>"
+              <%= product?.location?.id == location?.id ? 'selected' : '' %>>
+              <%= location?.name %>
+            </option>
+            <% }) %>
+          </select>
         </div>
         <div class="col-12 col-lg-6 mb-3 h-fit">
           <label for="serviceTime">Service Time</label>
@@ -93,7 +99,11 @@
         </div>
         <div class="col-12 col-lg-6 mb-3">
           <label for="inclusions">Service Include</label>
-          <select class="form-control inclusions" name="inclusions" id="inclusions" multiple="multiple">
+          <select 
+          class="form-control inclusions" 
+          name="inclusions" 
+          id="inclusions" 
+          multiple="multiple">
             <% productServices.forEach(service => { %>
               <% if (service.type == 'inclusive') { %>
                 <option value="<%= service.name %>" 

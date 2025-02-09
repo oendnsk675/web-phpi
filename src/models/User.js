@@ -70,6 +70,10 @@ const User = new EntitySchema({
       type: 'varchar',
       nullable: true,
     },
+    description: {
+      type: 'text',
+      nullable: true,
+    },
     educations: {
       type: 'text',
       nullable: true,
@@ -92,6 +96,11 @@ const User = new EntitySchema({
     languages: {
       type: 'many-to-many',
       target: 'Language',
+      joinTable: true,
+    },
+    availableAreas: {
+      type: 'many-to-many',
+      target: 'UserAvailableAreas',
       joinTable: true,
     },
     specialInterest: {

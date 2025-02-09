@@ -1,18 +1,11 @@
 .wpo-page {
   .team-grids {
-    display: flex;
-    gap: 10px;
-
     .toggle-filter {
       display: none;
 
       @media (max-width: 991px) {
         display: block;
       }
-    }
-
-    @media (max-width: 991px) {
-      flex-direction: column-reverse;
     }
 
     .content {
