@@ -1,0 +1,110 @@
+<div class="page-wrapper">
+  <!-- start preloader -->
+  <%- include('../components/ui/preloader') %>
+  <!-- end preloader -->
+  <!-- Start header -->
+  <%- include('../components/ui/header') %>
+  <!-- end of header -->
+
+  <!-- start wpo-page-title -->
+  <section class="wpo-page-title" style="background: url(/assets/images/banner/product.webp) no-repeat center top / cover">
+    <div class="container">
+      <div class="row">
+        <div class="col col-xs-12">
+          <div class="wpo-search-section">
+            <h3>Customizable Private Tours with Local Tour Guides</h3>
+            <span class="subtitle">Choose Local Tour Guides at the Destination of Your Choice. Simply Message Them To Personalize Your Tour!</span>
+
+            <form action="/products/search" method="get">
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
+                <input type="text" name="search" class="form-control" placeholder="Where to?" aria-label="Where to?" aria-describedby="addon-wrapping" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
+  </section>
+  <!-- end page-title -->
+
+  <!-- start wpo-team-section -->
+  <section class="wpo-shop-section section-padding">
+    <div class="container">
+      <!-- content -->
+      <div class="row">
+        <div id="product-list" class="shop-grids gx-5">
+          <% products.forEach(product => { %>
+          <a href="/products/<%= product.id %>">
+            <div class="grid-item">
+              <div class="img-container">
+                <div class="img-holder">
+                  <img src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> " alt="image" />
+                </div>
+                <div class="img-mini">
+                  <% product?.banners?.forEach(image => { %>
+                  <div class="img-mini-item">
+                    <img src="<%= image %>" alt="image banner" />
+                  </div>
+                  <% }) %>
+                </div>
+              </div>
+              <div class="details">
+                <h3>
+                  <span><%= product.name %></span>
+                </h3>
+                <div class="metadata">
+                  <span class="badge text-bg-secondary"><%= product?.location?.name %></span>
+                  <span class="badge text-bg-secondary"><%= product.serviceTime %></span>
+                </div>
+                <span class="description"> <%= product.description %> </span>
+                <span class="price">
+                  <span>From</span>
+                  <h3><%= product.price %></h3>
+                  <span>/ per group</span>
+                </span>
+              </div>
+            </div>
+          </a>
+          <% }) %>
+        </div>
+        <div class="pagination-wrapper pagination-wrapper-center">
+          <ul class="pg-pagination">
+            <% if (page != 1) { %>
+            <li>
+              <a href="/products?page=<%= page - 1 %>" aria-label="Previous">
+                <i class="ti-angle-left"></i>
+              </a>
+            </li>
+            <% } %>
+            <% for( let index = 1; index <= totalPage; index++ ) { %>
+            <li class="<%= page == index ? 'active' : '' %>">
+              <a href="/products?page=<%= index %>"><%= index %></a>
+            </li>
+            <% } %>
+            <% if (page < totalPage) { %>
+            <li>
+              <a href="/products?page=<%= page + 1 %>" aria-label="Next">
+                <i class="ti-angle-right"></i>
+              </a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end wpo-team-section -->
+
+  <!-- stert wpo-social-section -->
+  <%- include('../components/partials/home/social') %>
+  <!-- end wpo-social-section -->
+
+  <!-- start of wpo-site-footer-section -->
+  <%- include('../components/ui/footer.ejs') %>
+  <!-- end of wpo-site-footer-section -->
+</div>

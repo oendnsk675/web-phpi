@@ -206,9 +206,7 @@
 
   // tooltips
 
-  var tooltipTriggerList = [].slice.call(
-    document.querySelectorAll('[data-bs-toggle="tooltip"]'),
-  );
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
   });
@@ -234,10 +232,7 @@
       dots: true,
       arrows: false,
       nav: true,
-      navText: [
-        '<i class="ti-arrow-left"></i>',
-        '<i class="ti-arrow-right"></i>',
-      ],
+      navText: ['<i class="ti-arrow-left"></i>', '<i class="ti-arrow-right"></i>'],
       responsive: {
         0: {
           items: 1,
@@ -513,8 +508,7 @@
         var swiper = this;
         for (var i = 0; i < swiper.slides.length; i++) {
           swiper.slides[i].style.transition = speed + 'ms';
-          swiper.slides[i].querySelector('.slide-inner').style.transition =
-            speed + 'ms';
+          swiper.slides[i].querySelector('.slide-inner').style.transition = speed + 'ms';
         }
       },
     },
@@ -526,10 +520,7 @@
   var sliderBgSetting = $('.slide-bg-image');
   sliderBgSetting.each(function (indx) {
     if ($(this).attr('data-background')) {
-      $(this).css(
-        'background-image',
-        'url(' + $(this).data('background') + ')',
-      );
+      $(this).css('background-image', 'url(' + $(this).data('background') + ')');
     }
   });
 
@@ -611,9 +602,7 @@
         duration: 300,
         easing: 'ease-in-out',
         opener: function (openerElement) {
-          return openerElement.is('img')
-            ? openerElement
-            : openerElement.find('img');
+          return openerElement.is('img') ? openerElement : openerElement.find('img');
         },
       },
     });
@@ -877,10 +866,7 @@
       margin: 30,
       loop: true,
       nav: true,
-      navText: [
-        '<i class="fi ti-arrow-left"></i>',
-        '<i class="fi ti-arrow-right"></i>',
-      ],
+      navText: ['<i class="fi ti-arrow-left"></i>', '<i class="fi ti-arrow-right"></i>'],
       dots: false,
       items: 1,
     });
@@ -920,9 +906,7 @@
   /*------------------------------------------
         = BACK TO TOP BTN SETTING
     -------------------------------------------*/
-  $('body').append(
-    "<a href='#' class='back-to-top'><i class='ti-arrow-up'></i></a>",
-  );
+  $('body').append("<a href='#' class='back-to-top'><i class='ti-arrow-up'></i></a>");
 
   function toggleBackToTopBtn() {
     var amountScrolled = 1000;
@@ -1319,12 +1303,99 @@
     });
   });
 
-  $(
-    '.language, .specialInterestSelect2, .availableAreasSelect2, .inclusions, .exclusions',
-  ).select2({
-    width: '100%',
-    tags: true,
+  $('#dt-location').DataTable({
+    serverSide: true,
+    processing: true,
+    ajax: {
+      url: '/panel/location',
+      type: 'GET',
+      data: function (d) {
+        d.start = d.start || 0;
+        d.length = d.length || 10;
+      },
+    },
+    columns: [
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          return meta.row + 1;
+        },
+      },
+      {
+        data: 'thumbnail',
+        render: function (data, type, row) {
+          return `
+            <div style="width: 125px; height: 85px; overflow: hidden;">
+              <img src="${data}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          `;
+        },
+      },
+      { data: 'name' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `
+            <div class="d-flex flex-column gap-2">
+              <a class="w-100 btn btn-sm btn-primary" href="/panel/location/edit/${row.id}">Edit</a>
+              <a class="w-100 btn btn-sm btn-danger delete-btn" href="/panel/location/delete/${row.id}">Hapus</a>
+            </div>
+          `;
+        },
+      },
+    ],
+    scrollX: true,
+    columnDefs: [
+      {
+        targets: '_all',
+        className: 'text-center',
+      },
+      {
+        targets: 0,
+        width: '80px',
+        className: 'text-center',
+      },
+      {
+        targets: 1,
+        width: '150px',
+        className: 'text-center',
+      },
+      {
+        targets: -1,
+        width: '100px',
+        className: 'text-center',
+      },
+    ],
   });
+
+  $('#dt-category').on('click', '.delete-btn', function (e) {
+    e.preventDefault(); // Prevent default anchor click behavior
+
+    const href = $(this).attr('href'); // Get the href attribute
+
+    // Show SweetAlert2 confirmation popup
+    Swal.fire({
+      title: 'Anda yakin?',
+      text: 'Anda tidak dapat mengembalikan data ini lagi!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If confirmed, navigate to the href
+        window.location.href = href;
+      }
+    });
+  });
+
+  $('.language, .specialInterestSelect2, .availableAreasSelect2, .inclusions, .exclusions').select2(
+    {
+      width: '100%',
+      tags: true,
+    },
+  );
 
   $('.delete-btn').on('click', function (e) {
     e.preventDefault(); // Prevent default anchor click behavior
@@ -1374,9 +1445,7 @@
 
         if (i == 3 && files.length - 4 != 0) {
           console.log(previewBoxes[i]);
-          $(previewBoxes[i]).html(
-            `<span class="more-indicator">+${files.length - 4}</span>`,
-          );
+          $(previewBoxes[i]).html(`<span class="more-indicator">+${files.length - 4}</span>`);
         }
 
         reader.onload = function (e) {
@@ -1488,39 +1557,33 @@
   let typingTimer;
   const doneTypingInterval = 500; // Tunggu 500ms setelah user berhenti mengetik
 
-  $('#filter-2').on(
-    'input change',
-    'input, .custom-select-guide .option',
-    function () {
-      clearTimeout(typingTimer);
+  $('#filter-2').on('input change', 'input, .custom-select-guide .option', function () {
+    clearTimeout(typingTimer);
 
-      typingTimer = setTimeout(function () {
-        let formData = $('#filter-2').serialize(); // Ambil semua data form
+    typingTimer = setTimeout(function () {
+      let formData = $('#filter-2').serialize(); // Ambil semua data form
 
-        $('#guide-list').html('<p class="loading">Loading...</p>');
+      $('#guide-list').html('<p class="loading">Loading...</p>');
 
-        $.ajax({
-          url: '/search/guide',
-          method: 'GET',
-          data: formData,
-          success: function (response) {
-            console.log('Data fetched successfully', response);
+      $.ajax({
+        url: '/search/guide',
+        method: 'GET',
+        data: formData,
+        success: function (response) {
+          console.log('Data fetched successfully', response);
 
-            if (response.users && response.users.length > 0) {
-              updateGuideList(response.users);
-            } else {
-              $('#guide-list').html(
-                '<p class="not-found">Tidak ada hasil ditemukan.</p>',
-              );
-            }
-          },
-          error: function (xhr, status, error) {
-            console.error('Error fetching data', error);
-          },
-        });
-      }, doneTypingInterval);
-    },
-  );
+          if (response.users && response.users.length > 0) {
+            updateGuideList(response.users);
+          } else {
+            $('#guide-list').html('<p class="not-found">Tidak ada hasil ditemukan.</p>');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error fetching data', error);
+        },
+      });
+    }, doneTypingInterval);
+  });
 
   $(document).on('click', '.custom-select-guide .select', function () {
     let container = $(this).closest('.custom-select-guide');

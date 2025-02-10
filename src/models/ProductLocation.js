@@ -12,6 +12,10 @@ const ProductLocation = new EntitySchema({
     name: {
       type: 'varchar',
     },
+    thumbnail: {
+      type: 'varchar',
+      nullable: true,
+    },
   },
   relations: {
     products: {

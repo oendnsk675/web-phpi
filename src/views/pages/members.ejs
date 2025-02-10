@@ -154,8 +154,9 @@
               </div>
               <span class="review-count">(<%= user.countReview %> Review)</span>
               <div class="d-flex gap-2 align-items-center">
-                <% let badgeLength = user.availableAreas.length %> <%
-                user.availableAreas.splice(0, 3).forEach(area => { %>
+                <% let badgeLength = user.availableAreas.length %>
+                <input type="hidden" />
+                <% user.availableAreas.splice(0, 3).forEach(area => { %>
                 <div class="badge"><%= area.name %></div>
                 <% }) %>
                 <% if (badgeLength > 3) { %>

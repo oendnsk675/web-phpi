@@ -6,7 +6,7 @@ async function seed() {
 
   const repos = AppDataSource.getRepository(ProductLocation);
 
-  const locations = [{ name: 'Bali' }, { name: 'Lombok' }, { name: 'Makasar' }, { name: 'Jakarta' }, { name: 'Surabaya' }];
+  const locations = [{ name: 'Bali' }, { name: 'Lombok' }, { name: 'Makasar' }, { name: 'Jakarta' }, { name: 'Surabaya' }, { name: 'Bandung' }, { name: 'Yogyakarta' }, { name: 'Semarang' }, { name: 'Medan' }, { name: 'Palembang' }];
   await repos.save(locations);
 
   console.log('[seeder] Data location berhasil ditambahkan');
