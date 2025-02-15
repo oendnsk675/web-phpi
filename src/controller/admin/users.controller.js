@@ -161,7 +161,9 @@ exports.update = async (req, res) => {
     let { languages, specialInterest } = payload;
 
     languages = Array.isArray(languages) ? languages : [languages];
-    specialInterest = Array.isArray(specialInterest) ? specialInterest : [specialInterest];
+    specialInterest = Array.isArray(specialInterest)
+      ? specialInterest
+      : [specialInterest];
 
     if (languages && languages.length > 0) {
       delete payload.languages;
@@ -179,7 +181,8 @@ exports.update = async (req, res) => {
 
     const userRepository = queryRunner.manager.getRepository(User);
     const languageRepository = queryRunner.manager.getRepository(Language);
-    const specialInterestRepository = queryRunner.manager.getRepository(SpecialInterest);
+    const specialInterestRepository =
+      queryRunner.manager.getRepository(SpecialInterest);
 
     // Update data pengguna (kecuali relasi languages)
     await userRepository.update(id, payload);
@@ -201,7 +204,8 @@ exports.update = async (req, res) => {
       });
 
       const missingLanguages = languages.filter(
-        (language) => !existingLanguages.some((existing) => existing.language === language),
+        (language) =>
+          !existingLanguages.some((existing) => existing.language === language),
       );
 
       if (missingLanguages.length > 0) {
@@ -285,7 +289,8 @@ exports.updatePersonalProfile = async (req, res) => {
     }
 
     const userRepository = queryRunner.manager.getRepository(User);
-    const availableAreasRepository = queryRunner.manager.getRepository(UserAvailableAreas);
+    const availableAreasRepository =
+      queryRunner.manager.getRepository(UserAvailableAreas);
 
     await queryRunner.manager.getRepository(User).update(id, payload);
     const user = await userRepository.findOne({
@@ -347,8 +352,10 @@ exports.profile = async (req, res) => {
       relations: ['languages', 'specialInterest', 'availableAreas'],
     });
     const languages = await languageRepository.find();
-    const specialInterest = await AppDataSource.getRepository(SpecialInterest).find();
-    const availableAreas = await AppDataSource.getRepository(UserAvailableAreas).find();
+    const specialInterest =
+      await AppDataSource.getRepository(SpecialInterest).find();
+    const availableAreas =
+      await AppDataSource.getRepository(UserAvailableAreas).find();
 
     user.qr_url = `${process.env.APP_URL}/profile/${user.id}`;
 

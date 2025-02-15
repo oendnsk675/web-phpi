@@ -9607,6 +9607,51 @@ a {
   }
 }
 
+.wpo-form-post {
+  display: flex;
+  gap: 1rem;
+}
+.wpo-form-post .content {
+  min-height: 36rem;
+  height: 100% !important;
+  width: 50%;
+}
+.wpo-form-post .content .ql-form-container {
+  min-height: inherit;
+}
+.wpo-form-post .content .ql-form-container .ql-container {
+  min-height: inherit;
+}
+.wpo-form-post .content .ql-form-container .ql-container .ql-editor {
+  min-height: inherit;
+}
+.wpo-form-post .metadata {
+  flex: 1 1 0%;
+}
+.wpo-form-post .metadata #thumbnail-preview {
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid lightgray;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.wpo-form-post .metadata #thumbnail-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wpo-form-post .metadata #thumbnail-preview:hover {
+  background-color: rgba(211, 211, 211, 0.3);
+}
+.wpo-form-post .metadata #thumbnail {
+  display: none;
+}
+
 .wpo-find-your-guide .wpo-section-title {
   padding: 0 7rem;
 }

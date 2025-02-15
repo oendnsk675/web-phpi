@@ -1,0 +1,93 @@
+<div>
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <a href="/panel/post"
+      ><i class="fa fa-chevron-left" aria-hidden="true"></i
+    ></a>
+    <h4>Tambah Post</h4>
+  </div>
+
+  <div class="p-4">
+    <form
+      action="<%= post && post.id ? `/panel/post/update/${post.id}` : '/panel/post/save' %>"
+      method="post"
+      enctype="multipart/form-data"
+      id="post-form-submit"
+    >
+      <div class="wpo-form-post">
+        <div class="mb-3 card card-body content">
+          <div class="mb-3">
+            <label for="title">
+              Title
+              <span style="color: red">*</span>
+            </label>
+            <input
+              type="text"
+              name="title"
+              class="form-control"
+              id="title"
+              placeholder="Type here..."
+              value="<%= post?.title %>"
+              required
+            />
+          </div>
+          <div class="mb-3 ql-form-container">
+            <label for="content">Content</label>
+            <div id="content"></div>
+            <input type="hidden" name="content" value="<%= post?.content %>">
+          </div>
+        </div>
+        <div class="metadata card card-body h-fit">
+          <div class="mb-3">
+            <label for="thumbnail" id="thumbnail-preview">
+              <% if (post?.thumbnail) { %>
+              <img src="<%= post.thumbnail %>" alt="thumbnail" />
+              <% } else {%>
+              <span class="text-muted">Drop your thumbnail here!</span>
+              <% } %>
+            </label>
+            <input
+              type="file"
+              name="thumbnail"
+              id="thumbnail"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="summary">Summary</label>
+            <textarea name="summary" class="form-control" id="summary" rows="3"><%= post?.summary %></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="tags">Tags</label>
+            <select class="form-control tag" name="tags" id="tags" multiple="multiple">
+              <% tags.forEach(tag => { %>
+                <option value="<%= tag.name %>" 
+                  <%= post?.tags.some(data => data.id === tag.id) ? 'selected' : '' %>>
+                  <%= tag.name %>
+                </option>
+              <% }) %>
+            </select> 
+          </div>
+          <div
+            class="mb-3 form-check form-switch d-flex p-0 justify-content-between align-items-center"
+          >
+            <label class="form-check-label m-0" for="published">Publish</label>
+            <input
+              class="form-check-input m-0 position-relative"
+              name="published"
+              type="checkbox"
+              id="published"
+              value="true"
+              <%= post?.published ? 'checked' : '' %>
+            />
+          </div>
+
+          <div class="">
+            <button type="submit" class="theme-btn-sm w-100">
+              <%= type == "create" ? "Tambah" : "Edit" %>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

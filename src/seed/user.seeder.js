@@ -11,7 +11,7 @@ async function seed() {
     email: 'admin@example.com',
     nama: 'Admin',
     no_telp: '081234567890',
-    password: 'password123', // Pastikan mengenkripsi password sebelum disimpan
+    password: 'password1209', // Pastikan mengenkripsi password sebelum disimpan
     status: 'active',
     role: 'admin',
     photo: null,
