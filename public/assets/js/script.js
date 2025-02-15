@@ -1647,7 +1647,17 @@
             quill.insertEmbed(range.index, 'image', data);
           },
           error: function (xhr) {
-            console.error('Upload error:', xhr);
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              Swal.fire({
+                title: 'Oops...',
+                text: xhr.responseJSON.message,
+                icon: 'error',
+                confirmButtonText: 'OK',
+              });
+              // alert(xhr.responseJSON.message); // Menampilkan pesan error ke user
+            } else {
+              console.error('Upload error:', xhr);
+            }
           },
         });
       }

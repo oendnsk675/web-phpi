@@ -53,6 +53,7 @@ const reviewRoutes = require('./routes/review');
 const panelLocationRoutes = require('./routes/admin/location');
 const postRoutes = require('./routes/admin/post');
 const { getAllDashboard } = require('./controller/admin/dashboard.controller');
+const multer = require('multer');
 
 module.exports = (app) => {
   app.use('/', homeRoutes);
@@ -60,6 +61,22 @@ module.exports = (app) => {
   app.use('/directory', directoryRoutes);
   app.use('/review', reviewRoutes);
   app.use('/panel/post', postRoutes);
+  app.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        if (req.xhr) {
+          return res
+            .status(400)
+            .json({ message: 'Ukuran file terlalu besar! Maksimal 1MB.' });
+        }
+        req.flash('errorMessage', 'Ukuran file terlalu besar! Maksimal 1MB.');
+        return res.redirect(req.get('Referer') || '/panel/dashboard');
+      }
+    } else if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    next();
+  });
 
   app.get('/about', (req, res) => {
     res.render('pages/about', {
