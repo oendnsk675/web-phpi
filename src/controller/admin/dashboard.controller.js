@@ -4,13 +4,14 @@ const Category = require('../../models/Category');
 const User = require('../../models/User');
 const Product = require('../../models/Product');
 const ProductLocation = require('../../models/ProductLocation');
+const Post = require('../../models/Post');
 
 exports.getAllDashboard = async (req, res) => {
   try {
     const product = await AppDataSource.getRepository(Product).count();
     const user = await AppDataSource.getRepository(User).count();
     const location = await AppDataSource.getRepository(ProductLocation).count();
-    const categories = await AppDataSource.getRepository(Category).count();
+    const posts = await AppDataSource.getRepository(Post).count();
 
     res.render('pages/panel/dashboard/index', {
       layout: 'layouts/dashboard',
@@ -18,7 +19,7 @@ exports.getAllDashboard = async (req, res) => {
       product,
       user,
       location,
-      categories,
+      posts,
     });
   } catch (error) {
     console.error('Error fetching dashboard:', error);
