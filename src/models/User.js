@@ -118,6 +118,11 @@ const User = new EntitySchema({
       target: 'Review',
       inverseSide: 'user',
     },
+    posts: {
+      type: 'one-to-many',
+      target: 'Post',
+      inverseSide: 'author',
+    },
   },
 });
 

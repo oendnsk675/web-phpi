@@ -1785,7 +1785,7 @@
   });
 
   let typingTimer;
-  const doneTypingInterval = 500; // Tunggu 500ms setelah user berhenti mengetik
+  const doneTypingInterval = 500;
 
   $('#filter-2').on(
     'input change',
@@ -1820,6 +1820,35 @@
       }, doneTypingInterval);
     },
   );
+
+  $('#filter-blog').on('input change', 'input, select', function () {
+    clearTimeout(typingTimer);
+
+    typingTimer = setTimeout(function () {
+      let formData = $('#filter-blog').serialize();
+      $('#guide-list').html('<p class="loading">Loading...</p>');
+
+      $.ajax({
+        url: '/blogs',
+        method: 'GET',
+        data: formData,
+        success: function (response) {
+          console.log('Data fetched successfully', response);
+
+          if (response.data && response.data.length > 0) {
+            updateBlogList(response.data);
+          } else {
+            $('#guide-list').html(
+              '<p class="not-found">Tidak ada hasil ditemukan.</p>',
+            );
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error fetching data', error);
+        },
+      });
+    }, doneTypingInterval);
+  });
 
   $(document).on('click', '.custom-select-guide .select', function () {
     let container = $(this).closest('.custom-select-guide');
@@ -1888,6 +1917,37 @@
                     <div class="d-flex gap-2 align-items-center">${badges}</div>
                     <div class="description">
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.</p>
+                    </div>
+                </div>
+            </a>`;
+    });
+
+    $('#guide-list').html(guideHTML);
+  }
+
+  function updateBlogList(blogs) {
+    let guideHTML = '';
+
+    blogs.forEach((post) => {
+      let badges = post.tags
+        .slice(0, 3)
+        .map((tag) => `<div class="badge">${tag.name}</div>`)
+        .join('');
+      if (post.tags.length > 3) {
+        badges += '<div class="badge">...</div>';
+      }
+
+      guideHTML += `
+            <a href="/profile/${post.id}" class="guide-item">
+                <div class="img-holder">
+                    <img src="${post.thumbnail}" alt="guide image" />
+                </div>
+                <div class="guide-body">
+                    <div class="guide-name">${post.title}</div>
+                    <span class="review-count">${post.author.nama}</span>
+                    <div class="d-flex gap-2 align-items-center">${badges}</div>
+                    <div class="description">
+                        <p>${post.summary}</p>
                     </div>
                 </div>
             </a>`;

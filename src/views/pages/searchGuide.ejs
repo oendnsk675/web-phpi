@@ -7,7 +7,13 @@
   <!-- end of header -->
 
   <!-- start wpo-page-title -->
-  <section class="wpo-page-title" style="background: url(/assets/images/banner/member.jpg) no-repeat center top / cover">
+  <section
+    class="wpo-page-title"
+    style="
+      background: url(/assets/images/banner/member.jpg) no-repeat center top /
+        cover;
+    "
+  >
     <div class="container">
       <div class="row">
         <div class="col col-xs-12">
@@ -31,49 +37,106 @@
     <div class="container">
       <div class="">
         <form id="filter-2" action="/search/guide" method="get">
-          <div class="filter">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Cari berdasarkan location" name="location" value="<%= location %>" />
+          <div class="filter row">
+            <div class="col-12 col-lg-2 m-0 p-0 form-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Cari berdasarkan location"
+                name="location"
+                value="<%= location %>"
+              />
             </div>
-            <div class="custom-select-guide" id="language-select">
-              <input type="hidden" name="language" id="language" value="<%= language %>" />
+            <div
+              class="custom-select-guide col-12 col-lg-1 p-0"
+              id="language-select"
+            >
+              <input
+                type="hidden"
+                name="language"
+                id="language"
+                value="<%= language %>"
+              />
               <div class="select">Language</div>
               <div class="options-container">
                 <div class="options">
                   <% dataLanguage.forEach((lang) => { %>
-                  <div class="option <%= lang.language == language ? 'selected' : '' %>" value="<%= lang.language %>"><%= lang.language %></div>
+                  <div
+                    class="option <%= lang.language == language ? 'selected' : '' %>"
+                    value="<%= lang.language %>"
+                  >
+                    <%= lang.language %>
+                  </div>
                   <% }) %>
                 </div>
               </div>
             </div>
-            <div class="custom-select-guide" id="category-select">
-              <input type="hidden" name="category" id="category" value="<%= category %>" />
+            <div
+              class="custom-select-guide col-12 col-lg-1 p-0"
+              id="category-select"
+            >
+              <input
+                type="hidden"
+                name="category"
+                id="category"
+                value="<%= category %>"
+              />
               <div class="select">Category</div>
               <div class="options-container">
                 <div class="options">
                   <% dataCategory.forEach((data) => { %>
-                  <div class="option <%= data.name == category ? 'selected' : '' %>" value="<%= data.name %>"><%= data.name %></div>
+                  <div
+                    class="option <%= data.name == category ? 'selected' : '' %>"
+                    value="<%= data.name %>"
+                  >
+                    <%= data.name %>
+                  </div>
                   <% }) %>
                 </div>
               </div>
             </div>
-            <div class="custom-select-guide" id="special-select">
-              <input type="hidden" name="specialInterest" id="specialInterest" value="<%= specialInterest %>" />
+            <div
+              class="custom-select-guide col-12 col-lg-1 p-0"
+              id="special-select"
+            >
+              <input
+                type="hidden"
+                name="specialInterest"
+                id="specialInterest"
+                value="<%= specialInterest %>"
+              />
               <div class="select">Special interest</div>
               <div class="options-container">
                 <div class="options">
                   <% dataSpecialInterest.forEach((data) => { %>
-                  <div value="<%= data.name %>" class="option <%= data.name == specialInterest ? 'selected' : '' %>"><%= data.name %></div>
+                  <div
+                    value="<%= data.name %>"
+                    class="option <%= data.name == specialInterest ? 'selected' : '' %>"
+                  >
+                    <%= data.name %>
+                  </div>
                   <% }) %>
                 </div>
               </div>
             </div>
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Cari berdasarkan nama" name="nama" value="<%= nama %>" />
+            <div class="col-12 col-lg-1 p-0 form-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Cari berdasarkan nama"
+                name="nama"
+                value="<%= nama %>"
+              />
             </div>
-            <div class="form-group">
+            <div class="col-12 col-lg-1 p-0 form-group">
               <a href="/search/guide">
-                <button type="button" id="reset-filter" class="btn btn-primary">Reset</button>
+                <button
+                  type="button"
+                  id="reset-filter"
+                  class="btn btn-primary w-100"
+                >
+                  Reset
+                </button>
               </a>
             </div>
           </div>
@@ -104,7 +167,8 @@
               </div>
               <span class="review-count">(<%= user.countReview %> Review)</span>
               <div class="d-flex gap-2 align-items-center">
-                <% let badgeLength = user.availableAreas.length %> <% user.availableAreas.splice(0, 3).forEach(area => { %>
+                <% let badgeLength = user.availableAreas.length %> <%
+                user.availableAreas.splice(0, 3).forEach(area => { %>
                 <div class="badge"><%= area.name %></div>
                 <% }) %>
                 <% if (badgeLength > 3) { %>
@@ -123,7 +187,12 @@
           <ul class="pagination">
             <!-- Previous Button -->
             <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-              <a class="page-link" href="?page=<%= currentPage - 1 %>" tabindex="-1">Previous</a>
+              <a
+                class="page-link"
+                href="?page=<%= currentPage - 1 %>"
+                tabindex="-1"
+                >Previous</a
+              >
             </li>
 
             <!-- Page Numbers -->
@@ -134,7 +203,9 @@
             <% } %>
 
             <!-- Next Button -->
-            <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+            <li
+              class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>"
+            >
               <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
             </li>
           </ul>

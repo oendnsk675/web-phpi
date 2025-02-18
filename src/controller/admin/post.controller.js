@@ -66,6 +66,7 @@ exports.create = async (req, res) => {
 exports.save = async (req, res) => {
   const queryRunner = AppDataSource.createQueryRunner();
   await queryRunner.startTransaction();
+  const { id: userId } = req.session.user;
 
   try {
     const payload = req.body;
@@ -83,8 +84,7 @@ exports.save = async (req, res) => {
     if (tags && tags.length > 0) {
       delete payload.tags;
     }
-
-    console.log({ body: req.body });
+    payload.authorId = userId;
 
     let post = await repository.save(payload);
 

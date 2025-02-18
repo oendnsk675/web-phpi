@@ -7,6 +7,10 @@
   align-items: center;
   gap: 10px;
 
+  @media (max-width: 767px) {
+    padding: 2rem 1rem;
+  }
+
   h3 {
     color: #f7f7f7;
     text-align: center;
@@ -19,12 +23,20 @@
     justify-content: center;
     padding: 0 14rem;
     text-align: center;
+
+    @media (max-width: 767px) {
+      padding: 0;
+    }
   }
 
   form {
     width: 100%;
     margin-top: 10px;
     padding: 0 8rem;
+
+    @media (max-width: 767px) {
+      padding: 0;
+    }
 
     .input-group-text {
       background-color: white;
@@ -74,6 +86,15 @@
     display: grid;
     grid-template-columns: repeat(8, 1fr);
 
+    @media (max-width: 767px) {
+      display: flex;
+      overflow-x: auto;
+      width: 100%;
+      gap: 6px;
+      padding-bottom: 10px;
+      margin-bottom: 4rem;
+    }
+
     .location-item {
       grid-column: span 1;
       display: flex;
@@ -105,6 +126,10 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
+
+    @media (max-width: 767px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
 
     .guide-item {
       grid-column: span 1;
@@ -171,12 +196,58 @@
     gap: 15px;
 
     @include media-query(767px) {
+      grid-template-columns: repeat(1, 1fr);
       margin: 0 -7px;
     }
 
     .grid-item {
       grid-column: span 1;
 
+      .img-container {
+        border: 1px solid #f1f0f0;
+        margin: 0;
+        background: #f7f7f7;
+
+        .img-holder {
+          width: 100%;
+          height: 200px;
+          overflow: hidden;
+          border: 1px solid rgba(112, 128, 144, 0.06);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .img-mini {
+          gap: 10px;
+          display: grid;
+          height: 60px;
+          grid-template-columns: repeat(4, 1fr);
+
+          .img-mini-item {
+            grid-column: span 1;
+            overflow: hidden;
+            border: 1px solid rgba(112, 128, 144, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+              width: 100%;
+              object-fit: cover;
+            }
+          }
+        }
+      }
+    }
+
+    .grid {
       .img-container {
         border: 1px solid #f1f0f0;
         margin: 0;

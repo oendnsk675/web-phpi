@@ -1,0 +1,113 @@
+<div class="page-wrapper">
+  <!-- start preloader -->
+  <%- include('../components/ui/preloader') %>
+  <!-- end preloader -->
+  <!-- Start header -->
+  <%- include('../components/ui/header') %>
+  <!-- end of header -->
+
+  <!-- start wpo-page-title -->
+  <section
+    class="wpo-page-title"
+    style="
+      background: url(/assets/images/banner/member.jpg) no-repeat center top /
+        cover;
+    "
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col col-xs-12">
+          <div class="wpo-breadcumb-wrap">
+            <h2><%= title %></h2>
+            <ol class="wpo-breadcumb-wrap">
+              <li><a href="/">Home</a></li>
+              <li><%= title %></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
+  </section>
+  <!-- end page-title -->
+
+  <!-- start wpo-team-section -->
+  <section class="wpo-page-search-guide section-padding">
+    <div class="container">
+      <div class="w-full mb-3">
+        <form id="filter-blog" method="get">
+          <div class="filter row">
+            <div class="form-group col-12 col-lg-6 m-0 p-0">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Cari artikel berdasarkan title"
+                name="title"
+                value="<%= titleSearch %>"
+              />
+            </div>
+            <div class="form-group m-0 col-12 col-lg-4 p-0">
+              <select name="tag" id="tag" class="form-select" aria-label="Default select example">
+                <option value="">Filter tag</option>
+                <% tags.forEach(tag => { %>
+                  <option value="<%= tag.id %>" <%= tagSearch == tag.id && 'selected' %>><%= tag.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="form-group m-0 col-12 col-lg-1 p-0">
+              <a href="/blogs">
+                <button type="button" id="reset-filter" class="btn btn-primary w-100">
+                  Reset
+                </button>
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- content -->
+      <div class="h-fit">
+        <div id="guide-list" class="guide-container gx-5">
+          <% posts.forEach(post => { %>
+          <a href="/blogs/<%= post.id %>" class="guide-item">
+            <!-- image -->
+            <div class="img-holder">
+              <img src="<%= post.thumbnail %>" alt="guide image" />
+            </div>
+            <!-- body -->
+            <div class="guide-body">
+              <div class="guide-name"><%= post.title %></div>
+              <span class="review-count text-muted"
+                ><%= post.author.nama %></span
+              >
+              <div class="d-flex gap-2 align-items-center">
+                <% let badgeLength = post.tags.length %>
+                <input type="hidden" />
+                <% post.tags.splice(0, 3).forEach(tag => { %>
+                <div class="badge"><%= tag.name %></div>
+                <% }) %>
+                <% if (badgeLength > 3) { %>
+                <div class="badge">...</div>
+                <% } %>
+              </div>
+              <div class="description">
+                <p><%= post.summary %></p>
+              </div>
+            </div>
+          </a>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end wpo-team-section -->
+
+  <!-- stert wpo-social-section -->
+  <%- include('../components/partials/home/social') %>
+  <!-- end wpo-social-section -->
+
+  <!-- start of wpo-site-footer-section -->
+  <%- include('../components/ui/footer.ejs') %>
+  <!-- end of wpo-site-footer-section -->
+</div>

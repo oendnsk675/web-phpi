@@ -2,10 +2,18 @@
   display: flex;
   gap: 1rem;
 
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+
   .content {
     min-height: 36rem;
     height: 100% !important;
     width: 50%;
+
+    @media (max-width: 767px) {
+      width: 100%;
+    }
 
     .ql-form-container {
       min-height: inherit;

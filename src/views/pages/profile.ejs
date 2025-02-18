@@ -22,7 +22,10 @@
           <div class="col-lg-6">
             <div class="team-info-text">
               <div class="d-flex justify-content-start align-items-center">
-                <span class="fst-italic <%= user.status == 'active' ? 'text-success' : 'text-danger' %>" style="font-size: smaller">
+                <span
+                  class="fst-italic <%= user.status == 'active' ? 'text-success' : 'text-danger' %>"
+                  style="font-size: smaller"
+                >
                   <% if (user.status == 'active') { %>
                   <i class="fa fa-times-circle" aria-hidden="true"></i>
                   <% } else {%>
@@ -48,7 +51,10 @@
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
                     <div class="d-flex flex-column">
                       <span>Available Area </span>
-                      <span class=""> <% const areas = user?.availableAreas || []; %> <%= areas.map(area => area.name).join(', ') %>. </span>
+                      <span class="">
+                        <% const areas = user?.availableAreas || []; %> <%=
+                        areas.map(area => area.name).join(', ') %>.
+                      </span>
                     </div>
                   </a>
                 </li>
@@ -57,7 +63,11 @@
                     <i class="fa fa-language" aria-hidden="true"></i>
                     <div class="d-flex flex-column">
                       <span>Language </span>
-                      <span class=""> <% const languages = user?.languages || []; %> <%= languages.map(language => language.language).join(', ') %>. </span>
+                      <span class="">
+                        <% const languages = user?.languages || []; %> <%=
+                        languages.map(language => language.language).join(', ')
+                        %>.
+                      </span>
                     </div>
                   </a>
                 </li>
@@ -66,12 +76,20 @@
                     <i class="fa fa-star" aria-hidden="true"></i>
                     <div class="d-flex flex-column">
                       <span>Special interest </span>
-                      <span class=""> <% const si = user?.specialInterest || []; %> <%= si.map(item => item.name).join(', ') %>. </span>
+                      <span class="">
+                        <% const si = user?.specialInterest || []; %> <%=
+                        si.map(item => item.name).join(', ') %>.
+                      </span>
                     </div>
                   </a>
                 </li>
-                <a href="https://api.whatsapp.com/send/?phone=<%= user.no_telp %>" target="_blank">
-                  <button class="theme-btn-sm whatsapp-btn w-100 d-flex align-items-center justify-content-center gap-2">
+                <a
+                  href="https://api.whatsapp.com/send/?phone=<%= user.no_telp %>"
+                  target="_blank"
+                >
+                  <button
+                    class="theme-btn-sm whatsapp-btn w-100 d-flex align-items-center justify-content-center gap-2"
+                  >
                     <i class="fa fa-whatsapp" aria-hidden="true"></i>
                     <span>Message Maydhi</span>
                   </button>
@@ -108,11 +126,14 @@
                   <div class="col col-xs-12">
                     <div class="shop-grids clearfix">
                       <% products.forEach(product => { %>
-                      <a href="/products/<%= product.id %>">
+                      <a href="/products/<%= product.id %>" class="grid-item">
                         <div class="grid">
                           <div class="img-container">
                             <div class="img-holder">
-                              <img src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> " alt="image" />
+                              <img
+                                src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> "
+                                alt="image"
+                              />
                             </div>
                             <div class="img-mini">
                               <% product?.banners?.forEach(image => { %>
@@ -128,9 +149,15 @@
                             </h3>
                             <div class="metadata">
                               <span class="badge text-bg-secondary">Bali</span>
-                              <span class="badge text-bg-secondary">9 Hours</span>
+                              <span class="badge text-bg-secondary"
+                                >9 Hours</span
+                              >
                             </div>
-                            <span class="description"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae illum reprehenderit nisi sit saepe laudantium id, tenetur aut impedit minima. </span>
+                            <span class="description">
+                              Lorem ipsum dolor sit amet consectetur adipisicing
+                              elit. Vitae illum reprehenderit nisi sit saepe
+                              laudantium id, tenetur aut impedit minima.
+                            </span>
                             <span class="price">
                               <span>From</span>
                               <h3><%= product.price %></h3>
@@ -190,7 +217,10 @@
                 <div class="logo widget-title">
                   <img src="/assets/images/logo.svg" alt="blog" />
                 </div>
-                <p>Many desktop publishing packages web page editors now is use model search for many web sites.</p>
+                <p>
+                  Many desktop publishing packages web page editors now is use
+                  model search for many web sites.
+                </p>
                 <ul>
                   <li>
                     <a href="#">
@@ -237,13 +267,18 @@
                 <ul>
                   <li>
                     <p>
-                      <a href="blog-single.html">What are the pros and cons of becoming a it solution?</a>
+                      <a href="blog-single.html"
+                        >What are the pros and cons of becoming a it
+                        solution?</a
+                      >
                     </p>
                     <span><i class="fi flaticon-calendar"></i> 10.09.2022</span>
                   </li>
                   <li>
                     <p>
-                      <a href="blog-single.html">We are able to give truly independent advice</a>
+                      <a href="blog-single.html"
+                        >We are able to give truly independent advice</a
+                      >
                     </p>
                     <span><i class="fi flaticon-calendar"></i> 10.09.2022</span>
                   </li>
@@ -255,10 +290,18 @@
                 <div class="widget-title">
                   <h3>Newsletter</h3>
                 </div>
-                <p>Many desktop publi’s shing packages web page editors now is use sites.</p>
+                <p>
+                  Many desktop publi’s shing packages web page editors now is
+                  use sites.
+                </p>
                 <form>
                   <div class="input-1">
-                    <input type="email" class="form-control" placeholder="Email Address *" required="" />
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Email Address *"
+                      required=""
+                    />
                   </div>
                   <div class="submit clearfix">
                     <button type="submit">
@@ -277,7 +320,10 @@
       <div class="container">
         <div class="row">
           <div class="col col-xs-12">
-            <p class="copyright">Copyright &copy; 2022 Solun by <a href="/">wpOceans</a>. All Rights Reserved.</p>
+            <p class="copyright">
+              Copyright &copy; 2022 Solun by <a href="/">wpOceans</a>. All
+              Rights Reserved.
+            </p>
           </div>
         </div>
       </div>

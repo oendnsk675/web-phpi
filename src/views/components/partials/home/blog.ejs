@@ -15,19 +15,18 @@
       <div class="col-lg-6">
         <div class="blog-grids">
           <div class="row">
-            <% [1, 2, 3, 4].forEach(blog => { %>
+            <% posts.forEach(post => { %>
             <div class="col-lg-6 col-md-6 col-12">
               <div class="grid">
                 <div class="blog-img">
-                  <img src="/assets/images/activity/<%= blog %>.jpeg" alt="" />
+                  <img src="<%= post.thumbnail %>" alt="" />
                 </div>
                 <div class="text">
-                  <span>06 January, 2022</span>
+                  <span><%= post.createdAt %></span>
                   <h2>
-                    Udertakes laborious physical exercise except to obtain some
-                    advantage from it has any right to find.
+                    <%= post.title %>
                   </h2>
-                  <a class="blog-btn" href="blog-single.html">
+                  <a class="blog-btn" href="/blogs/<%= post.id %>">
                     Read More<i
                       class="fa fa-angle-double-right"
                       aria-hidden="true"

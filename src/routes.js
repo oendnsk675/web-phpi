@@ -52,6 +52,7 @@ const directoryRoutes = require('./routes/directory');
 const reviewRoutes = require('./routes/review');
 const panelLocationRoutes = require('./routes/admin/location');
 const postRoutes = require('./routes/admin/post');
+const postUserRoutes = require('./routes/post');
 const { getAllDashboard } = require('./controller/admin/dashboard.controller');
 const multer = require('multer');
 
@@ -60,6 +61,7 @@ module.exports = (app) => {
   app.use('/products', productMemberRoutes);
   app.use('/directory', directoryRoutes);
   app.use('/review', reviewRoutes);
+  app.use('/blogs', postUserRoutes);
   app.use('/panel/post', postRoutes);
   app.use((err, req, res, next) => {
     if (err instanceof multer.MulterError) {

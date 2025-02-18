@@ -369,3 +369,26 @@ a {
     background: lightgray;
   }
 }
+.min-w-100 {
+  min-width: 100%;
+}
+
+.w-80 {
+  width: 80%;
+}
+
+.flex-auto {
+  flex: auto;
+}
+
+.nav-tabs .nav-item {
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+}
+
+.sm-h-fit {
+  @media (max-width: 767px) {
+    height: fit-content !important;
+  }
+}

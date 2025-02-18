@@ -28,6 +28,10 @@ const Post = new EntitySchema({
       type: 'boolean',
       default: false,
     },
+    authorId: {
+      type: 'int',
+      nullable: false,
+    },
     createdAt: {
       type: 'timestamp',
       default: () => 'CURRENT_TIMESTAMP',
@@ -40,9 +44,9 @@ const Post = new EntitySchema({
   },
   relations: {
     author: {
-      type: 'one-to-many',
-      target: 'Review',
-      inverseSide: 'user',
+      type: 'many-to-one',
+      target: 'User',
+      joinColumn: { name: 'authorId', referencedColumnName: 'id' },
     },
     tags: {
       type: 'many-to-many',

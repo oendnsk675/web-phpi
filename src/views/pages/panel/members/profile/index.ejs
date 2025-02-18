@@ -7,13 +7,13 @@
     <div class="card-header" style="background: none;">
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Requirement Profile</button>
+            <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Requirement Profile</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Personal Profile</button>
+            <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Personal Profile</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="card-tab" data-bs-toggle="tab" data-bs-target="#card" type="button" role="tab" aria-controls="card" aria-selected="false">Card Member</button>
+            <button class="nav-link w-100" id="card-tab" data-bs-toggle="tab" data-bs-target="#card" type="button" role="tab" aria-controls="card" aria-selected="false">Card Member</button>
         </li>
     </ul>
     </div>
@@ -234,12 +234,12 @@
                 <label for="name">Short description</label>
                 <textarea name="description" class="form-control" id="description"><%= user?.description %></textarea>
               </div>
-              <div class="col-12 col-lg-6 mb-3">
+              <div class="col-12 col-lg-6 mb-3 sm-h-fit">
                 <label for="name">Personal Experience</label>
                 <div id="experience"></div>
                 <input type="hidden" name="experience" value="<%= user?.experience %>">
               </div>
-              <div class="col-12 col-lg-6 mb-3">
+              <div class="col-12 col-lg-6 mb-3 sm-h-fit">
                 <label for="address">Education</label>
                 <div id="educations"></div>
                 <input type="hidden" name="educations" value="<%= user?.educations %>">

@@ -1,7 +1,10 @@
 .wpo-page-search-guide {
   .filter {
-    display: flex;
-    gap: 1rem;
+    padding: 0 15px;
+    gap: 6px;
+    @media (max-width: 767px) {
+      gap: 6px;
+    }
   }
 
   .guide-container {
@@ -10,6 +13,10 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
 
+    @media (max-width: 767px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
     .not-found,
     .loading {
       grid-column: span 4;
@@ -17,6 +24,7 @@
     }
 
     .guide-item {
+      overflow: hidden;
       grid-column: span 1;
       border: 1px solid lightgrey;
       color: black;

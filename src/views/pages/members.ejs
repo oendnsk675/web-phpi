@@ -37,8 +37,8 @@
     <div class="container">
       <div class="">
         <form id="filter-2" action="/search/guide" method="get">
-          <div class="filter">
-            <div class="form-group">
+          <div class="filter row">
+            <div class="col-12 col-lg-2 m-0 p-0 form-group">
               <input
                 type="text"
                 class="form-control"
@@ -47,7 +47,10 @@
                 value="<%= location %>"
               />
             </div>
-            <div class="custom-select-guide" id="language-select">
+            <div
+              class="col-12 col-lg-1 p-0 custom-select-guide"
+              id="language-select"
+            >
               <input
                 type="hidden"
                 name="language"
@@ -68,7 +71,10 @@
                 </div>
               </div>
             </div>
-            <div class="custom-select-guide" id="category-select">
+            <div
+              class="col-12 col-lg-1 p-0 custom-select-guide"
+              id="category-select"
+            >
               <input
                 type="hidden"
                 name="category"
@@ -89,7 +95,10 @@
                 </div>
               </div>
             </div>
-            <div class="custom-select-guide" id="special-select">
+            <div
+              class="col-12 col-lg-1 p-0 custom-select-guide"
+              id="special-select"
+            >
               <input
                 type="hidden"
                 name="specialInterest"
@@ -110,7 +119,7 @@
                 </div>
               </div>
             </div>
-            <div class="form-group">
+            <div class="col-12 col-lg-1 p-0 form-group">
               <input
                 type="text"
                 class="form-control"
@@ -119,9 +128,13 @@
                 value="<%= nama %>"
               />
             </div>
-            <div class="form-group">
+            <div class="col-12 col-lg-1 p-0 form-group">
               <a href="/search/guide">
-                <button type="button" id="reset-filter" class="btn btn-primary">
+                <button
+                  type="button"
+                  id="reset-filter"
+                  class="btn btn-primary w-100"
+                >
                   Reset
                 </button>
               </a>

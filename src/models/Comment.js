@@ -9,6 +9,10 @@ const Comment = new EntitySchema({
       primary: true,
       generated: true,
     },
+    userId: {
+      type: 'int',
+      nullable: false,
+    },
     comment: {
       type: 'text',
       nullable: true,

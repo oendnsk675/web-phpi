@@ -1,0 +1,254 @@
+<div class="page-wrapper">
+  <!-- start preloader -->
+  <%- include('../components/ui/preloader') %>
+  <!-- end preloader -->
+  <!-- Start header -->
+  <%- include('../components/ui/header') %>
+  <!-- end of header -->
+
+  <!-- start wpo-page-title -->
+  <section
+    class="wpo-page-title"
+    style="
+      background: url(/assets/images/banner/member.jpg) no-repeat center top /
+        cover;
+    "
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col col-xs-12">
+          <div class="wpo-breadcumb-wrap">
+            <h2><%= title %></h2>
+            <ol class="wpo-breadcumb-wrap">
+              <li><a href="/">Home</a></li>
+              <li><%= title %></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
+  </section>
+  <!-- end page-title -->
+
+  <!-- start wpo-team-section -->
+  <section class="wpo-blog-single-section section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col col-lg-8 col-12">
+          <div class="wpo-blog-content">
+            <div class="post format-standard-image">
+              <div class="entry-media">
+                <img src="<%= post.thumbnail %>" alt="post thumbnail" />
+              </div>
+              <div class="entry-meta">
+                <ul>
+                  <li>
+                    <i class="fi flaticon-user"></i> By
+                    <a href="#"><%= post.author.nama %></a>
+                  </li>
+                  <li>
+                    <i class="fi flaticon-comment-white-oval-bubble"></i>
+                    Comments
+                    <%= commentCount %>
+                  </li>
+                  <li>
+                    <i class="fi flaticon-calendar"></i>
+                    <%= post.createdAt %>
+                  </li>
+                </ul>
+              </div>
+              <h2><%= post.title %></h2>
+              <div class="content"><%- post.content %></div>
+            </div>
+
+            <div class="tag-share">
+              <div class="d-flex align-items-center gap-3">
+                <span>Tags: </span>
+                <ul>
+                  <% let badgeLength = post.tags.length %>
+                  <% post.tags.splice(0, 5).forEach(tag => { %>
+                  <li><%= tag.name %></li>
+                  <% }) %>
+                  <% if (badgeLength > 5) { %>
+                  <div class="badge">...</div>
+                  <% } %>
+                </ul>
+              </div>
+            </div>
+
+            <div class="author-box">
+              <div class="author-avatar">
+                <img src="<%= post.author.photo %>" alt />
+              </div>
+              <div class="author-content">
+                <a href="#" class="author-name"
+                  >Author:
+                  <%= post.author.nama %></a
+                >
+                <p><%= post.author.description %></p>
+                <div class="socials">
+                  <ul class="social-link">
+                    <li>
+                      <a href="#"><i class="ti-facebook"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="ti-twitter-alt"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="ti-linkedin"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="ti-instagram"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- end author-box -->
+
+            <div class="comments-area">
+              <div class="comments-section">
+                <h3 class="comments-title"><%= commentCount %> Comments</h3>
+                <ol class="comments">
+                  <li class="comment" id="comment-1">
+                    <% comments.forEach(comment => { %>
+                    <div id="comment-container">
+                      <div class="comment-theme">
+                        <div class="comment-image">
+                          <img src="<%= comment.user.photo %>" alt />
+                        </div>
+                      </div>
+                      <div class="comment-main-area">
+                        <div class="comment-wrapper">
+                          <div class="comments-meta">
+                            <h4>
+                              <%= comment.user.nama %>
+                              <span class="comments-date"
+                                >says
+                                <%= comment.createdAt %></span
+                              >
+                            </h4>
+                          </div>
+                          <div class="comment-area">
+                            <p>
+                              <%= comment.comment %>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <% }) %>
+                  </li>
+                </ol>
+              </div>
+              <!-- end comments-section -->
+
+              <div class="comment-respond">
+                <h3 class="comment-reply-title">Leave a reply</h3>
+                <form
+                  class="comment-form"
+                  method="post"
+                  action="/blogs/comment"
+                >
+                  <input type="hidden" name="postId" value="<%= post.id %>" />
+                  <div class="form-textarea">
+                    <textarea
+                      id="comment"
+                      name="comment"
+                      placeholder="Write Your Comments..."
+                    ></textarea>
+                  </div>
+                  <div class="form-submit">
+                    <input id="submit" value="Post Comment" type="submit" />
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- end comments-area -->
+          </div>
+        </div>
+        <div class="col col-lg-4">
+          <div class="blog-sidebar">
+            <div class="widget about-widget">
+              <div class="img-holder">
+                <img src="assets/images/blog/about-widget.jpg" alt />
+              </div>
+              <h4>Jenny Watson</h4>
+              <p>
+                Hi! beautiful people. I`m an authtor of this blog. Read our post
+                - stay with us
+              </p>
+              <div class="social">
+                <ul class="clearfix">
+                  <li>
+                    <a href="#"><i class="ti-facebook"></i></a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="ti-twitter-alt"></i></a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="ti-linkedin"></i></a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="ti-pinterest"></i></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="widget search-widget">
+              <h3>Search Here</h3>
+              <form>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search Post.."
+                  />
+                  <button type="submit"><i class="ti-search"></i></button>
+                </div>
+              </form>
+            </div>
+            <div class="widget category-widget">
+              <h3>Post Tags</h3>
+              <ul>
+                <% tags.splice(0, 5).forEach(tag => { %>
+                <li><a href="/blogs?tag=<%= tag.id %>"><%= tag.name %></a></li>
+                <% }) %>
+              </ul>
+            </div>
+            <div class="widget recent-post-widget">
+              <h3>Related Posts</h3>
+              <div class="posts">
+                <% relatedPosts.forEach(post => { %>
+                <div class="post">
+                  <div class="img-holder">
+                    <img src="<%= post.thumbnail %>" alt="thumbnail" />
+                  </div>
+                  <div class="details">
+                    <h4>
+                      <a href="blog-single.html"><%= post.title %></a>
+                    </h4>
+                    <span class="date"><%= post.createdAt %> </span>
+                  </div>
+                </div>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end container -->
+  </section>
+  <!-- end wpo-team-section -->
+
+  <!-- stert wpo-social-section -->
+  <%- include('../components/partials/home/social') %>
+  <!-- end wpo-social-section -->
+
+  <!-- start of wpo-site-footer-section -->
+  <%- include('../components/ui/footer.ejs') %>
+  <!-- end of wpo-site-footer-section -->
+</div>
