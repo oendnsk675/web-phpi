@@ -398,7 +398,7 @@
 
   $('.slider-hero').slick({
     infinite: true,
-    autoplay: true,
+    autoplay: false,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,

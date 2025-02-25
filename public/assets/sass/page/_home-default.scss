@@ -473,7 +473,11 @@
   padding-bottom: 0;
 
   .fun-fact-wrap {
-    background: $theme-primary-color;
+    background: linear-gradient(rgba(33, 48, 95, 0.8), rgba(33, 48, 95, 0.8)),
+      url('/assets/images/banner/shape-banner.jpg');
+    // background: $theme-primary-color;
+    background-size: cover;
+    background-position: center;
     padding: 100px 0;
     position: relative;
     z-index: 1;
