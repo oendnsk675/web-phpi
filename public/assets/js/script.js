@@ -1515,6 +1515,220 @@
     tags: true,
   });
 
+  $('.select-province').select2({
+    width: '100%',
+    height: '100%',
+    tags: true,
+    ajax: {
+      url: '/api/provinces',
+      dataType: 'json',
+      processResults: function (data) {
+        return {
+          results: data.map(function (province) {
+            return {
+              id: province.code,
+              text: province.name,
+            };
+          }),
+        };
+      },
+    },
+  });
+  const provinceValue = $('#province_code').val();
+  const kabkotaValue = $('#kabkota_code').val();
+
+  if (kabkotaValue && kabkotaValue.length >= 4) {
+    // Enable select kabkota
+    // $('#kabkota_code').val(kabkotaValue).trigger('change');
+    $('.select-kabkota').prop('disabled', false);
+    // Re-inisialisasi select kabkota dengan ajax berdasarkan provinceCode
+    $('.select-kabkota').select2({
+      width: '100%',
+      height: '100%',
+      ajax: {
+        url: `/api/regencies?province_code=${provinceValue}`, // sesuaikan endpoint kamu
+        dataType: 'json',
+        // success: function(params) {
+
+        // },
+        processResults: function (data) {
+          return {
+            results: data.map(function (kabkota) {
+              return {
+                id: kabkota.code,
+                text: kabkota.name,
+              };
+            }),
+          };
+        },
+      },
+    });
+  } else {
+    $('.select-kabkota').select2({
+      width: '100%',
+      height: '100%',
+      placeholder: 'Pilih provinsi terlebih dahulu',
+    });
+  }
+  $('.select-province').on('change', function () {
+    const provinceCode = $(this).val();
+
+    // Enable select kabkota
+    $('.select-kabkota').prop('disabled', false);
+
+    // Re-inisialisasi select kabkota dengan ajax berdasarkan provinceCode
+    $('.select-kabkota')
+      .empty()
+      .select2({
+        width: '100%',
+        height: '100%',
+        ajax: {
+          url: `/api/regencies?province_code=${provinceCode}`, // sesuaikan endpoint kamu
+          dataType: 'json',
+          processResults: function (data) {
+            return {
+              results: data.map(function (kabkota) {
+                return {
+                  id: kabkota.code,
+                  text: kabkota.name,
+                };
+              }),
+            };
+          },
+        },
+      });
+  });
+
+  function disableAllInputCreateMember() {
+    $(
+      '#name, #address, #birthday, #gender, #phone, #inputEmail, #lastEducation, #trainingCertificationNumber, #competencyCertificationNumber, #qualification, #validUntil, #languages, #inputPassword, #province_code, #kabkota_code, .select-kabkota, #btn-submit',
+    ).prop('disabled', true);
+  }
+
+  function enableAllInputCreateMember() {
+    $(
+      '#name, #address, #birthday, #gender, #phone, #inputEmail, #lastEducation, #trainingCertificationNumber, #competencyCertificationNumber, #qualification, #validUntil, #languages, #inputPassword, .select-kabkota, #province_code, #kabkota_code, #btn-submit',
+    ).prop('disabled', false);
+  }
+
+  function resetInputCreateMember() {
+    $('#name').val('');
+    $('#address').val('');
+    $('#birthday').val('');
+    $('#gender').val('').trigger('change');
+    $('#phone').val('');
+    $('#inputEmail').val('');
+    $('#lastEducation').val('').trigger('change');
+    $('#trainingCertificationNumber').val('');
+    $('#competencyCertificationNumber').val('');
+    $('#qualification').val('').trigger('change');
+    $('#validUntil').val('');
+    $('#languages').val('').trigger('change');
+    $('#inputPassword').val('');
+    $('#province_code').val('').trigger('change');
+    $('#kabkota_code').val('').trigger('change');
+    $('#form-member').attr('action', '/panel/members/create');
+  }
+
+  let debounceTimeout;
+  $('#no_ktp').on('input', function () {
+    const noKtp = $(this).val().trim();
+
+    $('#indicator-fetch-user').text('Loading get detail user...');
+    $('#indicator-fetch-user').show();
+
+    clearTimeout(debounceTimeout);
+    disableAllInputCreateMember();
+
+    debounceTimeout = setTimeout(function () {
+      if (noKtp.length > 0) {
+        $.ajax({
+          url: `/api/user/by-ktp/${noKtp}`,
+          method: 'GET',
+          success: function (data) {
+            $('#form-member').attr(
+              'action',
+              `/panel/members/update/${data.id}`,
+            );
+            $('#indicator-fetch-user').text('Success get detail user...');
+            $('#btn-submit').text('Edit Member');
+
+            if (data.province_code) {
+              $('#province_code')
+                .append(
+                  new Option(
+                    data.province_name,
+                    data.province_code,
+                    true,
+                    true,
+                  ),
+                )
+                .trigger('change');
+            }
+            if (data.kabkota_code) {
+              $('#kabkota_code')
+                .append(
+                  new Option(data.kabkota_name, data.kabkota_code, true, true),
+                )
+                .trigger('change');
+            }
+            if (data.languages.length > 0) {
+              $('#languages').empty();
+              data.languages.forEach((lang) => {
+                $('#languages')
+                  .append(new Option(lang.language, lang.language, true, true))
+                  .trigger('change');
+              });
+            }
+
+            $('#name').val(data.nama);
+            $('#address').val(data.address);
+            $('#birthday').val(data.birthday);
+            $('#gender').val(data.gender);
+            $('#phone').val(data.no_telp);
+            $('#inputEmail').val(data.email);
+            $('#lastEducation').val(data.lastEducation);
+            $('#trainingCertificationNumber').val(
+              data.trainingCertificationNumber,
+            );
+            $('#competencyCertificationNumber').val(
+              data.competencyCertificationNumber,
+            );
+            $('#qualification').val(data.qualification);
+            $('#validUntil').val(data.validUntil);
+
+            if (data.languages) {
+              $('#languages')
+                .val(data.languages.map((lang) => lang.id))
+                .trigger('change');
+            }
+
+            if (data.province_code) {
+              $('.select-kabkota').prop('disabled', false);
+            }
+
+            $('#inputPassword').val(data.password); // Use only if password can be prefilled securely
+          },
+          error: function (error) {
+            console.log(error);
+            resetInputCreateMember();
+            $('#btn-submit').text('Tambah Member');
+            $('#indicator-fetch-user').text('User not found or error');
+            console.log('User not found or error');
+          },
+          complete: function () {
+            enableAllInputCreateMember();
+          },
+        });
+      } else {
+        $('#indicator-fetch-user').hide();
+      }
+    }, 1000);
+  });
+  $(document).ready(function () {
+    $('#indicator-fetch-user').hide();
+  });
+
   $('.delete-btn').on('click', function (e) {
     e.preventDefault(); // Prevent default anchor click behavior
 

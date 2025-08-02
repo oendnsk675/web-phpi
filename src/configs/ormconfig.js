@@ -1,15 +1,16 @@
 require('dotenv').config();
 const { DataSource } = require('typeorm');
-const User = require('../models/User');
+const AddNoKTPandNIPatUserTable1753880113435 = require('../migrations/1753880113435-AddNoKTPandNIPatUserTable');
+const AddColumnsProvinceCodeAndKabKotaCodeAtUserTable1753881394840 = require('../migrations/1753881394840-AddColumnsProvinceCodeAndKabKotaCodeAtUserTable');
 
 const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.POSTGRES_HOST,
-  port: process.env.POSTGRES_PORT || 5432,
+  port: process.env.POSTGRES_PORT || 5433,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DATABASE,
-  synchronize: true,
+  synchronize: false,
   logging: false,
   entities: [
     require('../models/User'),
@@ -27,7 +28,10 @@ const AppDataSource = new DataSource({
     require('../models/Tag'),
     require('../models/Comment'),
   ],
-  migrations: [],
+  migrations: [
+    AddNoKTPandNIPatUserTable1753880113435,
+    AddColumnsProvinceCodeAndKabKotaCodeAtUserTable1753881394840,
+  ],
   subscribers: [],
 });
 

@@ -12,6 +12,22 @@ const User = new EntitySchema({
     nama: {
       type: 'varchar',
     },
+    no_ktp: {
+      type: 'varchar',
+      nullable: true,
+    },
+    nip: {
+      type: 'varchar',
+      nullable: true,
+    },
+    province_code: {
+      type: 'varchar',
+      nullable: true,
+    },
+    kabkota_code: {
+      type: 'varchar',
+      nullable: true,
+    },
     address: {
       type: 'varchar',
       nullable: true,

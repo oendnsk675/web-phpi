@@ -15,3 +15,12 @@ exports.formatPhoneNumber = (phone) => {
   }
   return cleaned;
 };
+
+exports.generateNIP = (kabkota_code, mm, yy, counter) => {
+  if (!kabkota_code || kabkota_code.length < 4) {
+    throw new Error('Invalid kabkota_code');
+  }
+  const serial = String(counter).padStart(4, '0');
+
+  return `${kabkota_code}.${mm}${yy}.${serial}`;
+};

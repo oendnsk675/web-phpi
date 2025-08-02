@@ -12,7 +12,7 @@ run-postgres:
 		-e POSTGRES_USER=$(POSTGRES_USER) \
 		-e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) \
 		-e POSTGRES_DB=$(POSTGRES_DATABASE) \
-		-d -p 5432:5432 postgres:16.3
+		-d -p $(POSTGRES_PORT):5432 postgres:16.3
 
 stop-postgres:
 	docker stop $(POSTGRES_CONTAINER_NAME)
@@ -26,5 +26,5 @@ spin-up:
 		-e POSTGRES_USER=$(POSTGRES_USER) \
 		-e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) \
 		-e POSTGRES_DB=$(POSTGRES_DATABASE) \
-		-d -p 5432:5432 postgres:16.3
+		-d -p $(POSTGRES_PORT):5432 postgres:16.3
 	@pnpm dev

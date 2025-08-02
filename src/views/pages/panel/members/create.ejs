@@ -8,11 +8,28 @@
 
   <div class="card p-4">
     <form
+      id="form-member"
       action="<%= user && user.id ? `/panel/members/update/${user.id}` : '/panel/members/save' %>"
       method="post"
       enctype="multipart/form-data"
     >
       <div class="row mb-3">
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="no_ktp">
+            No KTP <span style="color: red">*</span> 
+            <span id="indicator-fetch-user" class="fst-italic text-success" style="font-size: small;">
+              Loading get detail user...
+            </span>
+          </label>
+          <input
+            type="text"
+            name="no_ktp"
+            class="form-control"
+            id="no_ktp"
+            value="<%= user?.no_ktp %>"
+            required
+          />
+        </div>
         <div class="col-12 col-lg-6 mb-3">
           <label for="name">Nama Sesuai KTP <span style="color: red">*</span></label>
           <input
@@ -23,6 +40,22 @@
             value="<%= user?.nama %>"
             required
           />
+        </div>
+        <div class="col-12 col-lg-6 mb-3" id="form">
+          <label for="province_code">Provinsi <span style="color: red">*</span></label>
+          <select name="province_code" id="province_code" class="select-province" required>
+            <% if (user?.province_code && user?.province_name) { %>
+              <option value="<%= user.province_code %>" selected><%= user.province_name %></option>
+            <% } %>
+          </select>
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <label for="kabkota_code">Kota/Kabupaten <span style="color: red">*</span></label>
+          <select name="kabkota_code" id="kabkota_code" class="select-kabkota" <%= user?.kabkota_code && user?.kabkota_name ? '' : 'disabled' %> required>
+            <% if (user?.kabkota_code && user?.kabkota_name) { %>
+              <option value="<%= user.kabkota_code %>" selected><%= user.kabkota_name %></option>
+            <% } %>
+          </select>
         </div>
         <div class="col-12 col-lg-6 mb-3">
           <label for="address">Alamat Sesuai KTP <span style="color: red">*</span></label>
@@ -71,12 +104,12 @@
           />
         </div>
         <div class="col-12 col-lg-6 mb-3">
-          <label for="inputEmail4">Email <span style="color: red">*</span></label>
+          <label for="inputEmail">Email <span style="color: red">*</span></label>
           <input
             type="email"
             name="email"
             class="form-control"
-            id="inputEmail4"
+            id="inputEmail"
             value="<%= user?.email %>"
           />
         </div>
@@ -152,12 +185,12 @@
           </select>          
         </div>
         <div class="col-12 col-lg-6 mb-3">
-          <label for="inputPassword4">Password <span style="color: red">*</span></label>
+          <label for="inputPassword">Password <span style="color: red">*</span></label>
           <div class="input-group">
             <input
               type="password"
               class="form-control"
-              id="inputPassword4"
+              id="inputPassword"
               required
               name="password"
               autocomplete="current-password"
@@ -177,8 +210,8 @@
         </div>
       </div>
       <div class="">
-        <button type="submit" class="theme-btn-sm w-100">
-          <%= type == "create" ? "Tambah" : "Edit" %>
+        <button id="btn-submit" type="submit" class="theme-btn-sm w-100">
+          <%= type == "create" ? "Tambah Member" : "Edit Member" %>
         </button>
       </div>
     </form>

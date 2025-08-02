@@ -5,6 +5,12 @@ const User = require('../../models/User');
 const { createMemberCard } = require('../../utils/qrcode');
 const SpecialInterest = require('../../models/SpecialInterest');
 const UserAvailableAreas = require('../../models/UserAvailableAreas');
+const { generateNIP } = require('../../utils/commons');
+const {
+  fetchProvinces,
+  fetchProvince,
+  fetchRegency,
+} = require('../../utils/http');
 
 exports.getAll = async (req, res) => {
   try {
@@ -55,6 +61,31 @@ exports.getAll = async (req, res) => {
   }
 };
 
+exports.getProvinces = async (req, res) => {
+  try {
+    const data = await fetchProvinces();
+    if (data instanceof Error) throw data;
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return res.render('pages/errors/index');
+  }
+};
+
+exports.getRegencies = async (req, res) => {
+  try {
+    const provinceCode = req.query.province_code;
+    const response = await fetch(
+      `https://wilayah.id/api/regencies/${provinceCode}.json`,
+    );
+    const data = await response.json();
+    res.json(data?.data);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return res.render('pages/errors/index');
+  }
+};
+
 exports.create = async (req, res) => {
   try {
     const languageRepository = AppDataSource.getRepository(Language);
@@ -75,24 +106,75 @@ exports.create = async (req, res) => {
 
 exports.save = async (req, res) => {
   try {
+    const userRepository = AppDataSource.getRepository(User);
+    const languageRepository = AppDataSource.getRepository(Language);
+
     const payload = req.body;
+    let { languages } = payload;
+    languages = Array.isArray(languages) ? languages : [languages];
+
+    if (languages && languages.length > 0) {
+      delete payload.languages;
+    }
+
     if (req.file != undefined) {
       const imagePath = `/uploads/${req.file.filename}`;
       payload.photo = imagePath;
     }
     payload.status = 'active';
 
-    const userRepository = AppDataSource.getRepository(User);
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const yy = String(now.getFullYear()).slice(-2);
+    const kabkota_code = payload.kabkota_code;
+    if (!kabkota_code || kabkota_code.length < 4) {
+      throw new Error('Invalid kabkota_code');
+    }
+    const prefix = `${kabkota_code.slice(0, 2)}.${kabkota_code.slice(2, 4)}.${mm}${yy}`;
+    const lastUser = await userRepository
+      .createQueryBuilder('user')
+      .where('user.nip LIKE :prefix', { prefix: `${prefix}%` })
+      .orderBy('user.nip', 'DESC')
+      .getOne();
+
+    let counter = 1;
+    if (lastUser?.nip) {
+      const parts = lastUser.nip.split('.');
+      const serialStr = parts[4]; // "0005"
+      const lastCounter = parseInt(serialStr, 10);
+      counter = isNaN(lastCounter) ? 1 : lastCounter + 1;
+    }
+
+    payload.nip = generateNIP(kabkota_code, mm, yy, counter);
+
+    if (languages && languages.length > 0) {
+      const selectedLanguages = await languageRepository.findBy({
+        language: In(languages),
+      });
+
+      payload.languages = selectedLanguages;
+    }
+
     await userRepository.save(payload);
 
     req.flash('successMessage', 'Data berhasil disimpan');
 
     return res.redirect('/panel/members');
   } catch (error) {
-    console.log(error);
+    console.error(error);
     req.flash('errorMessage', 'Terjadi kesalahan');
 
-    return res.redirect('/panel/members/create');
+    const languageRepository = AppDataSource.getRepository(Language);
+
+    const languages = await languageRepository.find();
+
+    return res.render('pages/panel/members/create', {
+      layout: 'layouts/dashboard',
+      title: 'Members',
+      user: req.body,
+      type: 'create',
+      languages,
+    });
   }
 };
 
@@ -104,6 +186,17 @@ exports.edit = async (req, res) => {
       where: { id },
       relations: ['languages'],
     });
+    const province_name = await fetchProvince(user.province_code);
+    const kabkota_name = await fetchRegency(
+      user.province_code,
+      user.kabkota_code,
+    );
+    const userTransformed = {
+      ...user,
+      province_name,
+      kabkota_name,
+    };
+    console.log({ userTransformed });
 
     const languageRepository = AppDataSource.getRepository(Language);
 
@@ -112,12 +205,15 @@ exports.edit = async (req, res) => {
     return res.render('pages/panel/members/create', {
       layout: 'layouts/dashboard',
       title: 'Members',
-      user,
+      user: userTransformed,
       type: 'edit',
       languages,
     });
   } catch (error) {
-    return res.status(500).send('Error fetching users');
+    console.error(error);
+
+    req.flash('errorMessage', 'Terjadi kesalahan ketika mengambil data user');
+    return res.redirect('/panel/members');
   }
 };
 
@@ -155,15 +251,22 @@ exports.update = async (req, res) => {
   const queryRunner = AppDataSource.createQueryRunner(); // Membuat query runner untuk transaksi
   await queryRunner.startTransaction(); // Mulai transaksi
 
+  const payload = req.body;
+  const { id } = req.params;
   try {
-    const payload = req.body;
-    const { id } = req.params;
     let { languages, specialInterest } = payload;
 
-    languages = Array.isArray(languages) ? languages : [languages];
-    specialInterest = Array.isArray(specialInterest)
-      ? specialInterest
-      : [specialInterest];
+    if (languages && languages != undefined) {
+      languages =
+        languages && Array.isArray(languages) ? languages : [languages];
+    }
+    if (specialInterest && specialInterest != undefined) {
+      specialInterest =
+        specialInterest && Array.isArray(specialInterest)
+          ? specialInterest
+          : [specialInterest];
+    }
+    console.log({ languages, specialInterest });
 
     if (languages && languages.length > 0) {
       delete payload.languages;
@@ -259,11 +362,12 @@ exports.update = async (req, res) => {
     }
     return res.redirect('/panel/members');
   } catch (error) {
-    await queryRunner.rollbackTransaction(); // Rollback transaksi jika ada error
     console.log(error);
+
+    await queryRunner.rollbackTransaction(); // Rollback transaksi jika ada error
     req.flash('errorMessage', 'Terjadi kesalahan');
 
-    return res.redirect('/panel/members/create');
+    return res.redirect(`/panel/members/edit/${id}`);
   } finally {
     await queryRunner.release(); // Pastikan query runner dilepas
   }
@@ -383,5 +487,31 @@ exports.profile = async (req, res) => {
     });
   } catch (error) {
     return res.render('pages/errors/index');
+  }
+};
+
+exports.getUserByKtp = async (req, res) => {
+  try {
+    const no_ktp = req.params.no_ktp;
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({
+      where: { no_ktp },
+      relations: ['languages'],
+    });
+    const province_name = await fetchProvince(user.province_code);
+    const kabkota_name = await fetchRegency(
+      user.province_code,
+      user.kabkota_code,
+    );
+    const userTransformed = {
+      ...user,
+      province_name,
+      kabkota_name,
+    };
+    if (!user) throw new Error('User not found');
+
+    return res.json(userTransformed);
+  } catch (error) {
+    return res.status(404).json({ error: 'User not found' });
   }
 };

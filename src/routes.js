@@ -46,6 +46,7 @@ const {
 const { checkAuthorization } = require('./middlewares/authorization');
 const { multerErrorHandler } = require('./middlewares/multerError');
 
+const apiRoutes = require('./routes/api/index');
 const homeRoutes = require('./routes/home');
 const productMemberRoutes = require('./routes/product');
 const directoryRoutes = require('./routes/directory');
@@ -58,6 +59,7 @@ const multer = require('multer');
 
 module.exports = (app) => {
   app.use('/', homeRoutes);
+  app.use('/api', apiRoutes);
   app.use('/products', productMemberRoutes);
   app.use('/directory', directoryRoutes);
   app.use('/review', reviewRoutes);

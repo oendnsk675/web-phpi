@@ -6,6 +6,10 @@
 		"format": "npx prettier --plugin=prettier-plugin-ejs --write '**/*.{ejs,js}'",
 		"dev": "nodemon",
 		"styles:watch": "sass --watch public/assets/sass/style.scss:public/assets/sass/style.css",
+		"migration:generate": "npm run typeorm migration:generate",
+		"migration:create": "npm run typeorm migration:create",
+		"migration:run": "npm run typeorm migration:run",
+		"migration:revert": "npm run typeorm migration:revert",
 		"seed": "node src/seed/user.seeder.js && node src/seed/language.seeder.js && node src/seed/category.seeder.js && node src/seed/location.seeder.js"
 	},
 	"keywords": [],
