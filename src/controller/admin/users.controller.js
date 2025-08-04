@@ -266,7 +266,6 @@ exports.update = async (req, res) => {
           ? specialInterest
           : [specialInterest];
     }
-    console.log({ languages, specialInterest });
 
     if (languages && languages.length > 0) {
       delete payload.languages;
@@ -300,10 +299,10 @@ exports.update = async (req, res) => {
       throw new Error('User not found');
     }
 
-    // Cek apakah ada perubahan pada languages yang dikirimkan
     if (languages && languages.length > 0) {
-      const existingLanguages = await languageRepository.findBy({
-        language: In(languages),
+      // saat ini ada dua kondisi dalam melakukan pengecekan, dikarnakan di fitur autofield ketika isi no_ktp, input languages send data languages dalam bentuk id, sebaliknya ketika menggunakan fitur edit tanpa autofield languages berisi text language nya.
+      const existingLanguages = await languageRepository.find({
+        where: { language: In(languages) },
       });
 
       const missingLanguages = languages.filter(
@@ -494,6 +493,7 @@ exports.getUserByKtp = async (req, res) => {
   try {
     const no_ktp = req.params.no_ktp;
     const userRepository = AppDataSource.getRepository(User);
+    const languageRepository = AppDataSource.getRepository(Language);
     const user = await userRepository.findOne({
       where: { no_ktp },
       relations: ['languages'],
@@ -509,8 +509,13 @@ exports.getUserByKtp = async (req, res) => {
       kabkota_name,
     };
     if (!user) throw new Error('User not found');
+    const languages = await languageRepository.find();
+    const data = {
+      user: userTransformed,
+      languages,
+    };
 
-    return res.json(userTransformed);
+    return res.json(data);
   } catch (error) {
     return res.status(404).json({ error: 'User not found' });
   }

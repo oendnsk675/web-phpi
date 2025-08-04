@@ -16,6 +16,15 @@ exports.formatPhoneNumber = (phone) => {
   return cleaned;
 };
 
+/**
+ * Format NSK(Nomor Sertifikat Kompetensi) number to comply with the PAR-XXXXX standard
+ * @param {string} nsk - NSK number
+ * @returns {string} Formatted NSK number
+ */
+exports.formatNSK = (nsk) => {
+  return `PAR-${nsk}`;
+};
+
 exports.generateNIP = (kabkota_code, mm, yy, counter) => {
   if (!kabkota_code || kabkota_code.length < 4) {
     throw new Error('Invalid kabkota_code');

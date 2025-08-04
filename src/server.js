@@ -31,7 +31,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(morgan('dev'));
+app.use(
+  morgan('dev', {
+    skip: (req, res) => req.url.startsWith('/assets/'),
+  }),
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));

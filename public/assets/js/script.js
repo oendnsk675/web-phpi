@@ -1512,6 +1512,7 @@
     '.language, .specialInterestSelect2, .availableAreasSelect2, .inclusions, .exclusions, .tag',
   ).select2({
     width: '100%',
+    height: '100%',
     tags: true,
   });
 
@@ -1646,68 +1647,71 @@
           url: `/api/user/by-ktp/${noKtp}`,
           method: 'GET',
           success: function (data) {
+            const user = data.user;
+            const languages = data.languages;
+
             $('#form-member').attr(
               'action',
-              `/panel/members/update/${data.id}`,
+              `/panel/members/update/${user.id}`,
             );
             $('#indicator-fetch-user').text('Success get detail user...');
             $('#btn-submit').text('Edit Member');
 
-            if (data.province_code) {
+            if (user.province_code) {
               $('#province_code')
                 .append(
                   new Option(
-                    data.province_name,
-                    data.province_code,
+                    user.province_name,
+                    user.province_code,
                     true,
                     true,
                   ),
                 )
                 .trigger('change');
             }
-            if (data.kabkota_code) {
+            if (user.kabkota_code) {
               $('#kabkota_code')
                 .append(
-                  new Option(data.kabkota_name, data.kabkota_code, true, true),
+                  new Option(user.kabkota_name, user.kabkota_code, true, true),
                 )
                 .trigger('change');
             }
-            if (data.languages.length > 0) {
-              $('#languages').empty();
-              data.languages.forEach((lang) => {
-                $('#languages')
-                  .append(new Option(lang.language, lang.language, true, true))
-                  .trigger('change');
+            if (languages.length > 0 && user.languages.length > 0) {
+              $('.language').empty();
+              // 1. Tambahkan semua option dulu
+              languages.forEach((lang) => {
+                const option = new Option(lang.language, lang.language);
+                $('#languages').append(option);
               });
+
+              // 2. Ambil semua language milik user
+              const selectedLangs = user.languages.map((l) => l.language);
+
+              // 3. Set selected value secara eksplisit
+              $('.language').val(selectedLangs).trigger('change');
             }
 
-            $('#name').val(data.nama);
-            $('#address').val(data.address);
-            $('#birthday').val(data.birthday);
-            $('#gender').val(data.gender);
-            $('#phone').val(data.no_telp);
-            $('#inputEmail').val(data.email);
-            $('#lastEducation').val(data.lastEducation);
+            $('#name').val(user.nama);
+            $('#address').val(user.address);
+            $('#birthday').val(user.birthday);
+            $('#gender').val(user.gender);
+            $('#phone').val(user.no_telp);
+            $('#inputEmail').val(user.email);
+            $('#lastEducation').val(user.lastEducation);
             $('#trainingCertificationNumber').val(
-              data.trainingCertificationNumber,
+              user.trainingCertificationNumber,
             );
             $('#competencyCertificationNumber').val(
-              data.competencyCertificationNumber,
+              user.competencyCertificationNumber,
             );
-            $('#qualification').val(data.qualification);
-            $('#validUntil').val(data.validUntil);
+            $('#qualification').val(user.qualification);
+            $('#validUntil').val(user.validUntil);
 
-            if (data.languages) {
-              $('#languages')
-                .val(data.languages.map((lang) => lang.id))
-                .trigger('change');
-            }
-
-            if (data.province_code) {
+            if (user.province_code) {
               $('.select-kabkota').prop('disabled', false);
             }
 
-            $('#inputPassword').val(data.password); // Use only if password can be prefilled securely
+            $('#inputPassword').val(user.password); // Use only if password can be prefilled securely
           },
           error: function (error) {
             console.log(error);

@@ -54,6 +54,7 @@ exports.doLogin = async (req, res) => {
       res.redirect('/panel/profile');
     }
   } catch (error) {
+    console.error(error);
     req.flash('errorMessage', 'Terjadi kesalahan');
 
     res.redirect('/login');

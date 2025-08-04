@@ -142,14 +142,18 @@
         </div>
         <div class="col-12 col-lg-6 mb-3">
           <label for="competencyCertificationNumber">Nomor Sertifikat Kompetensi <span style="color: red">*</span></label>
-          <input
-            type="text"
-            name="competencyCertificationNumber"
-            class="form-control"
-            id="competencyCertificationNumber"
-            value="<%= user?.competencyCertificationNumber %>"
-            required
-          />
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">PAR</span>
+            <input
+              type="text"
+              name="competencyCertificationNumber"
+              class="form-control"
+              id="competencyCertificationNumber"
+              value="<%= user?.competencyCertificationNumber %>"
+              aria-describedby="basic-addon1"
+              required
+            />
+          </div>
         </div>
         <div class="col-12 col-lg-6 mb-3">
           <label for="qualification">Kualifikasi/Kompetensi <span style="color: red">*</span></label>
