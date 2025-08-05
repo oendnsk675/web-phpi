@@ -9,6 +9,7 @@ const {
   verify,
   suspend,
   updatePersonalProfile,
+  doDelete,
 } = require('./controller/admin/users.controller');
 
 const {
@@ -109,13 +110,9 @@ module.exports = (app) => {
   app.get('/panel/members/edit/:id', checkAuth, checkAuthorization, edit);
   app.get('/panel/members/verify/:id', checkAuth, checkAuthorization, verify);
   app.get('/panel/members/suspend/:id', checkAuth, checkAuthorization, suspend);
-  app.post('/panel/members/save', checkAuth, upload.single('photo'), save);
-  app.post(
-    '/panel/members/update/:id',
-    checkAuth,
-    upload.single('photo'),
-    update,
-  );
+  app.get('/panel/members/delete/:id', checkAuth, checkAuthorization, doDelete);
+  app.post('/panel/members/save', checkAuth, save);
+  app.post('/panel/members/update/:id', checkAuth, update);
   app.post(
     '/panel/members/update-personal-profile/:id',
     checkAuth,

@@ -45,7 +45,10 @@ exports.doLogin = async (req, res) => {
       return res.redirect('/login');
     }
 
-    req.session.user = user;
+    req.session.user = {
+      ...user,
+      photo: user.photo ? `/uploads/${user.photo}` : null,
+    };
 
     req.flash('successMessage', 'User berhasil login');
     if (user.role == 'admin') {

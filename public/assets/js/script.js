@@ -1,6 +1,18 @@
 (function ($) {
   'use strict';
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
   /*------------------------------------------
         = FUNCTIONS
     -------------------------------------------*/
@@ -2186,5 +2198,220 @@
 
     // Trigger perubahan untuk memperbarui hasil pencarian
     $('#filter-2').trigger('change');
+  });
+
+  // sidebar
+  $(document).on('click', '.wpo-sidebar button', function () {
+    console.log('asdasd');
+
+    $('.wpo-sidebar').toggleClass('active');
+  });
+
+  function updateRuleStatus(selector, status) {
+    const $rule = $(selector);
+    const iconSuccess =
+      '<i class="fa fa-check success" aria-hidden="true"></i>';
+    const iconError = '<i class="fa fa-times error" aria-hidden="true"></i>';
+    const iconWarning =
+      '<i class="fa fa-exclamation warning" aria-hidden="true"></i>';
+
+    // Hapus icon sebelumnya
+    $rule.find('i.fa').remove();
+
+    if (status === 'success') {
+      $rule.removeClass('error warning');
+      $rule.addClass('success');
+      $rule.append(iconSuccess);
+    } else if (status === 'error') {
+      $rule.removeClass('success warning');
+      $rule.addClass('error');
+      $rule.append(iconError);
+    } else if (status === 'warning') {
+      $rule.removeClass('success error');
+      $rule.addClass('warning');
+      $rule.append(iconWarning);
+    } else {
+      $rule.removeClass('success error');
+      $rule.find('i.fa').remove();
+    }
+  }
+
+  // popup image with SweetAlert2
+  $('.trigger-popup').click(function () {
+    Swal.fire({
+      html: `
+        <div class="container-popup">
+          <div class="pop-header">
+            Upload Image
+          </div>
+          <div class="pop-content">
+            <label for="image-input" class="area-dropdown">
+              <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+              <span>Drag and drop or click to upload</span>
+            </label>
+            <input type="file" name="photo" id="image-input" id="photo" />
+            <div class="rules">
+              <h6>YOUR IMAGE MUST BE:</h4>
+              <ul>
+                <li class="rule-size"><span>Less than 1MB in size(required)</span></li>
+                <li class="rule-ratio"><span>Image ratio recomendation(optional): 1:1</span></li>
+                <li class="rule-resolution"><span>Image resolution recommended: 250px x 250px(optional)</span></li>
+                <li class="rule-format"><span>Image format: jpg, png, jpeg(required)</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="progress-container" style="display:none; margin-top:10px; padding: 0px 16px;">
+            <div class="progress-bar-wrapper" style="position: relative; height: 20px; background: #ddd; border-radius: 5px;">
+              <div class="progress-bar" style="width: 0%; height: 100%; background: #4caf50; border-radius: 5px;"></div>
+              <div class="progress-text" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); line-height: 20px; font-size: 12px; color: white;">0%</div>
+            </div>
+          </div>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonColor: '#173966',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirm!',
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      allowEnterKey: true,
+      backdrop: true, // optional
+      preConfirm: () => {
+        return new Promise((resolve, reject) => {
+          const file = $('#image-input')[0].files[0];
+          const hasError = $('.rules li')
+            .toArray()
+            .some((li) => $(li).hasClass('error'));
+
+          if (!file || hasError) {
+            Swal.showValidationMessage(
+              'Please select a valid image before uploading.',
+            );
+            return;
+          }
+
+          // Tampilkan progress bar
+          $('.progress-container').show();
+          $('.progress-bar').css('width', '0%');
+          $('.progress-text').text('0%');
+
+          const formData = new FormData();
+          formData.append('photo', file);
+
+          const xhr = new XMLHttpRequest();
+          const segments = window.location.pathname.split('/');
+          let user_id = segments[segments.length - 1];
+          if (user_id == 'create') user_id = 0;
+          xhr.open('POST', `/api/cdn/photo/${user_id}`); // ganti endpoint kamu
+
+          // Progress bar handler
+          xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+              const percent = Math.round((e.loaded / e.total) * 100);
+              $('.progress-bar').css('width', `${percent}%`);
+              $('.progress-text').text(`${percent}%`);
+            }
+          };
+
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              const response = JSON.parse(xhr.responseText);
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Upload Success',
+                text: 'File uploaded successfully!',
+              });
+              $('.preview-image img').attr('src', URL.createObjectURL(file));
+              $('#photo').val(response.filename);
+              const user_has_login_id = $('#user-id').text();
+              if (user_id == user_has_login_id) {
+                $('.img-container img').attr('src', URL.createObjectURL(file));
+              }
+              $('.progress-text').text(`Yay, file uploaded successfully!`);
+              resolve();
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Upload Failed',
+                text: 'Something went wrong.',
+              });
+              $('.progress-text').text(`Opps, something went wrong!.`);
+              reject();
+            }
+          };
+
+          xhr.onerror = function () {
+            Swal.fire({
+              icon: 'error',
+              title: 'Upload Error',
+              text: 'Network error occurred.',
+            });
+            $('.progress-text').text(`Opps, something went wrong!.`);
+            reject();
+          };
+
+          xhr.send(formData);
+        });
+      },
+      didOpen: () => {
+        // Supaya input file tetap bind setelah render
+        $('#image-input').on('change', function (event) {
+          const file = event.target.files[0];
+          const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+          if (!file) return;
+
+          if (file.size > 1 * 1024 * 1024) {
+            updateRuleStatus('.rule-size', 'error');
+          } else {
+            updateRuleStatus('.rule-size', 'success');
+          }
+
+          if (!allowedTypes.includes(file.type)) {
+            updateRuleStatus('.rule-format', 'error');
+          } else {
+            updateRuleStatus('.rule-format', 'success');
+          }
+
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const image = new Image();
+            image.onload = function () {
+              const { width, height } = image;
+
+              // Ratio 1:1
+              if (width === height) {
+                updateRuleStatus('.rule-ratio', 'success');
+              } else {
+                updateRuleStatus('.rule-ratio', 'warning');
+              }
+
+              // Resolution 250 x 250
+              if (width === 250 && height === 250) {
+                updateRuleStatus('.rule-resolution', 'success');
+              } else {
+                updateRuleStatus('.rule-resolution', 'warning');
+              }
+
+              // Jika semua success baru tampilkan preview
+              const hasError = $('.rules li')
+                .toArray()
+                .some((li) => $(li).hasClass('error'));
+
+              console.log(hasError);
+
+              if (hasError == false) {
+                const previewImage = `<img src="${e.target.result}" class="preview" alt="Preview Image" style="width: 100%; object-fit: cover;" />`;
+                $('.area-dropdown').html(previewImage);
+              }
+            };
+
+            image.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      },
+    });
   });
 })(window.jQuery);
