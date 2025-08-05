@@ -2302,6 +2302,7 @@
           const segments = window.location.pathname.split('/');
           let user_id = segments[segments.length - 1];
           if (user_id == 'create') user_id = 0;
+          if (user_id == 'profile') user_id = $('#user-id').text();
           xhr.open('POST', `/api/cdn/photo/${user_id}`); // ganti endpoint kamu
 
           // Progress bar handler
