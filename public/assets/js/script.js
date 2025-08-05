@@ -1727,7 +1727,7 @@
           },
           error: function (error) {
             console.log(error);
-            resetInputCreateMember();
+            // resetInputCreateMember();
             $('#btn-submit').text('Tambah Member');
             $('#indicator-fetch-user').text('User not found or error');
             console.log('User not found or error');
