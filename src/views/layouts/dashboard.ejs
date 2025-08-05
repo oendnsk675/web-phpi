@@ -3,12 +3,13 @@
 
 <!-- Dynamic content injected here -->
 <body class="wpo-dashboard">
-  <aside class="wpo-sidebar">
+  <aside class="wpo-sidebar active">
     <div class="wpo-sidebar-widget">
       <a href="/" class="wpo-widget-title">
         <img src="/assets/images/Logo-HPI.webp" width="50" alt="Logo HPI" />
         <h6 class="m-0">PHPI</h6>
       </a>
+      <button><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
     </div>
     <hr />
 
@@ -53,19 +54,34 @@
               <span>Products</span>
             </a>
           </li>
-          <li class="<%= currentPage === 'profile' ? 'active' : '' %>">
-            <a href="/panel/profile">
-              <i class="fa fa-user"></i>
-              <span>Profile</span>
-            </a>
-          </li>
         </ul>
       </div>
     </div>
 
-    <div class="wpo-sidebar-widget-logout">
+    <div class="wpo-sidebar-widget-secondary">
       <div class="wpo-widget-menu">
         <ul>
+          <li>
+            <a href="/panel/profile" class="card-user">
+              <div class="img-container">
+                <img
+                  src="<%= session.user?.photo %>"
+                  alt="photo user"
+                  onerror="generateFallbackAvatar(this, '<%= session.user?.nama %>')"
+                />
+              </div>
+              <div class="user-info">
+                <span style="display: none" id="user-id"
+                  ><%= session.user?.id %></span
+                >
+                <span class="title"><%= session.user?.nama %></span>
+                <span class="subtitle"
+                  >NIP:
+                  <%= session.user?.nip || '-' %></span
+                >
+              </div>
+            </a>
+          </li>
           <li>
             <a href="/logout">
               <i class="fa fa-sign-out" aria-hidden="true"></i>

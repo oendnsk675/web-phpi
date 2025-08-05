@@ -11,7 +11,6 @@
       id="form-member"
       action="<%= user && user.id ? `/panel/members/update/${user.id}` : '/panel/members/save' %>"
       method="post"
-      enctype="multipart/form-data"
     >
       <div class="row mb-3">
         <div class="col-12 col-lg-6 mb-3">
@@ -206,11 +205,22 @@
           </div>
         </div>
         <div class="col-12 col-lg-6 mb-3">
-          <label for="photo">Foto 
+          <label for="photo">Foto <span style="font-size: x-small; font-style: italic;">
+            Rekomendasi ukuran (250px x 250px)
+          </span></label>
+          <input type="text" name="photo" class="form-control" id="photo" value="<%= user?.originalPhoto %>" style="display: none">
+          <div class="preview-image mb-3">
+            <img src="<%= user?.photo %>" alt="preview" alt="Preview Image" onerror="generateFallbackAvatar(this, '<%= session.user?.nama %>')"/>
+          </div>
+          <div class="trigger-popup">
+            <div class="label">Choose file</div>
+            <div class="value">No file chosen</div>
+          </div>
+          <!-- <label for="photo">Foto 
             <span style="font-size: x-small; font-style: italic;">
             Rekomendasi ukuran (250px x 250px)
           </span> </label>
-          <input type="file" name="photo" class="form-control" id="photo" />
+          <input type="file" name="photo" class="form-control" id="photo" /> -->
         </div>
       </div>
       <div class="">

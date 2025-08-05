@@ -104,6 +104,52 @@ exports.create = async (req, res) => {
   }
 };
 
+/**
+ * Generates a new NIP (Nomor Induk Pegawai) based on the provided kabkota_code
+ * and an optional old NIP. The function constructs a prefix using the kabkota_code
+ * and the current month and year, then finds the last user with a matching NIP
+ * prefix to determine the next available serial number.
+ *
+ * @param {string} kabkota_code - The code representing the kabupaten/kota, which
+ * must be at least 4 characters long.
+ * @param {string|null} oldNip - An optional existing NIP to consider when generating
+ * the new NIP. If provided, the serial number from the old NIP is used initially.
+ * @returns {Promise<string|Error>} - Returns the newly generated NIP, or an Error
+ * if the kabkota_code is invalid or another error occurs during the process.
+ */
+
+exports.createNIP = async (kabkota_code) => {
+  try {
+    const userRepository = AppDataSource.getRepository(User);
+
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const yy = String(now.getFullYear()).slice(-2);
+    if (!kabkota_code || kabkota_code.length < 4) {
+      throw new Error('Invalid kabkota_code');
+    }
+    const prefix = `${kabkota_code}.${mm}${yy}`;
+    const lastUser = await userRepository
+      .createQueryBuilder('user')
+      .where('user.nip LIKE :prefix', { prefix: `${prefix}%` })
+      .orderBy('user.nip', 'DESC')
+      .getOne();
+
+    let counter = 1;
+    if (lastUser?.nip) {
+      const parts = lastUser.nip.split('.');
+      const serialStr = parts[3];
+      const lastCounter = parseInt(serialStr, 10);
+      counter = isNaN(lastCounter) ? 1 : lastCounter + 1;
+    }
+    let result = generateNIP(kabkota_code, mm, yy, counter);
+
+    return result;
+  } catch (error) {
+    return new Error(error);
+  }
+};
+
 exports.save = async (req, res) => {
   try {
     const userRepository = AppDataSource.getRepository(User);
@@ -117,35 +163,17 @@ exports.save = async (req, res) => {
       delete payload.languages;
     }
 
-    if (req.file != undefined) {
-      const imagePath = `/uploads/${req.file.filename}`;
-      payload.photo = imagePath;
-    }
     payload.status = 'active';
 
-    const now = new Date();
-    const mm = String(now.getMonth() + 1).padStart(2, '0');
-    const yy = String(now.getFullYear()).slice(-2);
-    const kabkota_code = payload.kabkota_code;
-    if (!kabkota_code || kabkota_code.length < 4) {
-      throw new Error('Invalid kabkota_code');
+    const nip = await this.createNIP(payload.kabkota_code);
+    payload.nip = nip;
+    const nipExists = await userRepository.findOneBy({ nip: payload.nip });
+    if (nipExists) {
+      req.flash(
+        'errorMessage',
+        'Terjadi kesalahan generate NIP, silahkan coba lagi!',
+      );
     }
-    const prefix = `${kabkota_code.slice(0, 2)}.${kabkota_code.slice(2, 4)}.${mm}${yy}`;
-    const lastUser = await userRepository
-      .createQueryBuilder('user')
-      .where('user.nip LIKE :prefix', { prefix: `${prefix}%` })
-      .orderBy('user.nip', 'DESC')
-      .getOne();
-
-    let counter = 1;
-    if (lastUser?.nip) {
-      const parts = lastUser.nip.split('.');
-      const serialStr = parts[4]; // "0005"
-      const lastCounter = parseInt(serialStr, 10);
-      counter = isNaN(lastCounter) ? 1 : lastCounter + 1;
-    }
-
-    payload.nip = generateNIP(kabkota_code, mm, yy, counter);
 
     if (languages && languages.length > 0) {
       const selectedLanguages = await languageRepository.findBy({
@@ -193,10 +221,10 @@ exports.edit = async (req, res) => {
     );
     const userTransformed = {
       ...user,
+      photo: user.photo ? `/uploads/${user.photo}` : null,
       province_name,
       kabkota_name,
     };
-    console.log({ userTransformed });
 
     const languageRepository = AppDataSource.getRepository(Language);
 
@@ -247,6 +275,21 @@ exports.suspend = async (req, res) => {
   }
 };
 
+exports.doDelete = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userRepository = AppDataSource.getRepository(User);
+    await userRepository.delete({ id });
+
+    req.flash('successMessage', 'User berhasil di delete!');
+
+    return res.redirect('/panel/members');
+  } catch (error) {
+    req.flash('errorMessage', 'User gagal di delete!');
+    return res.redirect('/panel/members');
+  }
+};
+
 exports.update = async (req, res) => {
   const queryRunner = AppDataSource.createQueryRunner(); // Membuat query runner untuk transaksi
   await queryRunner.startTransaction(); // Mulai transaksi
@@ -275,25 +318,28 @@ exports.update = async (req, res) => {
       delete payload.specialInterest;
     }
 
-    // Cek apakah ada file yang diupload dan simpan gambar
-    if (req.file != undefined) {
-      const imagePath = `/uploads/${req.file.filename}`;
-      payload.photo = imagePath;
-    }
-
     const userRepository = queryRunner.manager.getRepository(User);
     const languageRepository = queryRunner.manager.getRepository(Language);
     const specialInterestRepository =
       queryRunner.manager.getRepository(SpecialInterest);
 
-    // Update data pengguna (kecuali relasi languages)
-    await userRepository.update(id, payload);
-
-    // Ambil user yang akan diupdate
+    // Ambil user yang akan diupdate languages, specialInterest, dan NIP jika ada perubahan kabkota_code
     const user = await userRepository.findOne({
       where: { id: parseInt(id) },
       relations: ['languages', 'specialInterest'],
     });
+
+    if (user.kabkota_code != payload.kabkota_code) {
+      const nip = await this.createNIP(payload.kabkota_code);
+      if (nip instanceof Error) {
+        throw new Error(nip.message);
+      }
+      payload.nip = nip;
+    }
+
+    // Update data pengguna (kecuali relasi languages)
+    Object.assign(user, payload);
+    await userRepository.save(user);
 
     if (!user) {
       throw new Error('User not found');
@@ -517,6 +563,41 @@ exports.getUserByKtp = async (req, res) => {
 
     return res.json(data);
   } catch (error) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+};
+
+exports.uploadFoto = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const userRepository = AppDataSource.getRepository(User);
+
+    const file = req.file;
+    if (!file) throw new Error('File not found');
+
+    if (user_id == 0) {
+      return res.json({
+        message: 'Foto berhasil diupload',
+        filename: file.filename,
+      });
+    }
+    const user = await userRepository.findOne({ where: { id: user_id } });
+    if (!user) throw new Error('User not found');
+
+    user.photo = file.filename;
+
+    if (req.session.user.id == user_id) {
+      req.session.user.photo = `/uploads/${file.filename}`;
+    }
+
+    await userRepository.save(user);
+    return res.json({
+      message: 'Foto berhasil diupload dan disimpan',
+      filename: file.filename,
+    });
+  } catch (error) {
+    console.error(error);
+
     return res.status(404).json({ error: 'User not found' });
   }
 };
