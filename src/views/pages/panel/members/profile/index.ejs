@@ -23,9 +23,25 @@
           <form
           action="<%= user && user.id ? `/panel/members/update/${user.id}` : '/panel/members/save' %>?type=user"
           method="post"
-          enctype="multipart/form-data"
           >
+            <span id="user-id" style="display: none;"><%= user?.id %></span>
             <div class="row mb-3">
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="no_ktp">
+                  No KTP <span style="color: red">*</span> 
+                  <span id="indicator-fetch-user" class="fst-italic text-success" style="font-size: small;">
+                    Loading get detail user...
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  name="no_ktp"
+                  class="form-control"
+                  id="no_ktp"
+                  value="<%= user?.no_ktp %>"
+                  required
+                />
+              </div>
               <div class="col-12 col-lg-6 mb-3">
                 <label for="name">Nama Sesuai KTP <span style="color: red">*</span></label>
                 <input
@@ -36,6 +52,22 @@
                   value="<%= user?.nama %>"
                   required
                 />
+              </div>
+              <div class="col-12 col-lg-6 mb-3" id="form">
+                <label for="province_code">Provinsi <span style="color: red">*</span></label>
+                <select name="province_code" id="province_code" class="select-province" required>
+                  <% if (user?.province_code && user?.province_name) { %>
+                    <option value="<%= user.province_code %>" selected><%= user.province_name %></option>
+                  <% } %>
+                </select>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="kabkota_code">Kota/Kabupaten <span style="color: red">*</span></label>
+                <select name="kabkota_code" id="kabkota_code" class="select-kabkota" <%= user?.kabkota_code && user?.kabkota_name ? '' : 'disabled' %> required>
+                  <% if (user?.kabkota_code && user?.kabkota_name) { %>
+                    <option value="<%= user.kabkota_code %>" selected><%= user.kabkota_name %></option>
+                  <% } %>
+                </select>
               </div>
               <div class="col-12 col-lg-6 mb-3">
                 <label for="address">Alamat Sesuai KTP <span style="color: red">*</span></label>
@@ -166,7 +198,7 @@
               </div>
               <div class="col-12 col-lg-6 mb-3">
                 <label for="specialInterest">Spesial Interest</label>
-                <select class="form-control specialInterestSelect2" name="specialInterest" id="specialInterest" multiple="multiple" required>
+                <select class="form-control specialInterestSelect2" name="specialInterest" id="specialInterest" multiple="multiple">
                   <% specialInterest.forEach(data => { %>
                     <option value="<%= data.name %>" 
                       <%= user?.specialInterest.some(data_ => data_.id === data.id) ? 'selected' : '' %>>
@@ -193,11 +225,17 @@
                 </div>
               </div>
               <div class="col-12 col-lg-6 mb-3">
-                <label for="photo">Foto 
-                  <span style="font-size: x-small; font-style: italic;">
+                <label for="photo">Foto <span style="font-size: x-small; font-style: italic;">
                   Rekomendasi ukuran (250px x 250px)
-                </span> </label>
-                <input type="file" name="photo" class="form-control" id="photo" />
+                </span></label>
+                <input type="text" name="photo" class="form-control" id="photo" value="<%= user?.originalPhoto %>" style="display: none">
+                <div class="preview-image mb-3">
+                  <img src="<%= user?.photo %>" alt="preview" alt="Preview Image" onerror="generateFallbackAvatar(this, '<%= session.user?.nama %>')"/>
+                </div>
+                <div class="trigger-popup">
+                  <div class="label">Choose file</div>
+                  <div class="value">No file chosen</div>
+                </div>
               </div>
             </div>
             <div class="">

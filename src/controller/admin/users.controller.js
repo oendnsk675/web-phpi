@@ -221,7 +221,8 @@ exports.edit = async (req, res) => {
     );
     const userTransformed = {
       ...user,
-      photo: user.photo ? `/uploads/${user.photo}` : null,
+      originalPhoto: user.photo,
+      photo: user.photo ? `/uploads/photos/${user.photo}` : null,
       province_name,
       kabkota_name,
     };
@@ -335,6 +336,7 @@ exports.update = async (req, res) => {
         throw new Error(nip.message);
       }
       payload.nip = nip;
+      req.session.user.nip = nip;
     }
 
     // Update data pengguna (kecuali relasi languages)
@@ -506,7 +508,18 @@ exports.profile = async (req, res) => {
     const availableAreas =
       await AppDataSource.getRepository(UserAvailableAreas).find();
 
+    const province_name = await fetchProvince(user.province_code);
+    const kabkota_name = await fetchRegency(
+      user.province_code,
+      user.kabkota_code,
+    );
+
     user.qr_url = `${process.env.APP_URL}/profile/${user.id}`;
+    user.originalPhoto = user.photo;
+    user.photo = user.photo ? `/uploads/photos/${user.photo}` : null;
+
+    user.province_name = province_name;
+    user.kabkota_name = kabkota_name;
 
     const memberCard = await createMemberCard({
       id: user.id,
@@ -516,6 +529,8 @@ exports.profile = async (req, res) => {
       qrData: user.qr_url,
       photo: user.photo,
       status: user.status,
+      nip: user.nip,
+      no_ktp: user.no_ktp,
     });
     if (memberCard) {
       user.memberCard = `${process.env.APP_URL}/uploads/member-card/${user.id}.png`;
@@ -531,7 +546,10 @@ exports.profile = async (req, res) => {
       type: 'edit',
     });
   } catch (error) {
-    return res.render('pages/errors/index');
+    console.error(error);
+    req.flash('errorMessage', 'Terjadi kesalahan mengambil data!');
+    return;
+    // return res.render('pages/errors/index');
   }
 };
 
@@ -587,7 +605,7 @@ exports.uploadFoto = async (req, res) => {
     user.photo = file.filename;
 
     if (req.session.user.id == user_id) {
-      req.session.user.photo = `/uploads/${file.filename}`;
+      req.session.user.photo = `/uploads/photos/${file.filename}`;
     }
 
     await userRepository.save(user);

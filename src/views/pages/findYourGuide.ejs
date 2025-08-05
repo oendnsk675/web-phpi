@@ -9,7 +9,10 @@
   <!-- start wpo-page-title -->
   <section
     class="wpo-page-title"
-    style="background: url(/assets/images/banner/member.jpg) no-repeat center top / cover"
+    style="
+      background: url(/assets/images/banner/member.jpg) no-repeat center top /
+        cover;
+    "
   >
     <div class="container">
       <div class="row">
@@ -38,25 +41,26 @@
         <div class="col col-xs-12">
           <div class="wpo-section-title">
             <h2>
-              Gunakan alat "Find Your Guide" kami untuk menemukan pemandu yang sempurna untuk tur
-              Anda di Indonesia!
+              Use our "Find Your Guide" tool to find the perfect guide for your
+              tour in Indonesia!
             </h2>
           </div>
           <div class="wpo-section-description">
             <p>
-              Gunakan <b>"Find Your Guide"</b> untuk menemukan pemandu yang sempurna untuk tur anda
-              di indonesia!
+              Use our <b>"Find Your Guide"</b> tool to find the perfect guide
+              for your tour in Indonesia!
             </p>
             <p>
-              Tools <b>"Find Your Guide"</b> akan membantu Anda menemukan pemandu di indonesia yang
-              tersedia untuk tanggal yang Anda pilih.
+              Our <b>"Find Your Guide"</b> tool will help you find a guide in
+              Indonesia who is available for the date you choose.
             </p>
             <p>
-              Memilih jenis tur, bahasa, dan minat khusus anda akan membantu anda menemukan pemandu
-              yang sempurna untuk tur impian anda di Kota seluruh Indonesia.
+              Selecting the type of tour, language, and special interests will
+              help you find the perfect guide for your dream tour in any city in
+              Indonesia.
             </p>
-            <p>Bingung harus mulai dari mana?</p>
-            <p>Cukup klik tombol cari di bawah untuk melihat semua pemandu kami.</p>
+            <p>Not sure where to start?</p>
+            <p>Just click the search button below to see all of our guides.</p>
           </div>
         </div>
       </div>
@@ -89,10 +93,16 @@
                       <span class="input-group-text" id="addon-wrapping">
                         <i class="fa fa-language" aria-hidden="true"></i>
                       </span>
-                      <select name="language" id="language" class="form-control">
+                      <select
+                        name="language"
+                        id="language"
+                        class="form-control"
+                      >
                         <option value="">Search by language</option>
                         <% dataLanguage.forEach((lang) => { %>
-                        <option value="<%= lang.language %>"><%= lang.language %></option>
+                        <option value="<%= lang.language %>">
+                          <%= lang.language %>
+                        </option>
                         <% }) %>
                       </select>
                     </div>
@@ -104,10 +114,16 @@
                       <span class="input-group-text" id="addon-wrapping">
                         <i class="fa fa-compass" aria-hidden="true"></i>
                       </span>
-                      <select name="category" id="category" class="form-control">
+                      <select
+                        name="category"
+                        id="category"
+                        class="form-control"
+                      >
                         <option value="">Search by category</option>
                         <% dataCategory.forEach((data) => { %>
-                        <option value="<%= data.name %>"><%= data.name %></option>
+                        <option value="<%= data.name %>">
+                          <%= data.name %>
+                        </option>
                         <% }) %>
                       </select>
                     </div>
@@ -119,10 +135,16 @@
                       <span class="input-group-text" id="addon-wrapping">
                         <i class="fa fa-star" aria-hidden="true"></i>
                       </span>
-                      <select name="specialInterest" id="specialInterest" class="form-control">
+                      <select
+                        name="specialInterest"
+                        id="specialInterest"
+                        class="form-control"
+                      >
                         <option value="">Search by special interest</option>
                         <% dataSpecialInterest.forEach((data) => { %>
-                        <option value="<%= data.name %>"><%= data.name %></option>
+                        <option value="<%= data.name %>">
+                          <%= data.name %>
+                        </option>
                         <% }) %>
                       </select>
                     </div>
@@ -145,7 +167,9 @@
                   </div>
                 </div>
                 <div class="col-12">
-                  <button type="submit" class="theme-btn-sm w-100">Search</button>
+                  <button type="submit" class="theme-btn-sm w-100">
+                    Search
+                  </button>
                 </div>
               </div>
             </form>

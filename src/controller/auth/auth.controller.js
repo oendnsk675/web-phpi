@@ -47,7 +47,7 @@ exports.doLogin = async (req, res) => {
 
     req.session.user = {
       ...user,
-      photo: user.photo ? `/uploads/${user.photo}` : null,
+      photo: user.photo ? `/uploads/photos/${user.photo}` : null,
     };
 
     req.flash('successMessage', 'User berhasil login');

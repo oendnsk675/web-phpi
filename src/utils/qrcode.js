@@ -3,6 +3,30 @@ const QRCode = require('qrcode');
 const fs = require('fs');
 const path = require('path');
 
+function drawImageCover(ctx, img, x, y, w, h) {
+  const imgRatio = img.width / img.height;
+  const targetRatio = w / h;
+
+  let drawWidth = w;
+  let drawHeight = h;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  if (imgRatio > targetRatio) {
+    // Image is wider, crop sides
+    drawHeight = h;
+    drawWidth = h * imgRatio;
+    offsetX = (drawWidth - w) / 2;
+  } else {
+    // Image is taller, crop top/bottom
+    drawWidth = w;
+    drawHeight = w / imgRatio;
+    offsetY = (drawHeight - h) / 2;
+  }
+
+  ctx.drawImage(img, x - offsetX, y - offsetY, drawWidth, drawHeight);
+}
+
 /**
  * Generates a member card image with the provided member information.
  * The card includes the member's name, ID, a QR code, and a photo.
@@ -15,6 +39,8 @@ const path = require('path');
  * @param {string} memberInfo.name - The name of the member.
  * @param {string} memberInfo.status - The name of the member.
  * @param {string} memberInfo.photo - The name of the member.
+ * @param {string} memberInfo.nip - The name of the member.
+ * @param {string} memberInfo.no_ktp - The name of the member.
  * @param {string} memberInfo.qrData - Data to encode in the member's QR code.
  *
  * @returns {Promise<void>} A promise that resolves when the member card has been created and saved.
@@ -46,9 +72,9 @@ exports.createMemberCard = async (memberInfo) => {
     ctx.fillText(memberInfo.name, 300, 600); // Posisi teks ID
     ctx.textAlign = 'start';
     ctx.font = '25px Arial';
-    ctx.fillText(`NIP     : -`, 60, 660); // Posisi teks ID
+    ctx.fillText(`NIP     : ${memberInfo.nip}`, 60, 660); // Posisi teks ID
     ctx.fillText(`NSP/Reg : -`, 60, 700); // Posisi teks nama
-    ctx.fillText(`No KTPP : -`, 60, 740); // Posisi teks nama
+    ctx.fillText(`No KTP : ${memberInfo.no_ktp}`, 60, 740); // Posisi teks nama
 
     // Render QR code
     const qrCodeData = await QRCode.toDataURL(memberInfo.qrData, {
@@ -63,13 +89,33 @@ exports.createMemberCard = async (memberInfo) => {
     if (memberInfo.photo != null) {
       photoPath = path.join(__dirname, '..', '..', memberInfo.photo);
       if (!fs.existsSync(photoPath)) {
-        photoPath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'user.png');
+        photoPath = path.join(
+          __dirname,
+          '..',
+          '..',
+          'public',
+          'assets',
+          'images',
+          'user.png',
+        );
       }
     } else {
-      photoPath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'user.png');
+      photoPath = path.join(
+        __dirname,
+        '..',
+        '..',
+        'public',
+        'assets',
+        'images',
+        'user.png',
+      );
     }
     const photo = await loadImage(photoPath);
-    ctx.drawImage(photo, (width - 250) / 2, 240, 250, 250);
+    const photoX = (width - 250) / 2;
+    const photoY = 240;
+    const photoW = 250;
+    const photoH = 250;
+    drawImageCover(ctx, photo, photoX, photoY, photoW, photoH);
 
     // Simpan gambar ke file
     const outputFilePath = path.join(
