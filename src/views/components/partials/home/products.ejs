@@ -1,58 +1,32 @@
-<section class="wpo-service-section">
+<section class="phpi-home-products">
   <div class="container">
-    <div class="service-wrapper section-padding">
-      <div class="row">
-        <div class="col col-xs-12">
-          <div class="wpo-section-title">
-            <%- include('../../ui/shape-blue') %>
-            <span
-              ><i class="fa fa-plus" aria-hidden="true"></i> WHAT WE DO
-              <i class="fa fa-plus" aria-hidden="true"></i
-            ></span>
-            <h2>Products</h2>
-          </div>
-        </div>
+    <div class="phpi-section-heading">
+      <div>
+        <span>Travel Products</span>
+        <h2>Experiences crafted from local knowledge.</h2>
       </div>
-
-      <div class="service-grids">
-        <div class="row mb-5">
-          <div class="col col-xs-12 sortable-project">
-            <div class="service-slider owl-carousel">
-              <% products.forEach(product => { %>
-              <div>
-                <div class="grid">
-                  <div class="service-img">
-                    <img
-                      src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/shop-single/thumb/img-1.jpg' %>"
-                      alt="<%= product %>"
-                    />
-                  </div>
-                  <div class="service-text">
-                    <h2><%= product.name %></h2>
-                    <p class=""><%= product.price %></p>
-                    <a class="service-btn" href="/products/<%= product.id %>">
-                      Detail
-                      <i
-                        class="fa fa-angle-double-right"
-                        aria-hidden="true"
-                      ></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <% }) %>
-            </div>
-          </div>
+      <a href="/products">
+        View all products
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div class="phpi-product-grid">
+      <% products.slice(0, 4).forEach((product, index) => { %>
+      <a href="/products/<%= product.id %>" class="phpi-product-card">
+        <span class="phpi-card-index">0<%= index + 1 %></span>
+        <div class="phpi-product-img">
+          <img
+            src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/shop-single/thumb/img-1.jpg' %>"
+            alt="<%= product.name %>"
+          />
         </div>
-        <div class="col col-xs-12 d-flex justify-content-center">
-          <div class="wpo-service-btn">
-            <a class="theme-btn" href="/products"
-              >All Products
-              <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            </a>
-          </div>
+        <div class="phpi-product-body">
+          <span><%= product.category %></span>
+          <h3><%= product.name %></h3>
+          <p><%= product.price %></p>
         </div>
-      </div>
+      </a>
+      <% }) %>
     </div>
   </div>
 </section>

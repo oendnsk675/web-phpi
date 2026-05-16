@@ -1,135 +1,50 @@
-<header id="header" class="site-header header-style-1">
-  <div class="topbar">
-    <div class="container w-100">
-      <div class="px-2 w-100">
-        <div class="w-100 topbar-item-container">
-          <div class="site-logo">
-            <a href="/" class="d-flex gap-2 align-items-center">
-              <div class="logo-1 d-flex align-items-center gap-2">
-                <img
-                  src="/assets/images/Logo-HPI.webp"
-                  alt="Logo-HPI"
-                  width="90"
-                />
-                <p class="d-flex flex-column w-100 m-0 fw-bold">
-                  HIMPUNAN <br />
-                  PRAMUWISATA INDONESIA
-                </p>
-              </div>
-              <img
-                src="/assets/images/Logo-HPI.webp"
-                alt="Logo-HPI"
-                width="70"
-                class="logo-2"
-              />
-            </a>
-          </div>
+<header id="header" class="site-header phpi-public-header">
+  <nav class="navigation navbar navbar-expand-lg">
+    <div class="container phpi-nav-container">
+      <a href="/" class="phpi-nav-brand" aria-label="PHPI Home">
+        <img src="/assets/images/Logo-HPI.webp" alt="Logo HPI" />
+        <span>
+          <small>Himpunan Pramuwisata Indonesia</small>
+        </span>
+      </a>
 
-          <button class="open-btn">
-            <i class="fa fa-bars" aria-hidden="true"></i>
-          </button>
-        </div>
-        <div class="col col-lg-10 col-md-9 col-12 d-none">
-          <div class="contact-intro">
-            <div class="contact-info">
-              <a href="tel:+4733378901">
-                <ul>
-                  <li>
-                    <i class="fa fa-phone" aria-hidden="true"></i>
-                  </li>
-                  <li>
-                    <div class="contact-dete">
-                      <span>Call Us Today</span>
-                      <p>+88 5697 - 45 - 683</p>
-                    </div>
-                  </li>
-                </ul>
-              </a>
-            </div>
-            <div class="contact-info">
-              <ul>
-                <li>
-                  <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                </li>
-                <li>
-                  <div class="contact-dete">
-                    <span>E-mail Address</span>
-                    <p>example@solun.com</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- end container -->
-  </div>
-  <!-- end topbar -->
-  <nav class="navigation navbar navbar-expand-lg navbar-light">
-    <div class="container">
+      <button class="open-btn phpi-nav-toggle" aria-label="Open navigation">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </button>
+
       <div id="navbar" class="collapse navbar-collapse navigation-holder">
-        <button class="close-navbar"><i class="fa fa-close"></i></button>
-        <ul class="nav navbar-nav">
-          <li class=""><a href="/">Home</a></li>
-          <li class="">
-            <a href="/about">Tentang Kami</a>
-            <!-- <ul class="sub-menu">
-              <li><a href="/history">Sejarah</a></li>
-              <li><a href="/vision-mission">Visi & Misi</a></li>
-              <li><a href="/contribute">Kontribusi</a></li>
-            </ul> -->
-          </li>
-          <li class="">
-            <a href="/directory">Direktori</a>
-          </li>
-          <li class="">
-            <a href="/blogs">Blogs</a>
-          </li>
-          <li class="">
-            <a href="/members">Member</a>
-          </li>
-          <li class="">
-            <a href="/products">Produk</a>
-          </li>
-          <li class="">
-            <a href="/find-your-guide">Find Your Guide</a>
-          </li>
-          <li class="d-none"><a href="contact">Kontak</a></li>
+        <button class="close-navbar" aria-label="Close navigation">
+          <i class="fa fa-close"></i>
+        </button>
+        <ul class="nav navbar-nav phpi-nav-menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">Tentang Kami</a></li>
+          <li><a href="/directory">Direktori</a></li>
+          <li><a href="/blogs">Blogs</a></li>
+          <li><a href="/members">Member</a></li>
+          <li><a href="/products">Produk</a></li>
+          <li><a href="/find-your-guide">Find Your Guide</a></li>
           <% if (session.user) { %>
           <li class="item-add-on"><a href="/panel/profile">Go to Panel</a></li>
           <li class="item-add-on"><a href="/logout">Logout</a></li>
           <% } else { %>
           <li class="item-add-on"><a href="/login">Login</a></li>
+          <li class="item-add-on"><a href="/register">Register</a></li>
           <% } %>
         </ul>
       </div>
-      <!-- end of nav-collapse -->
-      <div class="search-quote">
-        <div class="quote">
-          <% if (session.user) { %>
-          <div class="dropdown">
-            <button
-              class="theme-btn dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i class="fa fa-bars m-0 p-0" aria-hidden="true"></i>
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="/panel/profile" class="dropdown-item">Go to Panel</a>
-              </li>
-              <li><a class="dropdown-item" href="/logout">Logout</a></li>
-            </ul>
-          </div>
-          <% } else { %>
-          <a href="/login" class="theme-btn">Login</a>
-          <% } %>
-        </div>
+      <button class="phpi-nav-backdrop" aria-label="Close menu"></button>
+
+      <div class="phpi-nav-actions">
+        <% if (session.user) { %>
+        <a href="/panel/profile" class="phpi-nav-cta phpi-nav-cta-light"
+          >Go to Panel</a
+        >
+        <% } else { %>
+        <a href="/login" class="phpi-nav-link">Login</a>
+        <a href="/register" class="phpi-nav-cta">Register</a>
+        <% } %>
       </div>
     </div>
-    <!-- end of container -->
   </nav>
 </header>

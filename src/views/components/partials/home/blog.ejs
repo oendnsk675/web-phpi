@@ -1,44 +1,34 @@
-<section class="wpo-blog-section section-padding">
-  <div class="container-fluid">
-    <div class="row align-items-center">
-      <div class="col-lg-6 col">
-        <div class="wpo-section-title">
-          <span
-            ><i class="fa fa-plus" aria-hidden="true"></i> ARTIKEL
-            <i class="fa fa-plus" aria-hidden="true"></i
-          ></span>
-          <h2>
-            Baca blog dan artikel terbaru terkait solusi pariwisata dari sini.
-          </h2>
-        </div>
+<section class="phpi-home-blog">
+  <div class="container">
+    <div class="phpi-section-heading">
+      <div>
+        <span>Articles</span>
+        <h2>Latest notes from the world of guiding and tourism.</h2>
       </div>
-      <div class="col-lg-6">
-        <div class="blog-grids">
-          <div class="row">
-            <% posts.forEach(post => { %>
-            <div class="col-lg-6 col-md-6 col-12">
-              <div class="grid">
-                <div class="blog-img">
-                  <img src="<%= post.thumbnail %>" alt="" />
-                </div>
-                <div class="text">
-                  <span><%= post.createdAt %></span>
-                  <h2>
-                    <%= post.title %>
-                  </h2>
-                  <a class="blog-btn" href="/blogs/<%= post.id %>">
-                    Read More<i
-                      class="fa fa-angle-double-right"
-                      aria-hidden="true"
-                    ></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <% }) %>
-          </div>
+      <a href="/blogs">
+        All articles
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div class="phpi-blog-grid">
+      <% posts.forEach(post => { %>
+      <article class="phpi-blog-card">
+        <a href="/blogs/<%= post.id %>" class="phpi-blog-img">
+          <img src="<%= post.thumbnail %>" alt="<%= post.title %>" />
+        </a>
+        <div class="phpi-blog-body">
+          <span><%= post.createdAt %></span>
+          <h3><a href="/blogs/<%= post.id %>"><%= post.title %></a></h3>
+          <% if (post.summary) { %>
+          <p><%= post.summary %></p>
+          <% } %>
+          <a href="/blogs/<%= post.id %>" class="phpi-inline-link">
+            Read More
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </a>
         </div>
-      </div>
+      </article>
+      <% }) %>
     </div>
   </div>
 </section>

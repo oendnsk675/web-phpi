@@ -1,0 +1,139 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="mb-1 d-grid">
+    <div class="mb-4 col-12">
+      <h4>Manage Card Member</h4>
+      <p class="mb-0">Manage card member here!</p>
+    </div>
+  </div>
+
+  <!-- Editor Area -->
+  <div class="p-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <!-- Sidebar kiri: Tools -->
+          <div class="col-2 border-end">
+            <div class="d-flex flex-column gap-2">
+              <button
+                id="add-text-btn"
+                class="btn btn-sm btn-outline-primary w-100"
+              >
+                Tambah Text
+              </button>
+              <button
+                id="add-image-btn"
+                class="btn btn-sm btn-outline-primary w-100"
+              >
+                Tambah Gambar
+              </button>
+              <button
+                id="add-qr-btn"
+                class="btn btn-sm btn-outline-primary w-100"
+              >
+                Tambah QR
+              </button>
+            </div>
+          </div>
+
+          <div id="container-area-dropdown" class="col-6">
+            <label for="bg-image-canvas" class="area-dropdown">
+              <span>Upload background first!</span>
+            </label>
+            <input class="d-none" type="file" id="bg-image-canvas" />
+          </div>
+
+          <div id="container-canvas" class="d-none col-6">
+            <div class="d-flex justify-content-center align-items-center">
+              <canvas
+                id="c"
+                width="500"
+                height="300"
+                style="border: 1px solid #ccc"
+              ></canvas>
+            </div>
+          </div>
+
+          <!-- Sidebar kanan: Properties (opsional) -->
+          <div class="col-4">
+            <div id="properties-panel" class="card p-3">
+              <h5>Properties</h5>
+
+              <!-- Textbox props -->
+              <div id="text-props row">
+                <hr class="my-2 w-100" />
+                <label class="form-label">Content</label>
+                <input
+                  type="text"
+                  id="prop-text-content"
+                  class="form-control form-control-sm mb-2"
+                />
+                <div class="row col-12">
+                  <div class="col-6">
+                    <label class="form-label">Font Size</label>
+                    <input
+                      type="number"
+                      id="prop-text-size"
+                      class="form-control form-control-sm"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label">Text Align</label>
+                    <div class="btn-group" role="group">
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        onclick="setTextAlign('left')"
+                      >
+                        Left
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        onclick="setTextAlign('center')"
+                      >
+                        Center
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        onclick="setTextAlign('right')"
+                      >
+                        Right
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <label class="form-label">Color</label>
+                    <input
+                      type="color"
+                      id="prop-text-color"
+                      class="form-control form-control-color w-100"
+                      value="#000000"
+                    />
+                  </div>
+                  <div class="col-6 d-flex gap-2">
+                    <button
+                      id="prop-bold"
+                      class="btn btn-sm btn-outline-secondary"
+                    >
+                      Bold
+                    </button>
+                    <button
+                      id="prop-italic"
+                      class="btn btn-sm btn-outline-secondary"
+                    >
+                      Italic
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -378,3 +378,151 @@
     top: -10%;
   }
 }
+
+.phpi-public-footer {
+  background: $theme-secondary-color;
+  color: rgba($white, 0.76);
+  padding: 88px 0 0;
+  position: relative;
+
+  .phpi-footer-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 1.4fr) 0.8fr 0.8fr 1.05fr;
+    gap: 68px;
+    padding-bottom: 82px;
+  }
+
+  .phpi-footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    color: $white;
+    font-family: $heading-font;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 28px;
+
+    img {
+      width: 62px;
+      height: 62px;
+      object-fit: contain;
+    }
+  }
+
+  p {
+    color: rgba($white, 0.68);
+    font-size: 15px;
+    line-height: 1.9;
+    margin: 0;
+  }
+
+  .phpi-footer-social {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+
+    a {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba($white, 0.16);
+      border-radius: 50%;
+      color: $white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: $theme-primary-color;
+        border-color: $theme-primary-color;
+      }
+    }
+  }
+
+  .phpi-footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+
+    h3 {
+      color: $orange;
+      font-family: $base-font;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    a {
+      color: rgba($white, 0.78);
+      font-size: 15px;
+
+      &:hover {
+        color: $small-white;
+      }
+    }
+  }
+
+  .phpi-footer-newsletter {
+    form {
+      border: 1px solid rgba($white, 0.18);
+      display: grid;
+      grid-template-columns: 1fr 48px;
+      margin-top: 20px;
+
+      input {
+        background: transparent;
+        border: 0;
+        color: $white;
+        height: 48px;
+        padding: 0 16px;
+        outline: none;
+
+        &::placeholder {
+          color: rgba($white, 0.5);
+        }
+      }
+
+      button {
+        background: $theme-primary-color;
+        border: 0;
+        color: $white;
+      }
+    }
+  }
+
+  .phpi-footer-bottom {
+    border-top: 1px solid rgba($white, 0.1);
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 26px 0;
+
+    p,
+    span {
+      color: rgba($white, 0.48);
+      font-size: 13px;
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .phpi-footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 42px;
+    }
+
+    .phpi-footer-bottom {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 575px) {
+    padding-top: 64px;
+
+    .phpi-footer-grid {
+      grid-template-columns: 1fr;
+      padding-bottom: 58px;
+    }
+  }
+}

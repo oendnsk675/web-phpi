@@ -66,7 +66,8 @@ exports.getAll = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const categoryRepository = AppDataSource.getRepository(Category);
-    const productServiceRepository = AppDataSource.getRepository(ProductService);
+    const productServiceRepository =
+      AppDataSource.getRepository(ProductService);
     const locationsRepository = AppDataSource.getRepository(ProductLocation);
     const categories = await categoryRepository.find();
     const productServices = await productServiceRepository.find();
@@ -94,8 +95,16 @@ exports.save = async (req, res) => {
     const files = req.files;
     let { inclusions, exclusions } = payload;
 
-    inclusions = inclusions ? (Array.isArray(inclusions) ? inclusions : [inclusions]) : [];
-    exclusions = exclusions ? (Array.isArray(exclusions) ? exclusions : [exclusions]) : [];
+    inclusions = inclusions
+      ? Array.isArray(inclusions)
+        ? inclusions
+        : [inclusions]
+      : [];
+    exclusions = exclusions
+      ? Array.isArray(exclusions)
+        ? exclusions
+        : [exclusions]
+      : [];
 
     delete payload.inclusions;
     delete payload.exclusions;
@@ -120,7 +129,8 @@ exports.save = async (req, res) => {
     const productRepository = AppDataSource.getRepository(Product);
     const savedProduct = await productRepository.save(payload);
 
-    const productServiceRepository = AppDataSource.getRepository(ProductService);
+    const productServiceRepository =
+      AppDataSource.getRepository(ProductService);
     const servicesToInsert = [];
 
     // Handle inclusions
@@ -168,12 +178,14 @@ exports.save = async (req, res) => {
     // Handle itineraries if provided
     if (payload.itineraries && Array.isArray(payload.itineraries)) {
       const itineraryRepository = AppDataSource.getRepository(Itinerary);
-      const itinerariesToInsert = payload.itineraries.map((itineraryData, index) => ({
-        title: itineraryData.title,
-        description: itineraryData.description,
-        time: itineraryData.time,
-        product: savedProduct,
-      }));
+      const itinerariesToInsert = payload.itineraries.map(
+        (itineraryData, index) => ({
+          title: itineraryData.title,
+          description: itineraryData.description,
+          time: itineraryData.time,
+          product: savedProduct,
+        }),
+      );
 
       if (itinerariesToInsert.length > 0) {
         await itineraryRepository.save(itinerariesToInsert);
@@ -193,16 +205,25 @@ exports.edit = async (req, res) => {
   try {
     const id = req.params.id;
     const productRepository = AppDataSource.getRepository(Product);
-    const productServiceRepository = AppDataSource.getRepository(ProductService);
+    const productServiceRepository =
+      AppDataSource.getRepository(ProductService);
     const product = await productRepository
       .findOne({
         where: { id },
-        relations: ['banners', 'category', 'productServices', 'itineraries', 'location'],
+        relations: [
+          'banners',
+          'category',
+          'productServices',
+          'itineraries',
+          'location',
+        ],
       })
       .then((product) => {
         return {
           ...product,
-          banners: product.banners.map((banner) => `${process.env.APP_URL}${banner.path}`),
+          banners: product.banners.map(
+            (banner) => `${process.env.APP_URL}${banner.path}`,
+          ),
         };
       });
     const categoryRepository = AppDataSource.getRepository(Category);
@@ -237,8 +258,16 @@ exports.update = async (req, res) => {
     const { id } = req.params;
     let { inclusions, exclusions, itineraries } = payload;
 
-    inclusions = inclusions ? (Array.isArray(inclusions) ? inclusions : [inclusions]) : [];
-    exclusions = exclusions ? (Array.isArray(exclusions) ? exclusions : [exclusions]) : [];
+    inclusions = inclusions
+      ? Array.isArray(inclusions)
+        ? inclusions
+        : [inclusions]
+      : [];
+    exclusions = exclusions
+      ? Array.isArray(exclusions)
+        ? exclusions
+        : [exclusions]
+      : [];
 
     delete payload.inclusions;
     delete payload.exclusions;
@@ -257,7 +286,8 @@ exports.update = async (req, res) => {
     }
 
     const productRepository = queryRunner.manager.getRepository(Product);
-    const productServiceRepository = queryRunner.manager.getRepository(ProductService);
+    const productServiceRepository =
+      queryRunner.manager.getRepository(ProductService);
 
     // Update data product
     await productRepository.update(id, payload);

@@ -412,3 +412,11 @@ a {
   height: 37px !important;
   top: 0 !important;
 }
+
+.container,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl {
+  max-width: 1372px !important;
+}

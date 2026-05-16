@@ -7,20 +7,36 @@
   <!-- end of header -->
 
   <!-- start wpo-page-title -->
-  <section class="wpo-page-title" style="background: url(/assets/images/banner/product.webp) no-repeat center top / cover">
+  <section
+    class="wpo-page-title"
+    style="
+      background: url(/assets/images/banner/product.webp) no-repeat center top /
+        cover;
+    "
+  >
     <div class="container">
       <div class="row">
         <div class="col col-xs-12">
           <div class="wpo-search-section">
             <h3>Customizable Private Tours with Local Tour Guides</h3>
-            <span class="subtitle">Choose Local Tour Guides at the Destination of Your Choice. Simply Message Them To Personalize Your Tour!</span>
+            <span class="subtitle"
+              >Choose Local Tour Guides at the Destination of Your Choice.
+              Simply Message Them To Personalize Your Tour!</span
+            >
 
             <form action="/products/search" method="get">
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
                   <i class="fa fa-search" aria-hidden="true"></i>
                 </span>
-                <input type="text" name="search" class="form-control" placeholder="Where to?" aria-label="Where to?" aria-describedby="addon-wrapping" />
+                <input
+                  type="text"
+                  name="search"
+                  class="form-control"
+                  placeholder="Where to?"
+                  aria-label="Where to?"
+                  aria-describedby="addon-wrapping"
+                />
               </div>
             </form>
           </div>
@@ -43,7 +59,10 @@
             <div class="grid-item">
               <div class="img-container">
                 <div class="img-holder">
-                  <img src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> " alt="image" />
+                  <img
+                    src="<%= product.banners.length > 0 ? product.banners[0] : '/assets/images/shop/1.jpg'%> "
+                    alt="image"
+                  />
                 </div>
                 <div class="img-mini">
                   <% product?.banners?.forEach(image => { %>
@@ -58,8 +77,12 @@
                   <span><%= product.name %></span>
                 </h3>
                 <div class="metadata">
-                  <span class="badge text-bg-secondary"><%= product?.location?.name %></span>
-                  <span class="badge text-bg-secondary"><%= product.serviceTime %></span>
+                  <span class="badge text-bg-secondary"
+                    ><%= product?.location?.name %></span
+                  >
+                  <span class="badge text-bg-secondary"
+                    ><%= product.serviceTime %></span
+                  >
                 </div>
                 <span class="description"> <%= product.description %> </span>
                 <span class="price">

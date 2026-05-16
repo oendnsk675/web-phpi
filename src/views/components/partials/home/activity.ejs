@@ -1,36 +1,24 @@
-<section class="wpo-portfolio-section section-padding">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col col-xs-12">
-        <div class="wpo-section-title">
-          <h2>Kegiatan</h2>
-        </div>
+<section class="phpi-home-story">
+  <img src="/assets/images/story-banner-generated.png" alt="PHPI activities" />
+  <div class="phpi-home-story-overlay"></div>
+  <div class="container">
+    <div class="phpi-story-content">
+      <div class="phpi-kicker">
+        <span></span>
+        Every Journey, A Story
       </div>
-    </div>
-    <div class="sortable-gallery">
-      <div class="gallery-filters"></div>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="gallery-grids gallery-container clearfix">
-            <% [1, 2, 3, 4, 5, 6].forEach(activity => { %>
-            <div class="grid">
-              <div class="grid-img">
-                <img
-                  src="/assets/images/activity/<%= activity %>.jpeg"
-                  alt="image activity"
-                />
-                <div class="grid-text">
-                  <h3>
-                    <a href="#">Transaction Processing</a>
-                  </h3>
-                  <span>Data Protection</span>
-                </div>
-              </div>
-            </div>
-            <% }) %>
-          </div>
-        </div>
-      </div>
+      <h2>
+        Every region has its own language, rhythm, and story. Local guides
+        help travelers experience them with meaning.
+      </h2>
+      <a
+        href="https://www.youtube.com/embed/CNAd2-TbLfo?si=dwxnZiBsWmfHEsLQ"
+        class="phpi-story-link video-btn"
+        data-type="iframe"
+      >
+        <span><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+        Watch The Film
+      </a>
     </div>
   </div>
 </section>

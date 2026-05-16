@@ -35,10 +35,12 @@
     var navbar = $('.navigation-holder');
     var openBtn = $('.open-btn');
     var closeBtn = $('.navigation-holder .close-navbar');
+    var backdrop = $('.phpi-nav-backdrop');
 
     openBtn.on('click', function () {
       if (!navbar.hasClass('slideInn')) {
         navbar.addClass('slideInn');
+        $('body').addClass('nav-open');
       }
       return false;
     });
@@ -46,12 +48,36 @@
     closeBtn.on('click', function () {
       if (navbar.hasClass('slideInn')) {
         navbar.removeClass('slideInn');
+        $('body').removeClass('nav-open');
       }
       return false;
+    });
+
+    backdrop.on('click', function () {
+      navbar.removeClass('slideInn');
+      $('body').removeClass('nav-open');
     });
   }
 
   toggleMobileNavigation();
+
+  function togglePublicHeaderState() {
+    var header = $('.phpi-public-header');
+    if (!header.length) return;
+
+    var hasHero = $('.phpi-home-hero').length > 0;
+    header.toggleClass('has-home-hero', hasHero);
+    $('body').toggleClass('has-home-hero', hasHero);
+
+    function updateHeader() {
+      header.toggleClass('is-scrolled', $(window).scrollTop() > 24 || !hasHero);
+    }
+
+    updateHeader();
+    $(window).on('scroll', updateHeader);
+  }
+
+  togglePublicHeaderState();
 
   // Function for toggle a class for small menu
   function toggleClassForSmallNav() {
@@ -148,7 +174,10 @@
   }
 
   // clone home style 1 navigation for sticky menu
-  if ($('.site-header .navigation').length) {
+  if (
+    $('.site-header .navigation').length &&
+    !$('.site-header').hasClass('phpi-public-header')
+  ) {
     cloneNavForSticyMenu($('.site-header .navigation'), 'sticky-header');
   }
 
@@ -173,11 +202,19 @@
     lastScrollTop = st;
   }
 
-  $('body').on('click', function () {
+  $('body').on('click', function (e) {
+    if (
+      $(e.target).closest('.navigation-holder, .open-btn, .phpi-nav-backdrop')
+        .length
+    ) {
+      return;
+    }
     $('.navigation-holder').removeClass('slideInn');
+    $('body').removeClass('nav-open');
   });
   $('.menu-close').on('click', function () {
     $('.navigation-holder').removeClass('slideInn');
+    $('body').removeClass('nav-open');
   });
   $('.menu-close').on('click', function () {
     $('.open-btn').removeClass('x-close');
@@ -689,13 +726,35 @@
         = FUNFACT
     -------------------------------------------*/
   if ($('.odometer').length) {
+    if (window.Odometer) {
+      $('.odometer').each(function () {
+        if (!this.odometer) {
+          this.odometer = new Odometer({
+            el: this,
+            value: 0,
+            duration: 1800,
+            format: '(,ddd)',
+          });
+        } else {
+          this.odometer.update(0);
+        }
+      });
+    }
+
     $('.odometer').appear();
     $(document.body).on('appear', '.odometer', function (e) {
-      var odo = $('.odometer');
-      odo.each(function () {
-        var countNumber = $(this).attr('data-count');
-        $(this).html(countNumber);
-      });
+      var $target = $(this);
+      if ($target.data('odometerStarted')) return;
+
+      $target.data('odometerStarted', true);
+      var countNumber = parseInt($target.attr('data-count') || '0', 10);
+      setTimeout(function () {
+        if ($target[0] && $target[0].odometer) {
+          $target[0].odometer.update(countNumber);
+        } else {
+          $target.text(countNumber);
+        }
+      }, 140);
     });
   }
 
@@ -714,7 +773,10 @@
   }
 
   // clone home style 1 navigation for sticky menu
-  if ($('.wpo-site-header .navigation').length) {
+  if (
+    $('.wpo-site-header .navigation').length &&
+    !$('.wpo-site-header').hasClass('phpi-public-header')
+  ) {
     cloneNavForSticyMenu($('.wpo-site-header .navigation'), 'sticky-header');
   }
 
@@ -1078,7 +1140,10 @@
         WHEN WINDOW SCROLL
     ==========================================================================*/
   $(window).on('scroll', function () {
-    if ($('.site-header').length) {
+    if (
+      $('.site-header').length &&
+      !$('.site-header').hasClass('phpi-public-header')
+    ) {
       stickyMenu($('.site-header .navigation'), 'sticky-on');
     }
 
@@ -2415,4 +2480,262 @@
       },
     });
   });
+
+  /* ------------- canvas fiber for manage card member ------------- */
+  const canvas = new fabric.Canvas('c');
+  const size = {
+    portrait: { width: 638, height: 1011 },
+    landscape: { width: 1011, height: 638 },
+  };
+  canvas.setWidth(size.portrait.width);
+  canvas.setHeight(size.portrait.height);
+
+  function addItemToCanvas(type) {
+    if (type === 'text') {
+      const text = new fabric.Textbox('Teks Baru', {
+        left: 100,
+        top: 100,
+        fontSize: 20,
+      });
+      canvas.add(text);
+    }
+
+    // if (type === 'image') {
+    //   fabric.Image.fromURL('https://placekitten.com/100/100', function (img) {
+    //     img.set({ left: 150, top: 120 });
+    //     canvas.add(img);
+    //   });
+    // }
+
+    if (type === 'bg-image') {
+      fabric.Image.fromURL('https://placekitten.com/100/100', function (img) {
+        img.set({ left: 150, top: 120 });
+        canvas.add(img);
+      });
+    }
+
+    if (type === 'qr') {
+      const url = 'http://host.com/profile/username';
+      QRCode.toDataURL(url, { width: 100 }, function (err, dataUrl) {
+        fabric.Image.fromURL(dataUrl, function (img) {
+          img.set({ left: 200, top: 150 });
+          canvas.add(img);
+        });
+      });
+    }
+
+    if (type === 'portrait') {
+      setLayout('portrait');
+    }
+
+    if (type === 'landscape') {
+      setLayout('landscape');
+    }
+  }
+
+  function setLayout(type) {
+    if (type === 'portrait') {
+      canvas.setWidth(size.portrait.width);
+      canvas.setHeight(size.portrait.height);
+    }
+
+    if (type === 'landscape') {
+      canvas.setWidth(size.landscape.width);
+      canvas.setHeight(size.landscape.height);
+    }
+
+    // optional: reset background biar scale ulang
+    if (canvas.backgroundImage) {
+      canvas.backgroundImage.scaleToWidth(canvas.width);
+      canvas.backgroundImage.scaleToHeight(canvas.height);
+    }
+
+    canvas.renderAll();
+  }
+
+  function toggleCanvasAndInitBgImage() {
+    $('#container-area-dropdown').toggleClass('d-none');
+    $('#container-canvas').toggleClass('d-none');
+  }
+
+  function refreshPanel() {
+    const obj = canvas.getActiveObject() || null;
+    showPanel(obj);
+  }
+
+  function showPanel(obj) {
+    // reset visibilitas
+    $('#empty-state').toggleClass('d-none', !!obj);
+    $('#common-props, #text-props, #image-props, #qr-props').addClass('d-none');
+
+    if (!obj) return;
+
+    // --- By type ---
+    const t = obj.type; // 'textbox' | 'image' | 'activeSelection' | ...
+
+    if (t === 'textbox') {
+      $('#text-props').removeClass('d-none');
+      $('#prop-text-content').val(obj.text || '');
+      $('#prop-text-size').val(obj.fontSize || 16);
+      $('#prop-text-color').val(obj.fill || '#000000');
+    } else if (t === 'image') {
+      $('#image-props').removeClass('d-none');
+      $('#prop-image-opacity').val(obj.opacity ?? 1);
+      $('#prop-image-width').val(Math.round(obj.getScaledWidth()));
+
+      // Jika ini QR (kita tandai saat tambah)
+      const isQr = obj.data && obj.data.kind === 'qr';
+      $('#qr-props').toggleClass('d-none', !isQr);
+      if (isQr) {
+        $('#prop-qr-value').val(obj.data.url || '');
+        $('#prop-qr-size').val(Math.round(obj.getScaledWidth()));
+      }
+    }
+  }
+
+  $('#bg-image-canvas').on('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (f) {
+      const data = f.target.result;
+
+      fabric.Image.fromURL(data, function (img) {
+        img.scaleToWidth(canvas.width);
+        img.scaleToHeight(canvas.height);
+
+        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+      });
+
+      toggleCanvasAndInitBgImage();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // === SELECTION & PANEL SYNC ===
+  canvas.on('selection:created', refreshPanel);
+  canvas.on('selection:updated', refreshPanel);
+  canvas.on('selection:cleared', () => showPanel(null));
+
+  // optional: keep panel synced saat geser/rotate/scale
+  [
+    'object:modified',
+    'object:moving',
+    'object:scaling',
+    'object:rotating',
+  ].forEach((evt) => {
+    canvas.on(evt, refreshPanel);
+  });
+
+  // === INPUT BINDINGS ===
+
+  // Textbox
+  $('#prop-text-content').on('input', function () {
+    const o = canvas.getActiveObject();
+    if (o && o.type === 'textbox') {
+      o.set('text', this.value);
+      canvas.renderAll();
+    }
+  });
+  $('#prop-text-size').on('input', function () {
+    const o = canvas.getActiveObject();
+    if (o && o.type === 'textbox') {
+      o.set('fontSize', parseInt(this.value, 10) || 12);
+      canvas.renderAll();
+    }
+  });
+  $('#prop-text-color').on('input', function () {
+    const o = canvas.getActiveObject();
+    if (o && o.type === 'textbox') {
+      o.set('fill', this.value);
+      canvas.renderAll();
+    }
+  });
+  $('#prop-bold').on('click', function () {
+    const o = canvas.getActiveObject();
+    if (o && o.type === 'textbox') {
+      o.set('fontWeight', o.fontWeight === 'bold' ? 'normal' : 'bold');
+      canvas.renderAll();
+    }
+  });
+  $('#prop-italic').on('click', function () {
+    const o = canvas.getActiveObject();
+    if (o && o.type === 'textbox') {
+      o.set('fontStyle', o.fontStyle === 'italic' ? 'normal' : 'italic');
+      canvas.renderAll();
+    }
+  });
+
+  // Image (umum)
+  $('#prop-image-opacity').on('input', function () {
+    const o = canvas.getActiveObject();
+    if (o && o.type === 'image') {
+      o.set('opacity', parseFloat(this.value));
+      canvas.renderAll();
+    }
+  });
+  $('#prop-image-width').on('input', function () {
+    const o = canvas.getActiveObject();
+    if (o && o.type === 'image') {
+      o.scaleToWidth(parseInt(this.value, 10) || o.width);
+      o.setCoords();
+      canvas.renderAll();
+    }
+  });
+
+  // QR khusus (dibedakan via o.data.kind === 'qr')
+  $('#prop-qr-value, #prop-qr-size').on('input', function () {
+    const o = canvas.getActiveObject();
+    if (!(o && o.type === 'image' && o.data && o.data.kind === 'qr')) return;
+
+    const newUrl = $('#prop-qr-value').val();
+    const size = parseInt($('#prop-qr-size').val(), 10) || 100;
+
+    QRCode.toDataURL(
+      newUrl,
+      { width: size, margin: 1 },
+      function (err, dataUrl) {
+        if (err) return console.error(err);
+        // ganti source image-nya (Fabric v5)
+        o.setSrc(dataUrl, () => {
+          o.scaleToWidth(size);
+          o.set('data', { kind: 'qr', url: newUrl });
+          o.setCoords();
+          canvas.renderAll();
+        });
+      },
+    );
+  });
+
+  const features = [
+    {
+      id: 'add-text-btn',
+      type: 'text',
+    },
+    {
+      id: 'add-image-btn',
+      type: 'image',
+    },
+    {
+      id: 'add-qr-btn',
+      type: 'qr',
+    },
+    {
+      id: 'portrait-btn',
+      type: 'portrait',
+    },
+    {
+      id: 'landscape-btn',
+      type: 'landscape',
+    },
+  ];
+
+  features.forEach((feature) => {
+    $(`#${feature.id}`).on('click', function () {
+      addItemToCanvas(feature.type);
+    });
+  });
+
+  /* ------------- end canvas fiber for manage card member ------------- */
 })(window.jQuery);

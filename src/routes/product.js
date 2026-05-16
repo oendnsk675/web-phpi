@@ -1,6 +1,10 @@
 // auth.routes.js
 const express = require('express');
-const { getAll, getDetail, productSearch } = require('../controller/products.controller');
+const {
+  getAll,
+  getDetail,
+  productSearch,
+} = require('../controller/products.controller');
 const router = express.Router();
 
 router.get('/', getAll);

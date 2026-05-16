@@ -51,7 +51,7 @@
         font-weight: 500;
         padding: 30px 20px;
         text-transform: capitalize;
-        color: #6c6f76;
+        color: #e0e1e6;
       }
 
       > ul > li:first-child > a:first-child {
@@ -409,6 +409,337 @@
     .navbar-nav > li {
       float: none;
     }
+  }
+}
+
+.phpi-public-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+
+  .navigation {
+    background: transparent;
+    border: 0;
+  }
+
+  &.is-scrolled,
+  &:not(.has-home-hero) {
+    background: rgba($theme-secondary-color, 0.96);
+    border-bottom: 1px solid rgba($white, 0.1);
+    box-shadow: 0 16px 50px rgba($black, 0.16);
+    backdrop-filter: blur(10px);
+  }
+
+  .phpi-nav-container.container {
+    max-width: 1420px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .phpi-nav-container {
+    min-height: 82px;
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto minmax(220px, 1fr);
+    align-items: center;
+    gap: 24px;
+    transition: min-height 0.35s ease;
+  }
+
+  .phpi-nav-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: $white;
+
+    img {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+    }
+
+    span {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    strong {
+      color: $white;
+      font-family: $heading-font;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    small {
+      color: rgba($white, 0.78);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      max-width: 220px;
+    }
+  }
+
+  .navigation-holder {
+    justify-content: center;
+  }
+
+  .phpi-nav-menu {
+    display: flex;
+    align-items: center;
+
+    li {
+      list-style: none;
+    }
+
+    > li > a {
+      color: $white;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
+      padding: 29px 0;
+      transition:
+        padding 0.35s ease,
+        color 0.35s ease;
+      text-transform: capitalize;
+
+      &:hover,
+      &:focus {
+        color: $orange;
+      }
+    }
+  }
+
+  &.is-scrolled {
+    .phpi-nav-container {
+      min-height: 64px;
+    }
+
+    .phpi-nav-menu > li > a {
+      padding: 23px 0;
+    }
+
+    .phpi-nav-brand img {
+      width: 46px;
+      height: 46px;
+    }
+
+    .phpi-nav-brand strong {
+      font-size: 21px;
+    }
+  }
+
+  .phpi-nav-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+  }
+
+  .phpi-nav-link {
+    color: $white;
+    font-size: 14px;
+    font-weight: 600;
+
+    &:hover {
+      color: $orange;
+    }
+  }
+
+  .phpi-nav-cta {
+    background: $white;
+    border: 1px solid $white;
+    color: $theme-secondary-color;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 24px;
+    border-radius: 0;
+    font-size: 14px;
+    font-weight: 600;
+
+    &:hover {
+      background: $orange;
+      border-color: $orange;
+      color: $white;
+    }
+  }
+
+  .phpi-nav-cta-light {
+    background: rgba($white, 0.12);
+    border-color: rgba($white, 0.32);
+    color: $white;
+  }
+
+  .phpi-nav-toggle {
+    display: none;
+    background: rgba($white, 0.12) !important;
+    border: 1px solid rgba($white, 0.24) !important;
+    color: $white !important;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+  }
+
+  .close-navbar {
+    display: none;
+  }
+
+  .phpi-nav-backdrop {
+    display: none;
+  }
+
+  .item-add-on {
+    display: none;
+  }
+
+  @media (max-width: 1199px) {
+    .phpi-nav-container {
+      grid-template-columns: auto 1fr auto;
+      gap: 24px;
+    }
+
+    .phpi-nav-menu {
+      gap: 22px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .phpi-nav-container {
+      display: flex;
+      justify-content: space-between;
+      min-height: 72px;
+    }
+
+    .phpi-nav-brand img {
+      width: 46px;
+      height: 46px;
+    }
+
+    .phpi-nav-brand small {
+      display: none;
+    }
+
+    .phpi-nav-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phpi-nav-actions {
+      display: none;
+    }
+
+    #navbar.navigation-holder {
+      background: $theme-secondary-color;
+      display: block !important;
+      width: min(84vw, 360px);
+      height: 100dvh !important;
+      max-height: 100dvh;
+      margin: 0;
+      padding: 84px 0 28px;
+      border-left: 1px solid rgba($white, 0.12);
+      position: fixed;
+      right: -100%;
+      top: 0;
+      z-index: 1000001;
+      box-shadow: -16px 0 42px rgba($black, 0.34);
+      transition: right 0.35s ease;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+
+      &.slideInn {
+        right: 0;
+      }
+
+      .close-navbar {
+        background: rgba($white, 0.96);
+        border: 0;
+        border-radius: 50%;
+        color: $theme-secondary-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        position: absolute;
+        left: 14px;
+        top: 14px;
+      }
+    }
+
+    #navbar.navigation-holder .phpi-nav-menu {
+      display: block;
+
+      > li {
+        border-bottom: 1px solid rgba($white, 0.2);
+      }
+
+      > li > a {
+        color: $white !important;
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+        padding: 13px 26px;
+        line-height: 1.35;
+      }
+    }
+
+    .phpi-nav-backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      border: 0;
+      background: rgba($black, 0.46);
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000000;
+    }
+
+    .item-add-on {
+      display: block;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .phpi-nav-brand strong {
+      font-size: 20px;
+    }
+  }
+}
+
+body.nav-open {
+  overflow: hidden;
+
+  .phpi-public-header .phpi-nav-backdrop {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+body:not(.has-home-hero) {
+  .page-wrapper {
+    padding-top: 60px;
+
+    @media (max-width: 991px) {
+      padding-top: 50px;
+    }
+  }
+
+  .register {
+    padding-top: 0 !important;
   }
 }
 

@@ -163,6 +163,13 @@ module.exports = (app) => {
     updateProduct,
   );
 
+  app.get('/panel/manage/card-member', checkAuth, (req, res) => {
+    return res.render('pages/panel/manage-card-member', {
+      layout: 'layouts/dashboard',
+      title: 'Manage Card Member',
+    });
+  });
+
   app.get('/history', (req, res) => {
     return res.render('pages/history', {
       title: 'Sejarah',

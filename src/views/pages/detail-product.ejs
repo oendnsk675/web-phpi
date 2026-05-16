@@ -13,20 +13,32 @@
         <div class="col col-lg-6 col-12">
           <div class="shop-single-slider">
             <div class="slider-for">
-              <% if (product.banners.length > 0) { %> <% product.banners.forEach(banner => { %>
+              <% if (product.banners.length > 0) { %> <%
+              product.banners.forEach(banner => { %>
               <div class="main-img">
-                <img src="<%= banner || '/assets/images/shop/shop-single/1.jpg' %>" alt="image slider" />
+                <img
+                  src="<%= banner || '/assets/images/shop/shop-single/1.jpg' %>"
+                  alt="image slider"
+                />
               </div>
               <% }) %>
               <% } %>
               <div class="main-img">
-                <img src="/assets/images/shop/shop-single/1.jpg" alt="image slider" />
+                <img
+                  src="/assets/images/shop/shop-single/1.jpg"
+                  alt="image slider"
+                />
               </div>
             </div>
             <div class="slider-nav p-0">
               <% product.banners.forEach(banner => { %>
-              <div class="aspect-ratio-square d-flex justify-content-center align-items-center overflow-hidden cursor-pointer">
-                <img src="<%= banner || '/assets/images/shop/shop-single/thumb/img-1.jpg' %>" alt />
+              <div
+                class="aspect-ratio-square d-flex justify-content-center align-items-center overflow-hidden cursor-pointer"
+              >
+                <img
+                  src="<%= banner || '/assets/images/shop/shop-single/thumb/img-1.jpg' %>"
+                  alt
+                />
               </div>
               <% }) %>
             </div>
@@ -71,16 +83,26 @@
                 <i class="fa fa-language" aria-hidden="true"></i>
                 <div class="d-flex flex-column">
                   <span class="fw-bold">languages</span>
-                  <span class=""> <% const languages = product?.user?.languages || []; %> <%= languages.map(language => language.language).join(',') %>. </span>
+                  <span class="">
+                    <% const languages = product?.user?.languages || []; %> <%=
+                    languages.map(language => language.language).join(',') %>.
+                  </span>
                 </div>
               </div>
 
               <form action="" method="post" class="user-info-container p-0">
                 <div class="form-group mt-2">
-                  <input type="date" class="form-control" name="date" id="date" />
+                  <input
+                    type="date"
+                    class="form-control"
+                    name="date"
+                    id="date"
+                  />
                 </div>
 
-                <button class="theme-btn-sm whatsapp-btn w-100 d-flex align-items-center justify-content-center gap-2">
+                <button
+                  class="theme-btn-sm whatsapp-btn w-100 d-flex align-items-center justify-content-center gap-2"
+                >
                   <i class="fa fa-whatsapp" aria-hidden="true"></i>
                   <span
                     >Message
@@ -102,7 +124,10 @@
             <!-- image -->
             <div class="d-flex flex-column align-items-center gap-2">
               <div class="foto-guide">
-                <img src="/assets/images/shop/shop-single/review/img-1.jpg" alt="foto guide" />
+                <img
+                  src="/assets/images/shop/shop-single/review/img-1.jpg"
+                  alt="foto guide"
+                />
               </div>
 
               <span class="fst-italic joined-date"
@@ -140,16 +165,52 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="Information-tab" data-bs-toggle="tab" href="#Information" role="tab" aria-controls="Information" aria-selected="true">Information</a>
+                <a
+                  class="nav-link active"
+                  id="Information-tab"
+                  data-bs-toggle="tab"
+                  href="#Information"
+                  role="tab"
+                  aria-controls="Information"
+                  aria-selected="true"
+                  >Information</a
+                >
               </li>
               <li class="nav-item" role="presentation">
-                <a class="nav-link" id="Itinerary-tab" data-bs-toggle="tab" href="#Itinerary" role="tab" aria-controls="Itinerary" aria-selected="true">Itinerary</a>
+                <a
+                  class="nav-link"
+                  id="Itinerary-tab"
+                  data-bs-toggle="tab"
+                  href="#Itinerary"
+                  role="tab"
+                  aria-controls="Itinerary"
+                  aria-selected="true"
+                  >Itinerary</a
+                >
               </li>
               <li class="nav-item d-none" role="presentation">
-                <a class="nav-link" id="CancellationPolicy-tab" data-bs-toggle="tab" href="#CancellationPolicy" role="tab" aria-controls="CancellationPolicy" aria-selected="true">Cancellation Policy</a>
+                <a
+                  class="nav-link"
+                  id="CancellationPolicy-tab"
+                  data-bs-toggle="tab"
+                  href="#CancellationPolicy"
+                  role="tab"
+                  aria-controls="CancellationPolicy"
+                  aria-selected="true"
+                  >Cancellation Policy</a
+                >
               </li>
               <li class="nav-item" role="presentation">
-                <a class="nav-link" id="Review-tab" data-bs-toggle="tab" href="#Review" role="tab" aria-controls="Review" aria-selected="false">Review</a>
+                <a
+                  class="nav-link"
+                  id="Review-tab"
+                  data-bs-toggle="tab"
+                  href="#Review"
+                  role="tab"
+                  aria-controls="Review"
+                  aria-selected="false"
+                  >Review</a
+                >
               </li>
             </ul>
 
@@ -157,20 +218,29 @@
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="Information">
                 <div class="row">
-                  <div class="col col-lg-3 col-12 d-flex flex-column gap-3 mb-3">
+                  <div
+                    class="col col-lg-3 col-12 d-flex flex-column gap-3 mb-3"
+                  >
                     <div class="d-flex align-items-center gap-3">
                       <i class="fa fa-map-marker" aria-hidden="true"></i>
-                      <span class="fw-semibold"><%= product?.location?.name %></span>
+                      <span class="fw-semibold"
+                        ><%= product?.location?.name %></span
+                      >
                     </div>
                     <div class="d-flex align-items-center gap-3">
                       <i class="fa fa-clock-o" aria-hidden="true"></i>
-                      <span class="fw-semibold"><%= product?.serviceTime %></span>
+                      <span class="fw-semibold"
+                        ><%= product?.serviceTime %></span
+                      >
                     </div>
                   </div>
                   <div class="col col-lg-6 col-12 d-flex flex-column gap-3">
                     <div class="d-flex align-items-center gap-3">
                       <i class="fa fa-language" aria-hidden="true"></i>
-                      <span class="fw-semibold"> <%= languages.map(language => language.language).join(',') %>. </span>
+                      <span class="fw-semibold">
+                        <%= languages.map(language =>
+                        language.language).join(',') %>.
+                      </span>
                     </div>
                     <div class="d-flex align-items-center gap-3">
                       <i class="fa fa-users" aria-hidden="true"></i>
@@ -211,7 +281,10 @@
                         <% product.productServices.forEach(service => { %>
                         <% if (service.type == 'exclusive') { %>
                         <li>
-                          <i class="fa fa-times-circle not" aria-hidden="true"></i>
+                          <i
+                            class="fa fa-times-circle not"
+                            aria-hidden="true"
+                          ></i>
                           <span><%= service.name %></span>
                         </li>
                         <% } %>
@@ -222,14 +295,19 @@
                 </div>
               </div>
               <div role="tabpanel" class="tab-pane" id="Itinerary">
-                <p>This itinerary can be customized to meet your needs and preferences. Send me a message with your requests!</p>
+                <p>
+                  This itinerary can be customized to meet your needs and
+                  preferences. Send me a message with your requests!
+                </p>
                 <div class="itinerary">
                   <ul>
                     <% product?.itineraries.forEach(itinerary => { %>
                     <li>
                       <div class="time"><%= itinerary.time %></div>
                       <div class="title"><%= itinerary.title %></div>
-                      <div class="description"><%= itinerary.description %></div>
+                      <div class="description">
+                        <%= itinerary.description %>
+                      </div>
                     </li>
                     <% }) %>
                   </ul>
@@ -240,15 +318,21 @@
                   <ul>
                     <li>
                       <i class="fa fa-check-circle" aria-hidden="true"></i>
-                      <span>Free cancellation - 8 days prior to meeting time</span>
+                      <span
+                        >Free cancellation - 8 days prior to meeting time</span
+                      >
                     </li>
                     <li>
                       <i class="fa fa-check-circle" aria-hidden="true"></i>
-                      <span>50% Refund - 3 to 7 days prior to meeting time</span>
+                      <span
+                        >50% Refund - 3 to 7 days prior to meeting time</span
+                      >
                     </li>
                     <li>
                       <i class="fa fa-times-circle not" aria-hidden="true"></i>
-                      <span>No Refund - Within 2 day(s) prior to meeting time</span>
+                      <span
+                        >No Refund - Within 2 day(s) prior to meeting time</span
+                      >
                     </li>
                   </ul>
                 </div>
@@ -259,14 +343,18 @@
                     <% product?.reviews.forEach(review => { %>
                     <div class="client-rv">
                       <div class="client-pic">
-                        <img src="<%= review?.user?.photo != 'http://localhost:3000null' ? review?.user?.photo : '/assets/images/shop/shop-single/review/img-1.jpg' %>" alt />
+                        <img
+                          src="<%= review?.user?.photo != 'http://localhost:3000null' ? review?.user?.photo : '/assets/images/shop/shop-single/review/img-1.jpg' %>"
+                          alt
+                        />
                       </div>
                       <div class="details">
                         <div class="name-rating-time">
                           <div class="name-rating">
                             <div>
                               <div class="rating">
-                                <% for (let index = 0; index < review.rating; index++) { %>
+                                <% for (let index = 0; index < review.rating;
+                                index++) { %>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <% } %>
                                 <% for (let index = review.rating; index < 5; index++) { %>
@@ -297,34 +385,63 @@
                     <div class="review-form">
                       <h4>Add a review</h4>
                       <form action="/review" method="post">
-                        <input type="hidden" value="<%= product?.id %>" name="productId" />
+                        <input
+                          type="hidden"
+                          value="<%= product?.id %>"
+                          name="productId"
+                        />
                         <div class="give-rat-sec">
                           <p>Your rating *</p>
                           <div class="give-rating">
                             <label>
-                              <input type="radio" required name="rating" value="1" />
+                              <input
+                                type="radio"
+                                required
+                                name="rating"
+                                value="1"
+                              />
                               <span class="icon">★</span>
                             </label>
                             <label>
-                              <input type="radio" required name="rating" value="2" />
-                              <span class="icon">★</span>
-                              <span class="icon">★</span>
-                            </label>
-                            <label>
-                              <input type="radio" required name="rating" value="3" />
-                              <span class="icon">★</span>
-                              <span class="icon">★</span>
-                              <span class="icon">★</span>
-                            </label>
-                            <label>
-                              <input type="radio" required name="rating" value="4" />
-                              <span class="icon">★</span>
-                              <span class="icon">★</span>
+                              <input
+                                type="radio"
+                                required
+                                name="rating"
+                                value="2"
+                              />
                               <span class="icon">★</span>
                               <span class="icon">★</span>
                             </label>
                             <label>
-                              <input type="radio" required name="rating" value="5" />
+                              <input
+                                type="radio"
+                                required
+                                name="rating"
+                                value="3"
+                              />
+                              <span class="icon">★</span>
+                              <span class="icon">★</span>
+                              <span class="icon">★</span>
+                            </label>
+                            <label>
+                              <input
+                                type="radio"
+                                required
+                                name="rating"
+                                value="4"
+                              />
+                              <span class="icon">★</span>
+                              <span class="icon">★</span>
+                              <span class="icon">★</span>
+                              <span class="icon">★</span>
+                            </label>
+                            <label>
+                              <input
+                                type="radio"
+                                required
+                                name="rating"
+                                value="5"
+                              />
                               <span class="icon">★</span>
                               <span class="icon">★</span>
                               <span class="icon">★</span>
@@ -334,11 +451,17 @@
                           </div>
                         </div>
                         <div>
-                          <textarea class="form-control" placeholder="Review *" name="comment"></textarea>
+                          <textarea
+                            class="form-control"
+                            placeholder="Review *"
+                            name="comment"
+                          ></textarea>
                         </div>
                         <div class="rating-wrapper">
                           <div class="submit">
-                            <button type="submit" class="theme-btn-s2">Post review</button>
+                            <button type="submit" class="theme-btn-s2">
+                              Post review
+                            </button>
                           </div>
                         </div>
                       </form>
