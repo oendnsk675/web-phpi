@@ -136,7 +136,7 @@ exports.createMemberCard = async (memberInfo) => {
     });
   } catch (error) {
     console.error('Error creating member card:', error);
-    return false;
+    return error;
   }
 };
 

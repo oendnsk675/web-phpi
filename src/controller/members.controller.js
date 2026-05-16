@@ -341,7 +341,7 @@ exports.profileMember = async (req, res) => {
       isFirstPage: page == 1,
     });
   } catch (error) {
-    console.log(`Error fetching users: ${error}`);
+    console.log(error);
     return res.render('pages/errors/index');
   }
 };
