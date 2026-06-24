@@ -139,14 +139,3 @@ exports.createMemberCard = async (memberInfo) => {
     return error;
   }
 };
-
-// const memberInfo = {
-//   id: '123456',
-//   email: 'Sayidina Ahmadal Qososyi',
-//   phone: 'Sayidina Ahmadal Qososyi',
-//   name: 'Sayidina Ahmadal Qososyi',
-//   status: 'Active',
-//   qrData: 'https://example.com/member/123456',
-// };
-
-// createMemberCard(memberInfo);
