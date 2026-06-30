@@ -26,6 +26,74 @@ Alur deployment yang disarankan:
 7. Arahkan Nginx ke port aplikasi.
 8. Verifikasi halaman dan log aplikasi.
 
+## Workflow Deployment Rutin
+
+Workflow harian saat ada perubahan kode yang perlu dideploy ke server.
+
+### Di Local
+
+1. Buat atau ubah kode di local.
+2. Uji perubahan dengan `pnpm dev` di local.
+3. Jalankan `pnpm format` jika mengubah file `.js` atau `.ejs`.
+4. Commit perubahan:
+   ```bash
+   git add <file>
+   git commit -m "pesan commit"
+   ```
+5. Push ke GitHub:
+   ```bash
+   git push origin main
+   ```
+
+### Di Server
+
+1. SSH ke server:
+   ```bash
+   ssh user@server
+   ```
+2. Masuk ke direktori project:
+   ```bash
+   cd /root/web-phpi
+   ```
+3. Pull perubahan terbaru:
+   ```bash
+   git pull origin main
+   ```
+4. Install dependency jika ada perubahan:
+   ```bash
+   pnpm install
+   ```
+5. Jalankan migration jika ada perubahan schema:
+   ```bash
+   npx typeorm migration:run -d ./src/configs/ormconfig.js
+   ```
+6. Restart aplikasi dengan PM2:
+   ```bash
+   pm2 restart phpi
+   ```
+7. Cek status dan log:
+   ```bash
+   pm2 status
+   pm2 logs phpi --lines 20
+   ```
+
+### Command Singkat
+
+Tanpa perubahan dependency atau schema:
+```bash
+cd /root/web-phpi && git pull origin main && pm2 restart phpi
+```
+
+Dengan kemungkinan dependency baru:
+```bash
+cd /root/web-phpi && git pull origin main && pnpm install && pm2 restart phpi
+```
+
+Jika ada migration:
+```bash
+cd /root/web-phpi && git pull origin main && pnpm install && npx typeorm migration:run -d ./src/configs/ormconfig.js && pm2 restart phpi
+```
+
 ## Environment Production
 
 Buat file `.env` di root project pada server.
